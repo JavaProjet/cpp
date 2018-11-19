@@ -1,9 +1,11 @@
 #include <iostream>
-#include "graphics/graphics.h"  //temporairement, avant d'utiliser QT
-#include "Personnage.h"
+#include "Sprite.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]){
-    cout << "hello";
+    cout << "debut\n";
+    Sprite s, s2("bonjour");
+    
+    printf("fin\n"); 
 }

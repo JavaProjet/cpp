@@ -23,7 +23,7 @@ Entity::Entity(int x, int y, int vision) : pos(x,y){
 }
 
 bool Entity::degats(int nb){
-	vie -= degat;
+	vie -= nb;
 	if(vie <= 0) return false;
 	else return true;
 }
@@ -57,4 +57,16 @@ void Entity::deplace(int x, int y){
 
 int Entity::getVie(){
 	return vie;
+}
+
+void Entity::setVie(int _vie){
+	vie = _vie;
+}
+
+void Entity::setRayon(int r){
+	rayon = r;
+}
+
+int Entity::getRayon(){
+	return rayon;
 }

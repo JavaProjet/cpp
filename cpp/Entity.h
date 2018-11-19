@@ -6,7 +6,8 @@
 class Entity{
 	protected :
 		int vie;
-		Point pos;
+		Point pos; //point centrale de la hitbox
+		int rayon; //taille de la hitbox
 		int vision;
 		int degatArme;
 		
@@ -19,15 +20,17 @@ class Entity{
 		~Entity();
 		Entity(int x, int y);
 		Entity(int x, int y, int vision);
-		bool degats(int); //infliger des degats au personnage
+		bool degats(int); //infliger des degats à l'entité, retourne faux si les points de vies atteignent 0
 		int getVision();
-		void setVision(int degre);
-		void tourneVision(int degre); //pour tourner la tete a un certain degré
+		void setVision(int degre); //définir un degré d'orientation à la vision
+		void tourneVision(int degre); //pour pivoter la vision d'un certain degré
 		Point& getPoint();
 		void setPoint(int x, int y);
 		void deplace(int x, int y);
 		int getVie();
-		
+		void setVie(int);
+		void setRayon(int);
+		int getRayon();
 };
 
 #endif //Entity_h
