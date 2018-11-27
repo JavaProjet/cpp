@@ -17,6 +17,7 @@ class Fenetre{
 		void close();
 		bool isOpen();
 		RenderWindow& getWindow();
+		bool write(const char* str, int police, sf::Color color, int x, int y);
 };
 
 #endif //Fenetre_h

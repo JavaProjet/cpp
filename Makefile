@@ -29,6 +29,6 @@ clean:
 install:
 	unzip SFML.zip
 	sudo cp -r SFML /usr/local
-	rm -f SFML
+	rm -f -r SFML
 
 #SFML est installé dans /usr/local

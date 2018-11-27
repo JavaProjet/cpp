@@ -3,74 +3,54 @@
 #include "fenetre.h"
 #include <iostream>
 
-
 using namespace std;
 
-
-//modele a ne pas supprimer
-int fenetre(){
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen()){
+int fenetreMenu(){
+	int choix = -1;
+	Fenetre window(600,500,"Menu");
+	while (window.isOpen() && choix < 0){
         sf::Event event;
-        while (window.pollEvent(event))
+        while (window.getWindow().pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 window.close();
+                choix = 3;
+			}
+            if(event.type == sf::Event::KeyPressed){
+				if(event.key.code == sf::Keyboard::Up) choix = -1;
+				if(event.key.code == sf::Keyboard::Down) choix = -2;
+				if(event.key.code == sf::Keyboard::Return) choix = -choix;
+			}
         }
-        window.clear();
-        window.draw(shape);
-        window.display();
+        window.getWindow().clear(sf::Color(160,62,35));
+        
+        window.write("Jouer une partie", 40, sf::Color::White, 170, 180);
+        window.write("Creer une carte", 40, sf::Color::White, 180, 330);
+        
+        if(choix == -1){
+			window.write(">", 40, sf::Color::White, 120, 180);
+		}
+		else if(choix == -2){
+			window.write(">", 40, sf::Color::White, 120, 330);
+		}
+        
+        window.getWindow().display();
     }
-    
-    return 0;
-
+    return choix;
 }
 
 int main(int argc, char *argv[]){
-    cout << "debut\n";
-    
-    sf::Texture texture;
-	if (!texture.loadFromFile("Textures/rocher.png")){
-		cout << "erreur de chargement de la texture\n";
+    int choix = 0;
+    while(choix != 3){
+		choix = fenetreMenu();
+		if(choix == 1){
+			cout << "lancement d'une partie\n";
+			//jouer
+		}
+		if(choix == 2){
+			//editeur de carte
+			cout << "lancement de l'éditeur de cartes\n";
+		}
 	}
-	
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	
-	sprite.setTextureRect(sf::IntRect(0, 0, 29, 21));
-	
-	sprite.setPosition(sf::Vector2f(100.f, 100.f));
-	int i = 0, j = 0;
-	int move = 1;
-	bool vis = true;
-    Fenetre w(900,500, "toto");
-    while (w.isOpen()){
-		sf::Event event;
-        while (w.getWindow().pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                w.close();
-            if(event.type == sf::Event::KeyPressed){
-				if(event.key.code == sf::Keyboard::Left)i-= move;
-				if(event.key.code == sf::Keyboard::Right)i+= move;
-				if(event.key.code == sf::Keyboard::Up)j-= move;
-				if(event.key.code == sf::Keyboard::Down)j+= move;
-				if(event.key.code == sf::Keyboard::A)move++;
-				if(event.key.code == sf::Keyboard::Q)j+= move--;
-				if(event.key.code == sf::Keyboard::V)vis = !vis;
-			}
-        }
-        w.getWindow().clear(sf::Color::White);
-        
-        sprite.setPosition(sf::Vector2f(i, j));
-        if(vis)w.getWindow().draw(sprite);
-        
-        w.getWindow().display();
-	}
-    w.close();
-    
-    printf("fin\n"); 
+	cout << "l'utilisateur a quitté\n";
 }

@@ -21,14 +21,16 @@ void Carte::freeTab(){
 
 Carte::Carte(const char* name){
 	tab = NULL;
+	nom = NULL;
 }
 
 Carte::Carte(int largeur, int hauteur){
 	tab = NULL;
+	nom = NULL;
 }
 
 Carte::~Carte(){
 	freeTab();
-	delete nom;
+	if(nom) delete nom;
 }
 
