@@ -17,5 +17,13 @@ void Fenetre::close(){
 	}
 }
 
+bool Fenetre::isOpen(){
+	return window->isOpen();
+}
+
+RenderWindow& Fenetre::getWindow(){
+	return *window;
+}
+
 
 

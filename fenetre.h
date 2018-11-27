@@ -15,6 +15,8 @@ class Fenetre{
 		Fenetre(int largeur, int hauteur, const char *title);
 		~Fenetre();
 		void close();
+		bool isOpen();
+		RenderWindow& getWindow();
 };
 
-#endif //Window_h
+#endif //Fenetre_h
