@@ -1,5 +1,8 @@
 #include "fenetre.h"
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 Fenetre::Fenetre(int largeur, int hauteur, const char *title){
 	this->largeur = largeur;
@@ -83,4 +86,24 @@ void Fenetre::drawRect(int x, int y, int largeur, int hauteur, sf::Color color){
 	rectangle.setPosition(sf::Vector2f(x, y));
 	
 	window->draw(rectangle);
+}
+
+bool Fenetre::drawSprite(int x, int y, int Xsize, int Ysize, const char* file){
+	sf::Texture texture;
+	string str = "Textures/";
+	str.append(file);
+
+	if (!texture.loadFromFile(str)){
+		return false;
+	}
+	
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	
+	sprite.setTextureRect(sf::IntRect(0, 0, Xsize, Ysize));
+	
+	sprite.setPosition(sf::Vector2f(x,y));
+
+	window->draw(sprite);
+	return true;
 }

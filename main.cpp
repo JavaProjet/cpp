@@ -24,6 +24,8 @@ int fenetreMenu(){
         }
         window.getWindow().clear(sf::Color(160,62,35));
         
+		window.drawSprite(0,0,600,500,"SBMa.png");
+
         window.write("Jouer une partie", 40, sf::Color::White, 170, 180);
         window.write("Creer une carte", 40, sf::Color::White, 180, 330);
         
@@ -40,8 +42,8 @@ int fenetreMenu(){
 }
 
 void inputTest(){
-	Fenetre window(900,600,"input");
-	drawInput(window, 10, 10, 200, 10);
+	Fenetre window(902,600,"yes");
+	drawInput(window, 12, 10, 200, 10);
 	while(window.isOpen()){
 		sf::Event event;
 		while (window.getWindow().pollEvent(event)){
@@ -49,7 +51,7 @@ void inputTest(){
                 window.close();
 			}
 		}
-		window.getWindow().clear();
+		window.getWindow().clear(sf::Color(2,2,2));
         window.getWindow().display();
 	}
 }

@@ -1,6 +1,4 @@
-#ifndef editeur_cpp
-#define editeur_cpp
-
+#include "editeur.h"
 #include "fenetre.h"
 
 using namespace std;
@@ -23,8 +21,8 @@ int menuEdition(){
         }
         window.getWindow().clear(sf::Color(160,62,35));
         
-        window.write("Nouvelle Carte", 40, sf::Color::White, 170, 180);
-        window.write("Modifier une Carte", 40, sf::Color::White, 180, 330);
+        window.write("Nouvelle Carte", 40, sf::Color::White, 190, 180);
+        window.write("Modifier une Carte", 40, sf::Color::White, 170, 330);
         
         if(choix == -1){
 			window.write(">", 40, sf::Color::White, 120, 180);
@@ -41,5 +39,3 @@ int menuEdition(){
 void editeur(){
 	menuEdition();
 }
-
-#endif //editeur_cpp
