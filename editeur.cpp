@@ -20,15 +20,16 @@ int menuEdition(){
 			}
         }
         window.getWindow().clear(sf::Color(160,62,35));
+        window.drawSprite(0,0,600,500,"fond.png");
         
-        window.write("Nouvelle Carte", 40, sf::Color::White, 190, 180);
-        window.write("Modifier une Carte", 40, sf::Color::White, 170, 330);
+        window.write("Nouvelle carte", 40, sf::Color::Black, 190, 180);
+        window.write("Modifier une carte", 40, sf::Color::Black, 170, 330);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::White, 120, 180);
+			window.write(">", 40, sf::Color::Black, 120, 180);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::White, 120, 330);
+			window.write(">", 40, sf::Color::Black, 120, 330);
 		}
         
         window.getWindow().display();

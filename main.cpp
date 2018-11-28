@@ -26,14 +26,14 @@ int fenetreMenu(){
         
 		window.drawSprite(0,0,600,500,"fond.png");
 
-        window.write("Jouer une partie", 40, sf::Color::White, 170, 180);
-        window.write("Creer une carte", 40, sf::Color::White, 180, 330);
+        window.write("Jouer une partie", 40, sf::Color::Black, 170, 180);
+        window.write("Creer une carte", 40, sf::Color::Black, 180, 330);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::White, 120, 180);
+			window.write(">", 40, sf::Color::Black, 120, 180);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::White, 120, 330);
+			window.write(">", 40, sf::Color::Black, 120, 330);
 		}
         
         window.getWindow().display();
