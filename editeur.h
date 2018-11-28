@@ -3,6 +3,6 @@
 
 int menuEdition();
 
-void editeur();
+int editeur();
 
 #endif //editeur_h

@@ -1,12 +1,12 @@
 nom potenciel du jeu :
 mettre un M,S ou un T après chaque proposition celon vos gout.
 
- San Pedro T
+ San Pedro MT
  Msillas
- Guerachi
+ Guerachi M
  Los Tanques
- cobachi T
+ cobachi MT
  Tubares
- Morelos
+ Morelos M
  Sianori T
  Los Haro T

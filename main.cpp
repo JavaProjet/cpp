@@ -15,7 +15,7 @@ int fenetreMenu(){
         while (window.getWindow().pollEvent(event)){
             if (event.type == sf::Event::Closed){
                 window.close();
-                choix = 3;
+                choix = 0;
 			}
             if(event.type == sf::Event::KeyPressed){
 				if(event.key.code == sf::Keyboard::Up) choix = -1;
@@ -58,18 +58,18 @@ void inputTest(){
 }
 
 int main(int argc, char *argv[]){
-    int choix = 0;
-    while(choix != 3){
+    int choix = -1;
+    while(choix != 0){
 		choix = fenetreMenu();
 		if(choix == 1){
 			cout << "lancement d'une partie\n";
 			//jouer
 			affiche();
 		}
-		if(choix == 2){
+		else if(choix == 2){
 			//editeur de carte
 			cout << "lancement de l'éditeur de cartes\n";
-			editeur();
+			choix = editeur();
 		}
 	}
 	cout << "l'utilisateur a quitté\n";

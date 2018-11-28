@@ -11,32 +11,36 @@ int menuEdition(){
         while (window.getWindow().pollEvent(event)){
             if (event.type == sf::Event::Closed){
                 window.close();
-                choix = 3;
+                choix = 0;
 			}
             if(event.type == sf::Event::KeyPressed){
-				if(event.key.code == sf::Keyboard::Up) choix = -1;
-				if(event.key.code == sf::Keyboard::Down) choix = -2;
+				if(event.key.code == sf::Keyboard::Up && choix < -1) choix++;
+				if(event.key.code == sf::Keyboard::Down && choix > -3 ) choix--;
 				if(event.key.code == sf::Keyboard::Return) choix = -choix;
 			}
         }
         window.getWindow().clear(sf::Color(160,62,35));
         window.drawSprite(0,0,600,500,"fond.png");
         
-        window.write("Nouvelle carte", 40, sf::Color::Black, 190, 180);
-        window.write("Modifier une carte", 40, sf::Color::Black, 170, 330);
+        window.write("Nouvelle carte", 40, sf::Color::Black, 190, 100);
+        window.write("Modifier une carte", 40, sf::Color::Black, 170, 220);
+        window.write("Retour vers le menu", 40, sf::Color::Black, 165, 340);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::Black, 120, 180);
+			window.write(">", 40, sf::Color::Black, 120, 100);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::Black, 120, 330);
+			window.write(">", 40, sf::Color::Black, 120, 220);
 		}
-        
+        else if(choix == -3){
+			window.write(">", 40, sf::Color::Black, 120, 340);
+		}
+
         window.getWindow().display();
     }
     return choix;
 }
 
-void editeur(){
-	menuEdition();
+int editeur(){
+	return menuEdition();
 }
