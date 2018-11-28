@@ -7,12 +7,12 @@ all: main run
 run:
 	$(RSFML) ./main
 
-main: main.o Point.o Entity.o fenetre.o input.o editeur.o
-	g++ -Wall main.o Point.o Entity.o fenetre.o input.o editeur.o $(LSFML) -o main
+main: main.o Point.o Entity.o fenetre.o input.o editeur.o jouer.o
+	g++ -Wall main.o Point.o Entity.o fenetre.o input.o editeur.o jouer.o $(LSFML) -o main
 	rm *.gch
 
-main.o: main.cpp fenetre.h
-	g++ -c -Wall main.cpp input.h fenetre.h $(ISFML)
+main.o: main.cpp fenetre.h editeur.h jouer.h
+	g++ -c -Wall main.cpp input.h fenetre.h editeur.h jouer.h $(ISFML)
 
 Point.o: Point.cpp Point.h
 	g++ -c -Wall Point.cpp Point.h
@@ -28,6 +28,9 @@ input.o: input.cpp input.h fenetre.h
 
 editeur.o: editeur.cpp editeur.h fenetre.h
 	g++ -c -Wall editeur.cpp editeur.h fenetre.h $(ISFML)
+
+jouer.o: jouer.cpp jouer.h fenetre.h 
+	g++ -c -Wall jouer.cpp jouer.h fenetre.h $(ISFML)
 
 clean:
 	rm -f *.o main

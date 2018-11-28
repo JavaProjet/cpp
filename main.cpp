@@ -3,6 +3,7 @@
 #include "fenetre.h"
 #include "input.h"
 #include "editeur.h"
+#include "jouer.h"
 
 using namespace std;
 
@@ -63,6 +64,7 @@ int main(int argc, char *argv[]){
 		if(choix == 1){
 			cout << "lancement d'une partie\n";
 			//jouer
+			affiche();
 		}
 		if(choix == 2){
 			//editeur de carte
