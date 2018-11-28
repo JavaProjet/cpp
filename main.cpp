@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "fenetre.h"
 #include "input.h"
+#include "editeur.h"
 
 using namespace std;
 
@@ -39,8 +40,8 @@ int fenetreMenu(){
 }
 
 void inputTest(){
-	Fenetre window(1200,900,"input");
-	drawInput(window, 10, 10, 90, 10);
+	Fenetre window(900,600,"input");
+	drawInput(window, 10, 10, 200, 10);
 	while(window.isOpen()){
 		sf::Event event;
 		while (window.getWindow().pollEvent(event)){
@@ -64,7 +65,7 @@ int main(int argc, char *argv[]){
 		if(choix == 2){
 			//editeur de carte
 			cout << "lancement de l'éditeur de cartes\n";
-			inputTest();
+			editeur();
 		}
 	}
 	cout << "l'utilisateur a quitté\n";

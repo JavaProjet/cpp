@@ -33,8 +33,8 @@ string drawInput(Fenetre& w,int x, int y, int size, int nbChar){
 				if(event.key.code == sf::Keyboard::LShift) maj = false;
 			}
 		}
-		w.drawRect(x,y,size * nbChar / 1.5,size, sf::Color::White);
-		w.write(str,size - 1, sf::Color::Black, x, y);
+		w.drawRect(x,y,w.getFont(nbChar, size), size, sf::Color::White);
+		w.write(str,size - 1, sf::Color::Black, x, y - size / 8);
 		w.getWindow().display();
 	}
 	string s = str;

@@ -18,6 +18,7 @@ class Fenetre{
 		bool isOpen();
 		RenderWindow& getWindow();
 		bool write(const char* str, int police, sf::Color, int x, int y);
+		float getFont(int nbChar, int police);
 		void drawRect(int x, int y, int largeur, int hauteur, sf::Color);
 };
 
