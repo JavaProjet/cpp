@@ -28,6 +28,31 @@ RenderWindow& Fenetre::getWindow(){
 sf::Font font;
 bool fontLoaded = false;
 
+float Fenetre::getFont(int nbChar, int police){
+	if(fontLoaded == false){
+		if (!font.loadFromFile("dynasty.ttf"))
+			return 0.f;
+		fontLoaded = true;
+	}
+	char str[nbChar + 1];
+	for (int i = 0; i < nbChar; i++){
+		str[i] = 'M';
+	}
+	str[nbChar] = '\0';
+	
+	sf::Text text;
+	// select the font
+	text.setFont(font); // font is a sf::Font
+	// set the string to display
+	text.setString(str);
+	// set the character size
+	text.setCharacterSize(police);
+	
+	sf::FloatRect fr = text.getLocalBounds();
+	float largeurTexte = fr.width;
+	return largeurTexte;
+}
+
 bool Fenetre::write(const char* str, int police, sf::Color color, int x, int y){
 	if(fontLoaded == false){
 		if (!font.loadFromFile("dynasty.ttf"))
