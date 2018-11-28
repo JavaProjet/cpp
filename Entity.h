@@ -33,4 +33,25 @@ class Entity{
 		int getRayon();
 };
 
+
+exo7:
+(defun my_eq(x y)
+	(if(and(atom x)(atom y))
+	        (if(eq x y)t
+				(string=x y))
+				(eq y))
+(defun equal (l1 l2)
+	(cond((or(atom l1)(atome l2))(my_eq (l1 l2)))
+		((eq l1 l2) t)
+		(t(and(my_equal(cdr l2)(car l2))
+			   (my_equal(cdr l1)(car l1))))
+		(my_equal 2 '(2))=nil))
+
+
+
+
+
+
+
+
 #endif //Entity_h
