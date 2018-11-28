@@ -88,6 +88,55 @@ void Fenetre::drawRect(int x, int y, int largeur, int hauteur, sf::Color color){
 	window->draw(rectangle);
 }
 
+void Fenetre::drawCircle(int x, int y, int rayon, sf::Color color){
+	sf::CircleShape shape(rayon);
+    shape.setFillColor(color);
+    x -= rayon;
+    y -= rayon;
+    shape.setPosition(sf::Vector2f(x,y));
+	window->draw(shape);
+}
+
+/*
+void Fenetre::line(sf::Vector2f p1, sf::Vector2f p2, sf::Color coul) {
+	int xmin, xmax;
+	int ymin, ymax;
+	int i,j;
+	float a,b,ii,jj;
+
+	
+	if (p1.x < p2.x) {xmin=p1.x; xmax=p2.x;} else{xmin=p2.x; xmax=p1.x;}
+	if (p1.y < p2.y) {ymin=p1.y; ymax=p2.y;} else{ymin=p2.y; ymax=p1.y;}
+	
+	//if (xmin==xmax) for (j=ymin;j<=ymax;j++) add_pix(xmin,j,coul);
+	//if (ymin==ymax) for (i=xmin;i<=xmax;i++) add_pix(i,ymin,coul);
+	
+	
+	if ((xmax-xmin >= ymax-ymin) && (ymax-ymin>0)) {
+		a = (float)(p1.y-p2.y) / ((float)(p1.x-p2.x));
+		b = p1.y - a*p1.x;
+		for (i=xmin;i<=xmax;i++) {
+			jj = a*i+b;
+			j = jj;
+			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
+			//add_pix(i,j,coul);
+		}
+	}
+	
+	if ((ymax-ymin > xmax-xmin) && (xmax-xmin>0)) {
+		a = (float)(p1.y-p2.y) / ((float)(p1.x-p2.x));
+		b = p1.y - a*p1.x;
+		for (j=ymin;j<=ymax;j++) {
+			ii = (j-b)/a;
+			i = ii;
+			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
+			//add_pix(i,j,coul);
+		}
+	}
+
+}
+*/
+
 bool Fenetre::drawSprite(int x, int y, int Xsize, int Ysize, const char* file){
 	sf::Texture texture;
 	string str = "Textures/";
@@ -106,4 +155,27 @@ bool Fenetre::drawSprite(int x, int y, int Xsize, int Ysize, const char* file){
 
 	window->draw(sprite);
 	return true;
+}
+
+sf::Vector2f Fenetre::wait_clic(){
+	bool encore = true;
+	sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+	printf("En attente de clic GAUCHE ... %4d %4d\r",mousePos.x, mousePos.y); fflush(stdout);
+	sf::Event event;
+	while(encore && window->waitEvent(event)){
+		if(event.type == sf::Event::Closed)
+			close();
+		if (event.type == sf::Event::MouseMoved){
+			mousePos = sf::Mouse::getPosition(*window);
+			printf("En attente de clic GAUCHE ... %4d %4d\r",mousePos.x, mousePos.y); fflush(stdout);
+		}
+		if (event.type == sf::Event::MouseButtonPressed){
+			if (event.mouseButton.button == sf::Mouse::Left){
+				mousePos = sf::Mouse::getPosition(*window);
+				encore = false;
+			}
+		}
+	}
+	printf("Clic GAUCHE en %4d %4d               \n",mousePos.x, mousePos.y); fflush(stdout);
+	return sf::Vector2f(mousePos.x,mousePos.y);
 }

@@ -41,3 +41,9 @@ install:
 	rm -f -r SFML
 
 #SFML est installé dans /usr/local
+
+git: clean
+	git add -A
+	git commit
+	git push
+

@@ -3,6 +3,20 @@
 
 using namespace std;
 
+void nouvelle(){
+    Fenetre window(600,500,"test clic");
+    window.getWindow().clear(sf::Color::Green);
+    window.getWindow().display();
+    sf::Vector2f point = window.wait_clic();
+    window.drawCircle(point.x, point.y,20,sf::Color::Red);
+    window.getWindow().display();
+    window.wait_clic();
+}
+
+void modifier(){
+
+}
+
 int menuEdition(){
     int choix = -1;
 	Fenetre window(600,500,"Menu");
@@ -22,7 +36,7 @@ int menuEdition(){
         window.getWindow().clear(sf::Color(160,62,35));
         window.drawSprite(0,0,600,500,"fond.png");
         
-        window.write("Nouvelle carte", 40, sf::Color::Black, 190, 100);
+        window.write("Nouvelle carte", 40, sf::Color::Black, 200, 100);
         window.write("Modifier une carte", 40, sf::Color::Black, 170, 220);
         window.write("Retour vers le menu", 40, sf::Color::Black, 165, 340);
         
@@ -42,5 +56,17 @@ int menuEdition(){
 }
 
 int editeur(){
-	return menuEdition();
+    int choix = -1;
+
+    choix = menuEdition();
+    
+    if(choix == 1){
+        //nouvelle carte
+        nouvelle();
+    }
+    else if(choix == 2){
+        //modification de carte
+    }
+
+	return choix;
 }

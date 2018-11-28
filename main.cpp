@@ -18,8 +18,8 @@ int fenetreMenu(){
                 choix = 0;
 			}
             if(event.type == sf::Event::KeyPressed){
-				if(event.key.code == sf::Keyboard::Up) choix = -1;
-				if(event.key.code == sf::Keyboard::Down) choix = -2;
+				if(event.key.code == sf::Keyboard::Up && choix < -1) choix++;
+				if(event.key.code == sf::Keyboard::Down && choix > -3 ) choix--;
 				if(event.key.code == sf::Keyboard::Return) choix = -choix;
 			}
         }
@@ -27,18 +27,23 @@ int fenetreMenu(){
         
 		window.drawSprite(0,0,600,500,"fond.png");
 
-        window.write("Jouer une partie", 40, sf::Color::Black, 170, 180);
-        window.write("Creer une carte", 40, sf::Color::Black, 180, 330);
+        window.write("Jouer une partie", 40, sf::Color::Black, 170, 100);
+        window.write("Creer une carte", 40, sf::Color::Black, 180, 220);
+		window.write("Quitter", 40,sf::Color::Black,240,340);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::Black, 120, 180);
+			window.write(">", 40, sf::Color::Black, 120, 100);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::Black, 120, 330);
+			window.write(">", 40, sf::Color::Black, 120, 220);
+		}
+		else if(choix == -3){
+			window.write(">", 40, sf::Color::Black, 120, 340);
 		}
         
         window.getWindow().display();
     }
+	if(choix == 3) choix = 0;
     return choix;
 }
 
