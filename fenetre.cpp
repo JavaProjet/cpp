@@ -14,9 +14,7 @@ Fenetre::~Fenetre(){
 }
 
 void Fenetre::close(){
-	if(window->isOpen()){
 		window->close();
-	}
 }
 
 bool Fenetre::isOpen(){
@@ -53,3 +51,11 @@ bool Fenetre::write(const char* str, int police, sf::Color color, int x, int y){
 	return true;
 }
 
+void Fenetre::drawRect(int x, int y, int largeur, int hauteur, sf::Color color){
+	sf::RectangleShape rectangle(sf::Vector2f(largeur, hauteur));
+
+	// change the size to 100x100
+	rectangle.setPosition(sf::Vector2f(x, y));
+	
+	window->draw(rectangle);
+}

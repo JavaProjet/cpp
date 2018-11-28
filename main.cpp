@@ -1,7 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "fenetre.h"
-#include <iostream>
+#include "input.h"
 
 using namespace std;
 
@@ -10,8 +10,7 @@ int fenetreMenu(){
 	Fenetre window(600,500,"Menu");
 	while (window.isOpen() && choix < 0){
         sf::Event event;
-        while (window.getWindow().pollEvent(event))
-        {
+        while (window.getWindow().pollEvent(event)){
             if (event.type == sf::Event::Closed){
                 window.close();
                 choix = 3;
@@ -39,6 +38,21 @@ int fenetreMenu(){
     return choix;
 }
 
+void inputTest(){
+	Fenetre window(1200,900,"input");
+	drawInput(window, 10, 10, 90, 10);
+	while(window.isOpen()){
+		sf::Event event;
+		while (window.getWindow().pollEvent(event)){
+            if (event.type == sf::Event::Closed){
+                window.close();
+			}
+		}
+		window.getWindow().clear();
+        window.getWindow().display();
+	}
+}
+
 int main(int argc, char *argv[]){
     int choix = 0;
     while(choix != 3){
@@ -50,6 +64,7 @@ int main(int argc, char *argv[]){
 		if(choix == 2){
 			//editeur de carte
 			cout << "lancement de l'éditeur de cartes\n";
+			inputTest();
 		}
 	}
 	cout << "l'utilisateur a quitté\n";

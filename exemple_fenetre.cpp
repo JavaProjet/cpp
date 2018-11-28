@@ -6,8 +6,7 @@ int fenetre(){
 
     while (window.isOpen()){
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window.close();
         }
@@ -36,8 +35,7 @@ void fenetre2(){
     Fenetre w(900,500, "toto");
     while (w.isOpen()){
 		sf::Event event;
-        while (w.getWindow().pollEvent(event))
-        {
+        while (w.getWindow().pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 w.close();
             if(event.type == sf::Event::KeyPressed){
@@ -46,7 +44,7 @@ void fenetre2(){
 				if(event.key.code == sf::Keyboard::Up)j-= move;
 				if(event.key.code == sf::Keyboard::Down)j+= move;
 				if(event.key.code == sf::Keyboard::A)move++;
-				if(event.key.code == sf::Keyboard::Q)j+= move--;
+				if(move > 0 && event.key.code == sf::Keyboard::Q)move--;
 				if(event.key.code == sf::Keyboard::V)vis = !vis;
 			}
         }
