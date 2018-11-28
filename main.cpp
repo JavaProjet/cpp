@@ -24,7 +24,7 @@ int fenetreMenu(){
         }
         window.getWindow().clear(sf::Color(160,62,35));
         
-		window.drawSprite(0,0,600,500,"SBMa.png");
+		window.drawSprite(0,0,600,500,"fond.png");
 
         window.write("Jouer une partie", 40, sf::Color::White, 170, 180);
         window.write("Creer une carte", 40, sf::Color::White, 180, 330);
