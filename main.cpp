@@ -47,21 +47,6 @@ int fenetreMenu(){
     return choix;
 }
 
-void inputTest(){
-	Fenetre window(902,600,"yes");
-	drawInput(window, 12, 10, 200, 10);
-	while(window.isOpen()){
-		sf::Event event;
-		while (window.getWindow().pollEvent(event)){
-            if (event.type == sf::Event::Closed){
-                window.close();
-			}
-		}
-		window.getWindow().clear(sf::Color(2,2,2));
-        window.getWindow().display();
-	}
-}
-
 int main(int argc, char *argv[]){
     int choix = -1;
     while(choix != 0){

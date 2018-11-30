@@ -11,7 +11,7 @@ main: main.o Point.o Entity.o fenetre.o input.o editeur.o jouer.o
 	g++ -Wall main.o Point.o Entity.o fenetre.o input.o editeur.o jouer.o $(LSFML) -o main
 	rm *.gch
 
-main.o: main.cpp fenetre.h editeur.h jouer.h
+main.o: main.cpp input.h fenetre.h editeur.h jouer.h
 	g++ -c -Wall main.cpp input.h fenetre.h editeur.h jouer.h $(ISFML)
 
 Point.o: Point.cpp Point.h
@@ -26,8 +26,8 @@ fenetre.o: fenetre.cpp fenetre.h
 input.o: input.cpp input.h fenetre.h
 	g++ -c -Wall input.cpp input.h fenetre.h $(ISFML)
 
-editeur.o: editeur.cpp editeur.h fenetre.h
-	g++ -c -Wall editeur.cpp editeur.h fenetre.h $(ISFML)
+editeur.o: editeur.cpp editeur.h fenetre.h input.h
+	g++ -c -Wall editeur.cpp editeur.h fenetre.h input.h $(ISFML)
 
 jouer.o: jouer.cpp jouer.h fenetre.h 
 	g++ -c -Wall jouer.cpp jouer.h fenetre.h $(ISFML)

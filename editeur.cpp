@@ -1,5 +1,7 @@
 #include "editeur.h"
 #include "fenetre.h"
+#include "input.h"
+#include <iostream>
 
 using namespace std;
 
@@ -14,7 +16,17 @@ void nouvelle(){
 }
 
 void modifier(){
-
+    Fenetre window(600,500,"test clic");
+    Input a(&window,sf::Vector2i(10,10),30,20),b(&window,sf::Vector2i(10,50),30,20),c(&window,sf::Vector2i(10,90),30,20);
+    while(window.isOpen()){
+        window.getWindow().clear(sf::Color::Yellow);
+        Input::get_clic(window);
+        a.drawInput();
+        b.drawInput();
+        c.drawInput();
+        window.getWindow().display();
+    }
+    cout << endl;
 }
 
 int menuEdition(){
@@ -66,6 +78,7 @@ int editeur(){
     }
     else if(choix == 2){
         //modification de carte
+        modifier();
     }
 
 	return choix;
