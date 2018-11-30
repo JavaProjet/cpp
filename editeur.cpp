@@ -6,11 +6,10 @@
 using namespace std;
 
 void nouvelle(){
-    Fenetre window(600,500,"test clic");
+    Fenetre window(600,500,"");
     window.getWindow().clear(sf::Color::Green);
     window.getWindow().display();
-    sf::Vector2f point = window.wait_clic();
-    window.drawCircle(point.x, point.y,20,sf::Color::Red);
+    window.draw_line(window.wait_clic(), window.wait_clic(),sf::Color::Red);
     window.getWindow().display();
     window.wait_clic();
 }

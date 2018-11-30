@@ -9,12 +9,14 @@ class Carte{
 		char *nom;
 		int largeur;
 		int hauteur;
+		
+		void allocTab();
+		void freeTab();
 	public :
 		Carte(const char* name);
 		Carte(int, int);
 		~Carte();
-		void allocTab();
-		void freeTab();
+		
 };
 
 #endif //Carte_h
