@@ -6,6 +6,7 @@
 class Entity_ronde : public Entity{
 	private :
 		int rayon;
+		sf::Vector2i centre;
 	public :
 		Entity_ronde();
 		~Entity_ronde();

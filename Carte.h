@@ -1,7 +1,10 @@
 #ifndef Carte_h
 #define Carte_h
+#define arbre 1
 
 #include "entity/Entity.h"
+#include "entity/arbre.h"
+#include "fenetre.h"
 
 class Carte{
 	private :
@@ -17,6 +20,7 @@ class Carte{
 		Carte(int, int);
 		~Carte();
 		void draw(Fenetre& w);
+		bool ajoutEntity(int x, int y, int entity);
 		
 };
 

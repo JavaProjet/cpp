@@ -3,7 +3,7 @@
 #include "input.h"
 #include "Carte.h"
 #include <iostream>
-#include "Arbre"
+#include "entity/arbre.h"
 
 using namespace std;
 
@@ -12,12 +12,10 @@ void nouvelle(){
     window.getWindow().clear(sf::Color::Green);
     window.getWindow().display();
     Carte c(600,500);
-    c[20][20] = new Arbre(20,20,20,100);
-    int i;
+    c.ajoutEntity(20,20,arbre);
     while(window.isOpen()){
 		window.getWindow().clear(sf::Color::Green);
-		c.draw(w);
-		
+		c.draw(window);
         window.getWindow().display();
     }
     
