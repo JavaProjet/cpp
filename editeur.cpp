@@ -9,12 +9,13 @@ using namespace std;
 
 void nouvelle(){
     Fenetre window(600,500,"");
-    window.getWindow().clear(sf::Color::Green);
+    window.getWindow().clear();
     window.getWindow().display();
     Carte c(600,500);
+    
     c.ajoutEntity(20,20,arbre);
     while(window.isOpen()){
-		window.getWindow().clear(sf::Color::Green);
+		window.getWindow().clear();
 		c.draw(window);
         window.getWindow().display();
     }

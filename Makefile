@@ -60,5 +60,5 @@ git: clean
 	git push
 
 
-#main2:
-#	g++ -Wall $(ficCpp) $(ficH) $(ISFML) $(LSFML) -o main
+main2:
+	g++ -Wall $(ficCpp) $(ficH) $(ISFML) $(LSFML) -o main
