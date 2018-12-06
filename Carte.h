@@ -1,11 +1,11 @@
 #ifndef Carte_h
 #define Carte_h
 
-#include "Entity"
+#include "entity/Entity.h"
 
 class Carte{
 	private :
-		Entity ** tab;
+		Entity *** tab;
 		char *nom;
 		int largeur;
 		int hauteur;

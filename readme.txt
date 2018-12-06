@@ -1,5 +1,5 @@
-nom potenciel du jeu :
-mettre un M,S ou un T après chaque proposition celon vos gout.
+nom potentiel du jeu :
+mettre un M,S ou un T après chaque proposition selon vos gout.
 
  San Pedro MT
  Msillas

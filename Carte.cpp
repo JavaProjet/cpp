@@ -2,17 +2,26 @@
 
 void Carte::allocTab(){
 	freeTab();
-	
-	tab = new Entity*[largeur] ();
+	int j;
+	tab = new Entity**[largeur] ();
 	for (int i = 0; i < largeur; i++){
-		tab[i] = new Entity[hauteur] ();
+		tab[i] = new Entity*[hauteur] ();
+		for (j = 0; j < hauteur; i++){
+			tab[i][j] = NULL;
+		}
 	}
 }
 
 void Carte::freeTab(){
+	int j;
 	if(tab){
 		for (int i = 0; i < largeur; i++){
+			for (j = 0; j < hauteur; i++){
+				delete tab[i][j];
+				tab[i][j] = NULL;
+			}
 			delete[] tab[i];
+			tab[i] = NULL;
 		}
 		delete[] tab;
 		tab = NULL;
@@ -27,6 +36,9 @@ Carte::Carte(const char* name){
 Carte::Carte(int largeur, int hauteur){
 	tab = NULL;
 	nom = NULL;
+	this->largeur = largeur;
+	this->hauteur = hauteur;
+	allocTab();
 }
 
 Carte::~Carte(){

@@ -1,6 +1,7 @@
 #include "editeur.h"
 #include "fenetre.h"
 #include "input.h"
+#include "Carte.h"
 #include <iostream>
 
 using namespace std;
@@ -9,20 +10,18 @@ void nouvelle(){
     Fenetre window(600,500,"");
     window.getWindow().clear(sf::Color::Green);
     window.getWindow().display();
-    window.draw_line(window.wait_clic(), window.wait_clic(),sf::Color::Red);
-    window.getWindow().display();
-    window.wait_clic();
+    Carte c(600,500);
+    
+    
 }
 
 void modifier(){
     Fenetre window(600,500,"test clic");
-    Input a(&window,sf::Vector2i(10,10),30,20),b(&window,sf::Vector2i(10,50),30,20),c(&window,sf::Vector2i(10,90),30,20);
+    Input a(&window,sf::Vector2i(10,10),30,20);	
     while(window.isOpen()){
-        window.getWindow().clear(sf::Color::Yellow);
+		window.drawSprite(0,0,600,500,"fond.png");
         Input::get_clic(window);
         a.drawInput();
-        b.drawInput();
-        c.drawInput();
         window.getWindow().display();
     }
     cout << endl;

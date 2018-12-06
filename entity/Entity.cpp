@@ -1,24 +1,20 @@
 #include "Entity.h"
 
-const int Entity::top = 0;
+/*const int Entity::top = 0;
 const int Entity::left = 270;
 const int Entity::right = 90;
 const int Entity::bottom = 180;
+*/
 
-Entity::Entity() : pos(0,0){
-	vision = top;
+Entity::Entity() : position(0,0){
+	//vision = top;
 	vie = 100;
 }
 
 Entity::~Entity(){}
 
-Entity::Entity(int x, int y) : pos(x,y){
-	vision = top;
-	vie = 100;
-}
-
-Entity::Entity(int x, int y, int vision) : pos(x,y){
-	this->vision = vision;
+Entity::Entity(int x, int y) : position(x,y){
+	//vision = top;
 	vie = 100;
 }
 
@@ -28,6 +24,7 @@ bool Entity::degats(int nb){
 	else return true;
 }
 
+/*
 int Entity::getVision(){
 	return vision;
 }
@@ -41,18 +38,15 @@ void Entity::tourneVision(int degre){
 	if(vision >= 360) vision -= 360; 
 	if(vision < 0) vision += 360; 
 }
+*/
 
-Point& Entity::getPoint(){
-	return pos.getPoint();
-}
-
-void Entity::setPoint(int x, int y){
-	pos.setX(x);
-	pos.setY(y);
+sf::Vector2i& Entity::getPosition(){
+	return position;
 }
 
 void Entity::deplace(int x, int y){
-	pos.deplace(x,y);
+	position.x += x;
+	position.y += y;
 }
 
 int Entity::getVie(){
@@ -61,12 +55,4 @@ int Entity::getVie(){
 
 void Entity::setVie(int _vie){
 	vie = _vie;
-}
-
-void Entity::setRayon(int r){
-	rayon = r;
-}
-
-int Entity::getRayon(){
-	return rayon;
 }
