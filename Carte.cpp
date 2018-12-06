@@ -46,3 +46,10 @@ Carte::~Carte(){
 	if(nom) delete nom;
 }
 
+void Carte::draw(Fenetre& w){
+	for (int i = 0; i < largeur; i++){
+			for (j = 0; j < hauteur; i++){
+				c[i][j].draw();
+			}
+		}
+}

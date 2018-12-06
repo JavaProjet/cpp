@@ -16,6 +16,7 @@ class Carte{
 		Carte(const char* name);
 		Carte(int, int);
 		~Carte();
+		void draw(Fenetre& w);
 		
 };
 

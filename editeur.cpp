@@ -3,6 +3,7 @@
 #include "input.h"
 #include "Carte.h"
 #include <iostream>
+#include "Arbre"
 
 using namespace std;
 
@@ -11,7 +12,14 @@ void nouvelle(){
     window.getWindow().clear(sf::Color::Green);
     window.getWindow().display();
     Carte c(600,500);
-    
+    c[20][20] = new Arbre(20,20,20,100);
+    int i;
+    while(window.isOpen()){
+		window.getWindow().clear(sf::Color::Green);
+		c.draw(w);
+		
+        window.getWindow().display();
+    }
     
 }
 

@@ -1,4 +1,7 @@
 #include "Entity.h"
+#include <string.h>
+
+using namespace std;
 
 /*const int Entity::top = 0;
 const int Entity::left = 270;
@@ -8,13 +11,20 @@ const int Entity::bottom = 180;
 
 Entity::Entity() : position(0,0){
 	//vision = top;
+	texture = NULL;
 	vie = 100;
 }
 
-Entity::~Entity(){}
+Entity::~Entity(){
+	if(texture != NULL){
+		delete texture;
+		texture = NULL;
+	}
+}
 
 Entity::Entity(int x, int y) : position(x,y){
 	//vision = top;
+	texture = NULL;
 	vie = 100;
 }
 
@@ -23,7 +33,14 @@ bool Entity::degats(int nb){
 	if(vie <= 0) return false;
 	else return true;
 }
-
+void Entity::set_texture(const char* name){
+	texture = new char();
+	int taille = strlen(name);
+	for (int i = 0; i < taille + 1; i++){
+		texture[i] = name[i];
+	}
+	
+}
 /*
 int Entity::getVision(){
 	return vision;
@@ -39,6 +56,10 @@ void Entity::tourneVision(int degre){
 	if(vision < 0) vision += 360; 
 }
 */
+
+void Entity::draw(Fenetre& w){
+	w.drawSprite(position.x, position.y, 44,40, texture);
+}
 
 sf::Vector2i& Entity::getPosition(){
 	return position;
