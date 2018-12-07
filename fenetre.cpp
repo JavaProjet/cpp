@@ -4,10 +4,11 @@
 
 using namespace std;
 
-Fenetre::Fenetre(int largeur, int hauteur, const char *title){
+Fenetre::Fenetre(int largeur, int hauteur, string title){
 	this->largeur = largeur;
 	this->hauteur = hauteur;
-	window = new RenderWindow(VideoMode(largeur, hauteur), title);
+	
+	window = new RenderWindow(VideoMode(largeur, hauteur), title, sf::Style::Titlebar | sf::Style::Close);
 	window->setVerticalSyncEnabled(false);
 }
 

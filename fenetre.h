@@ -12,7 +12,7 @@ class Fenetre{
 		int hauteur;
 		
 	public:
-		Fenetre(int largeur, int hauteur, const char *title);
+		Fenetre(int largeur, int hauteur, std::string title);
 		~Fenetre();
 		void close();
 		bool isOpen();

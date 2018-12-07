@@ -7,9 +7,11 @@
 #include "entity/arbre.h"
 #include "fenetre.h"
 
+using namespace std;
+
 class Carte{
 	private :
-		Entity *** tab;
+		vector <Entity*> entity;
 		char *nom;
 		int largeur;
 		int hauteur;

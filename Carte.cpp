@@ -1,66 +1,37 @@
 #include "Carte.h"
 
-void Carte::allocTab(){
-	freeTab();
-	int j;
-	tab = new Entity**[largeur] ();
-	for (int i = 0; i < largeur; i++){
-		tab[i] = new Entity*[hauteur] ();
-		for (j = 0; j < hauteur; j++){
-			tab[i][j] = NULL;
-		}
-	}
-	
-}
-
-void Carte::freeTab(){
-	int j;
-	if(tab){
-		for (int i = 0; i < largeur; i++){
-			for (j = 0; j < hauteur; j++){
-				delete tab[i][j];
-				tab[i][j] = NULL;
-			}
-			delete[] tab[i];
-			tab[i] = NULL;
-		}
-		delete[] tab;
-		tab = NULL;
-	}
-}
-
 Carte::Carte(const char* name){
-	tab = NULL;
 	nom = NULL;
 }
 
 Carte::Carte(int largeur, int hauteur){
-	tab = NULL;
 	nom = NULL;
 	this->largeur = largeur;
 	this->hauteur = hauteur;
-	allocTab();
 }
 
 Carte::~Carte(){
-	freeTab();
-	if(nom) delete nom;
+	if(nom) delete nom, nom = NULL;
+	while(entity.size() > 0){
+		entity.pop_back();
+	} 
 }
 
 void Carte::draw(Fenetre& w){
-	int j;
-	for (int i = 0; i < largeur; i++){
-		for (j = 0; j < hauteur; j++){
-			if(tab[i][j] != NULL) tab[i][j]->draw(w);
-		}
+	for (unsigned int i = 0; i < entity.size(); i++){
+		entity[i]->draw(w);
 	}
 }
 
 bool Carte::ajoutEntity(int x, int y, int entity){
-	if(tab[x][y] != NULL) return false;
+	Entity* ent = NULL;
+	printf("size : %d\n", (int)this->entity.size()); 
 	if(entity == arbre){
-		tab[x][y] = new Arbre(x,y,20,100);
+		printf("avant\n");
+		ent = new Arbre(x,y,20,100);
+		printf("apres\n");
 	}
-	
+	if(ent != NULL) this->entity.push_back(ent);
+	printf("size : %d\n", (int)this->entity.size()); 
 	return true;
 }

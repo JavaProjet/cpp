@@ -15,7 +15,7 @@ void nouvelle(){
     
     c.ajoutEntity(20,20,arbre);
     while(window.isOpen()){
-		window.getWindow().clear();
+		window.getWindow().clear(sf::Color(160,62,35));
 		c.draw(window);
         window.getWindow().display();
     }

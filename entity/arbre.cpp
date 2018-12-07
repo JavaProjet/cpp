@@ -5,4 +5,5 @@ Arbre::Arbre(int x, int y, int rayon, int vie){
 	set_texture("Arbre-autre2.png");
 }
 Arbre::~Arbre(){
+	printf("destruction arbre\n");
 }

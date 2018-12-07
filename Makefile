@@ -3,7 +3,7 @@ LSFML=-lsfml-graphics -lsfml-window -lsfml-system -L/usr/local/SFML/lib
 RSFML=export LD_LIBRARY_PATH=/usr/local/SFML/lib &&
 ficCpp = main.cpp	entity/Entity.cpp fenetre.cpp input.cpp editeur.cpp jouer.cpp entity/entity_rect.cpp entity/entity_ronde.cpp entity/arbre.cpp Carte.cpp
 ficH   = 			entity/Entity.h   fenetre.h   input.h   editeur.h   jouer.h   entity/entity_rect.h   entity/entity_ronde.h   entity/arbre.h   Carte.h
-ficO   = main.o		entity/Entity.o   fenetre.o   input.o   editeur.o   jouer.o   entity/entity_rect.o   entity/entity_ronde.o   entity/arbre.o   Carte.o
+ficO   = main.o			   Entity.o   fenetre.o   input.o   editeur.o   jouer.o          entity_rect.o          entity_ronde.o   arbre.o          Carte.o
 
 all: main run
 
@@ -33,7 +33,7 @@ jouer.o: jouer.cpp jouer.h fenetre.h
 	g++ -c -Wall jouer.cpp jouer.h fenetre.h $(ISFML)
 
 entity_ronde.o: entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fenetre.h
-	g++ -c -Wall entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fenetre $(ISFML)
+	g++ -c -Wall entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fenetre.h $(ISFML)
 
 entity_rect.o: entity/entity_rect.cpp entity/entity_rect.h entity/Entity.h fenetre.h
 	g++ -c -Wall entity/entity_rect.cpp entity/entity_rect.h entity/Entity.h fenetre.h $(ISFML)
