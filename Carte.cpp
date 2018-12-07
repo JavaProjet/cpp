@@ -12,9 +12,10 @@ Carte::Carte(int largeur, int hauteur){
 
 Carte::~Carte(){
 	if(nom) delete nom, nom = NULL;
-	while(entity.size() > 0){
-		entity.pop_back();
-	} 
+	vector <Entity*>::iterator i;
+	 for (i = entity.begin(); i < entity.end(); i++){
+		 entity.erase(i);
+	 }
 }
 
 void Carte::draw(Fenetre& w){
@@ -25,13 +26,11 @@ void Carte::draw(Fenetre& w){
 
 bool Carte::ajoutEntity(int x, int y, int entity){
 	Entity* ent = NULL;
-	printf("size : %d\n", (int)this->entity.size()); 
-	if(entity == arbre){
-		printf("avant\n");
-		ent = new Arbre(x,y,20,100);
-		printf("apres\n");
+	switch (entity){
+		case arbre : ent = new Arbre(x,y,20,100);break;
+		case cactus : ent = new Cactus(x,y,20,100);break;
+		case rocher : ent = new Rocher(x,y,20,100);break;
 	}
 	if(ent != NULL) this->entity.push_back(ent);
-	printf("size : %d\n", (int)this->entity.size()); 
 	return true;
 }

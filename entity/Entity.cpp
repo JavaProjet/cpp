@@ -9,7 +9,7 @@ const int Entity::right = 90;
 const int Entity::bottom = 180;
 */
 
-Entity::Entity() : position(0,0){
+Entity::Entity() : position(100,100){
 	//vision = top;
 	texture = NULL;
 	vie = 100;

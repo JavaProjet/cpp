@@ -3,7 +3,6 @@
 #include "input.h"
 #include "Carte.h"
 #include <iostream>
-#include "entity/arbre.h"
 
 using namespace std;
 
@@ -14,7 +13,15 @@ void nouvelle(){
     Carte c(600,500);
     
     c.ajoutEntity(20,20,arbre);
+    c.ajoutEntity(20,200,cactus);
+    c.ajoutEntity(20,300,rocher);
     while(window.isOpen()){
+		sf::Event event;
+        while (window.getWindow().pollEvent(event)){
+			if (event.type == sf::Event::Closed){
+                window.close();
+			}
+		}
 		window.getWindow().clear(sf::Color(160,62,35));
 		c.draw(window);
         window.getWindow().display();

@@ -2,9 +2,13 @@
 #define Carte_h
 
 #define arbre 1
+#define cactus 2
+#define rocher 3
 
 #include "entity/Entity.h"
 #include "entity/arbre.h"
+#include "entity/Cactus.h"
+#include "entity/Rocher.h"
 #include "fenetre.h"
 
 using namespace std;
