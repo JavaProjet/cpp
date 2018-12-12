@@ -12,9 +12,12 @@ void nouvelle(){
     window.getWindow().display();
     Carte c(600,500);
     
-    c.ajoutEntity(20,20,arbre);
-    c.ajoutEntity(20,200,cactus);
-    c.ajoutEntity(20,300,rocher);
+    c.ajoutEntity(20,20,petit,arbre);
+    c.ajoutEntity(20,200,petit,cactus);
+    c.ajoutEntity(20,300,petit,rocher);
+    c.ajoutEntity(300,200,petit,tronc);
+    c.ajoutEntity(500,400,petit,joueur_b);
+    c.ajoutEntity(400,400,petit,joueur_r);
     while(window.isOpen()){
 		sf::Event event;
         while (window.getWindow().pollEvent(event)){
