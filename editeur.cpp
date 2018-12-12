@@ -26,6 +26,7 @@ void nouvelle(){
 			}
 		}
 		window.getWindow().clear(sf::Color(160,62,35));
+		window.drawSprite(0,0,600,500,"Terre.png");
 		c.draw(window);
         window.getWindow().display();
     }
