@@ -10,6 +10,9 @@ all: main run
 run:
 	$(RSFML) ./main
 
+valgrind:
+	$(RSFML) valgrind ./main
+
 main: $(ficO)
 	g++ -Wall $(ficO) $(LSFML) -o main
 	rm -f *.gch entity/*.gch
@@ -38,8 +41,8 @@ entity_ronde.o: entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fe
 entity_rect.o: entity/entity_rect.cpp entity/entity_rect.h entity/Entity.h fenetre.h
 	g++ -c -Wall entity/entity_rect.cpp entity/entity_rect.h entity/Entity.h fenetre.h $(ISFML)
 
-arbre.o: entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h
-	g++ -c -Wall entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h $(ISFML)
+arbre.o: entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h Carte.h
+	g++ -c -Wall entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h Carte.h $(ISFML)
 
 Carte.o: Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Joueur.h
 	g++ -c -Wall Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Joueur.h $(ISFML)
@@ -75,4 +78,4 @@ git: clean
 
 
 main2:
-	g++ -Wall $(ficCpp) $(ficH) $(ISFML) $(LSFML) -o main
+	g++ -g -Wall $(ficCpp) $(ficH) $(ISFML) $(LSFML) -o main

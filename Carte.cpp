@@ -29,10 +29,10 @@ bool Carte::ajoutEntity(int x, int y, int size, int entity){
 	switch (entity){
 		case joueur_b : ent = new Joueur(x,y,100, true);break;
 		case joueur_r : ent = new Joueur(x,y,100, false);break;
-		case arbre : ent = new Arbre(x,y,petit,100);break;
-		case cactus : ent = new Cactus(x,y,petit,100);break;
-		case rocher : ent = new Rocher(x,y,petit,100);break;
-		case tronc : ent = new Tronc(x,y,petit*4,petit*2,100);break;
+		case arbre : ent = new Arbre(x,y,size*2,100);break;
+		case cactus : ent = new Cactus(x,y,size,100);break;
+		case rocher : ent = new Rocher(x,y,size,100);break;
+		case tronc : ent = new Tronc(x,y,size*4,size*2,100);break;
 	}
 	if(ent != NULL) this->entity.push_back(ent);
 	return true;

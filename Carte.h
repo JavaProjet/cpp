@@ -2,6 +2,7 @@
 #define Carte_h
 
 #define petit 20
+#define moyen petit*2
 
 #define arbre 1
 #define cactus 2
@@ -33,7 +34,7 @@ class Carte{
 		Carte(const char* name);
 		Carte(int, int);
 		~Carte();
-		void draw(Fenetre& w);
+		virtual void draw(Fenetre& w);
 		bool ajoutEntity(int x, int y,int size, int entity);
 		
 };

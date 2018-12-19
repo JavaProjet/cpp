@@ -114,7 +114,7 @@ void Fenetre::drawCircle(int x, int y, int rayon, sf::Color color){
 bool Fenetre::drawSprite(int x, int y, int Xsize, int Ysize, const char* file){
 	sf::Texture texture;
 	string str = "Textures/";
-	str.append(file);
+	if(file)str.append(file);
 
 	if (!texture.loadFromFile(str)){
 		return false;
