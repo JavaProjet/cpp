@@ -4,13 +4,14 @@
 #include "Entity.h"
 
 class Entity_rect : public Entity{
-	private :
+	protected :
 		sf::Vector2i size;
 	public :
 		Entity_rect();
-		~Entity_rect();
+		virtual ~Entity_rect();
 		Entity_rect(int x, int y,int sizeX,int sizeY,  int vie);
-		virtual sf::Vector2i &get_size();
+		sf::Vector2i &get_size();
+		void draw(Fenetre &w);
 		
 };
 

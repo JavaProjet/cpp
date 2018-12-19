@@ -1,8 +1,9 @@
 #ifndef Carte_h
 #define Carte_h
 
-#define petit 20
-#define moyen petit*2
+#define petit 1
+#define moyen 2
+#define grand 3
 
 #define arbre 1
 #define cactus 2

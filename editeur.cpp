@@ -12,10 +12,21 @@ void nouvelle(){
     window.getWindow().display();
     Carte c(600,500);
     
-    c.ajoutEntity(20,20,petit,arbre);
+   /*c.ajoutEntity(20,20,petit,arbre);
     c.ajoutEntity(20,200,petit,cactus);
     c.ajoutEntity(20,300,petit,rocher);
     c.ajoutEntity(300,200,petit,tronc);
+    
+    c.ajoutEntity(40,20,moyen,arbre);
+    c.ajoutEntity(40,200,moyen,cactus);
+    c.ajoutEntity(40,300,moyen,rocher);
+    c.ajoutEntity(340,200,moyen,tronc);*/
+    
+    c.ajoutEntity(100,20,grand,arbre);
+    c.ajoutEntity(100,200,grand,cactus);
+    c.ajoutEntity(100,300,grand,rocher);
+    c.ajoutEntity(400,200,grand,tronc);
+    
     c.ajoutEntity(500,400,petit,joueur_b);
     c.ajoutEntity(400,400,petit,joueur_r);
     while(window.isOpen()){

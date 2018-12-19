@@ -4,14 +4,15 @@
 #include "Entity.h"
 
 class Entity_ronde : public Entity{
-	private :
+	protected :
 		int rayon;
 		sf::Vector2i centre;
 	public :
 		Entity_ronde();
-		~Entity_ronde();
+		virtual ~Entity_ronde();
 		Entity_ronde(int x, int y, int rayon, int vie);
-		virtual int get_rayon();
+		int get_rayon();
+		void draw(Fenetre &w);
 		
 };
 

@@ -8,7 +8,7 @@ class Cactus : public Entity_ronde{
 		
 	public :
 	Cactus(int x, int y, int rayon, int vie);
-	~Cactus();
+	virtual ~Cactus();
 };
 
 #endif // Cactus_h

@@ -8,7 +8,7 @@ class Rocher : public Entity_ronde{
 		
 	public :
 	Rocher(int x, int y, int rayon, int vie);
-	~Rocher();
+	virtual ~Rocher();
 };
 
 #endif // Rocher_h

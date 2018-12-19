@@ -2,7 +2,18 @@
 
 Cactus::Cactus(int x, int y, int rayon, int vie) : Entity_ronde(x,y,rayon,vie){
 	
-	set_texture("cac2.png");
+	if(rayon == 1){
+		this->rayon = 20;
+		set_texture("Cactus_40px.png");
+	}
+	if(rayon == 2){
+		this->rayon = 30;
+		set_texture("Cactus_60px.png");
+	}
+	if(rayon == 3){
+		this->rayon = 40;
+		set_texture("Cactus_80px.png");
+	}
 
 }
 Cactus::~Cactus(){

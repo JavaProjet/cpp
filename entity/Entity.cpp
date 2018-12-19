@@ -39,7 +39,6 @@ void Entity::set_texture(const char* name){
 	for (int i = 0; i < taille + 1; i++){
 		texture[i] = name[i];
 	}
-	
 }
 /*
 int Entity::getVision(){
@@ -56,10 +55,6 @@ void Entity::tourneVision(int degre){
 	if(vision < 0) vision += 360; 
 }
 */
-
-void Entity::draw(Fenetre& w){
-	w.drawSprite(position.x, position.y, 44,40, texture);
-}
 
 sf::Vector2i& Entity::getPosition(){
 	return position;
