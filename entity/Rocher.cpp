@@ -13,6 +13,8 @@ Rocher::Rocher(int x, int y, int rayon, int vie) : Entity_ronde(x,y,rayon,vie){
 		this->rayon = 80;
 		set_texture("Rocher_160px.png");
 	}
+	centre.x = position.x + this->rayon;
+	centre.y = position.y + this->rayon;
 }
 Rocher::~Rocher(){
 	printf("destruction Rocher\n");

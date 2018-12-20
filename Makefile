@@ -1,9 +1,9 @@
 ISFML=-I/usr/local/SFML/include
 LSFML=-lsfml-graphics -lsfml-window -lsfml-system -L/usr/local/SFML/lib
 RSFML=export LD_LIBRARY_PATH=/usr/local/SFML/lib &&
-ficCpp = main.cpp	entity/Entity.cpp fenetre.cpp input.cpp editeur.cpp jouer.cpp entity/entity_rect.cpp entity/entity_ronde.cpp entity/arbre.cpp Carte.cpp entity/Cactus.cpp entity/Rocher.cpp entity/Tronc.cpp entity/Joueur.cpp
-ficH   = 			entity/Entity.h   fenetre.h   input.h   editeur.h   jouer.h   entity/entity_rect.h   entity/entity_ronde.h   entity/arbre.h   Carte.h   entity/Cactus.h   entity/Rocher.h   entity/Tronc.h   entity/Joueur.h
-ficO   = main.o			   Entity.o   fenetre.o   input.o   editeur.o   jouer.o          entity_rect.o          entity_ronde.o   arbre.o          Carte.o   Cactus.o          Rocher.o          Tronc.o          Joueur.o
+ficCpp = main.cpp	entity/Entity.cpp fenetre.cpp input.cpp editeur.cpp jouer.cpp entity/entity_rect.cpp entity/entity_ronde.cpp entity/arbre.cpp Carte.cpp entity/Cactus.cpp entity/Rocher.cpp entity/Tronc.cpp entity/Joueur.cpp entity/Collision.cpp 
+ficH   = 			entity/Entity.h   fenetre.h   input.h   editeur.h   jouer.h   entity/entity_rect.h   entity/entity_ronde.h   entity/arbre.h   Carte.h   entity/Cactus.h   entity/Rocher.h   entity/Tronc.h   entity/Joueur.h   entity/Collision.h
+ficO   = main.o			   Entity.o   fenetre.o   input.o   editeur.o   jouer.o          entity_rect.o          entity_ronde.o   arbre.o          Carte.o   Cactus.o          Rocher.o          Tronc.o          Joueur.o		   Collision.o
 
 all: main run
 
@@ -59,7 +59,8 @@ Joueur.o: entity/Joueur.cpp entity/Joueur.h entity/entity_ronde.h entity/Entity.
 Tronc.o: entity/Tronc.cpp entity/Tronc.h entity/entity_rect.h entity/Entity.h fenetre.h
 	g++ -c -Wall entity/Tronc.cpp entity/Tronc.h entity/entity_rect.h entity/Entity.h fenetre.h $(ISFML)
 
-
+Collision.o: entity/Collision.cpp entity/Collision.h
+	g++ -c -Wall entity/Collision.cpp entity/Collision.h $(ISFML)
 
 clean:
 	rm -f *.o main entity/*.gch
