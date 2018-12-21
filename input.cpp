@@ -43,10 +43,11 @@ void Input::drawInput(){
 				}
 			}
 		}
-		w->drawRect(posInput.x,posInput.y,sizeX, sizeText, sf::Color(127,127,127));
+		printf("size : %d\r",sizeX);
 	}
+	sizeX = w->getFont(str, sizeText); if(sizeX < 200) sizeX = 200;
+	w->drawRect(posInput.x,posInput.y,sizeX, sizeText, sf::Color(127,127,127));
 	if(focus != id) w->drawRect(posInput.x,posInput.y,sizeX, sizeText, sf::Color::White);
-	
 	w->write(str,sizeText - 1, sf::Color::Black, posInput.x, posInput.y - sizeText / 8);
 }
 
@@ -59,7 +60,6 @@ Input::Input(Fenetre* _w, sf::Vector2i posInput, int sizeText, int maxChar) {
 	nbInstanceActif++;
 	id = nbInstance++;
 	this->posInput = posInput;
-	sizeX = w->getFont(maxChar, sizeText);
 	this->sizeText = sizeText; //sizeY
 	this->maxChar = maxChar;
 	cursor = 0;

@@ -1,10 +1,10 @@
 #include "Carte.h"
 
-Carte::Carte(const char* name){
+Carte::Carte(const char* name) : jb(20,20,100,true), jr(60,20,100,false){
 	nom = NULL;
 }
 
-Carte::Carte(int largeur, int hauteur){
+Carte::Carte(int largeur, int hauteur) : jb(20,20,100,true), jr(60,20,100,false){
 	nom = NULL;
 	this->largeur = largeur;
 	this->hauteur = hauteur;
@@ -22,18 +22,14 @@ void Carte::draw(Fenetre& w){
 	for (unsigned int i = 0; i < entity.size(); i++){
 		entity[i]->draw(w);
 	}
+	jb.draw(w);
+	jr.draw(w);
 }
 
 bool Carte::ajoutEntity(int x, int y, int size, int entity){
 	Entity* ent = NULL;
 	
-	if(entity == joueur_b)
-		ent = new Joueur(x,y,100, true);
-	
-	else if(entity == joueur_r)
-		ent = new Joueur(x,y,100, false);
-	
-	else if(entity == arbre) {
+	if(entity == arbre) {
 		if(size == petit)
 			ent = new Arbre(x,y,40,100);
 		else if (size == moyen)
@@ -73,4 +69,12 @@ bool Carte::ajoutEntity(int x, int y, int size, int entity){
 		return true;
 	}
 	else return false;
+}
+
+Joueur& Carte::getJoueurBleu(){
+	return jb;
+}
+
+Joueur& Carte::getJoueurRouge(){
+	return jr;
 }

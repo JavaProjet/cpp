@@ -86,6 +86,6 @@ void Entity::setVie(int _vie){
 	vie = _vie;
 }
 
-sf::Sprite& getSprite(){
+sf::Sprite& Entity::getSprite(){
 	return sprite;
 }

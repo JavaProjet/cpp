@@ -32,17 +32,13 @@ RenderWindow& Fenetre::getWindow(){
 sf::Font font;
 bool fontLoaded = false;
 
-float Fenetre::getFont(int nbChar, int police){
+float Fenetre::getFont(char* str, int police){
 	if(fontLoaded == false){
 		if (!font.loadFromFile("dynasty.ttf"))
 			return 0.f;
 		fontLoaded = true;
 	}
-	char str[nbChar + 1];
-	for (int i = 0; i < nbChar; i++){
-		str[i] = 'M';
-	}
-	str[nbChar] = '\0';
+	if(str == NULL) return 0.0;
 	
 	sf::Text text;
 	// select the font
@@ -192,4 +188,12 @@ sf::Vector2f Fenetre::wait_clic(){
 	}
 	printf("Clic GAUCHE en %4d %4d               \n",mousePos.x, mousePos.y); fflush(stdout);
 	return sf::Vector2f(mousePos.x,mousePos.y);
+}
+
+int Fenetre::getLargeur(){
+	return largeur;
+}
+
+int Fenetre::getHauteur(){
+	return hauteur;
 }

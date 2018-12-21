@@ -6,42 +6,27 @@
 
 using namespace std;
 
+void draw_menu(Fenetre &w){
+	unsigned int size = 60;
+	w.drawRect(0, w.getHauteur() - size, w.getLargeur(), size, sf::Color(190,190,190));
+}
+
 void nouvelle(){
-	Fenetre window(600,500,"");
+	Fenetre window(600,500,"Editeur de cartes");
 	window.getWindow().clear();
 	window.getWindow().display();
 	Carte c(600,500);
-
-	/*c.ajoutEntity(20,20,petit,arbre);
-	c.ajoutEntity(20,200,petit,cactus);
-	c.ajoutEntity(20,300,petit,rocher);
-	c.ajoutEntity(300,200,petit,tronc);
-
-	c.ajoutEntity(40,20,moyen,arbre);
-	c.ajoutEntity(40,200,moyen,cactus);
-	c.ajoutEntity(40,300,moyen,rocher);
-	c.ajoutEntity(340,200,moyen,tronc);*/
-
-	c.ajoutEntity(100,20,grand,arbre);
-	c.ajoutEntity(100,200,grand,cactus);
-	c.ajoutEntity(100,300,grand,rocher);
-	c.ajoutEntity(400,200,grand,tronc);
-
-	c.ajoutEntity(500,400,petit,joueur_b);
-	c.ajoutEntity(400,400,petit,joueur_r);
+	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 40), 20, 15);
+	sf::Vector2i clic;
 	while(window.isOpen()){
-		sf::Event event;
-		while (window.getWindow().pollEvent(event)){
-			if (event.type == sf::Event::Closed){
-				window.close();
-			}
-		}
 		window.getWindow().clear(sf::Color(160,62,35));
 		window.drawSprite(0,0,600,500,"Terre.png");
+		draw_menu(window);
 		c.draw(window);
+		clic = Input::get_clic(window);
+		nomCarte.drawInput();
 		window.getWindow().display();
 	}
-
 }
 
 void modifier(){

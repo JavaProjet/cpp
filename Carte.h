@@ -9,8 +9,6 @@
 #define cactus 2
 #define rocher 3
 #define tronc 4
-#define joueur_b 5
-#define joueur_r 6
 
 #include "entity/Entity.h"
 #include "entity/arbre.h"
@@ -25,6 +23,7 @@ using namespace std;
 class Carte{
 	private :
 		vector <Entity*> entity;
+		Joueur jb, jr;
 		char *nom;
 		int largeur;
 		int hauteur;
@@ -37,7 +36,8 @@ class Carte{
 		~Carte();
 		virtual void draw(Fenetre& w);
 		bool ajoutEntity(int x, int y,int size, int entity);
-		
+		Joueur& getJoueurBleu();
+		Joueur& getJoueurRouge();
 };
 
 #endif //Carte_h
