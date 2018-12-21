@@ -11,7 +11,6 @@ class Entity_rect : public Entity{
 		virtual ~Entity_rect();
 		Entity_rect(int x, int y,int sizeX,int sizeY,  int vie);
 		sf::Vector2i &get_size();
-		void draw(Fenetre &w);
 		
 };
 

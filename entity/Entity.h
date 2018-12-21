@@ -7,8 +7,8 @@ class Entity{
 	protected :
 		int vie;
 		sf::Vector2i position;
-		char* texture;
-		sf::Sprite sprite;
+		sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient invalide
+		sf::Sprite sprite; //variable contenant le sprite a afficher
 		//int vision;
 		//int degatArme;
 		
@@ -22,7 +22,7 @@ class Entity{
 		Entity(int x, int y);
 		bool degats(int); //infliger des degats à l'entité, retourne faux si les points de vies atteignent 0
 		void set_texture(const char* name);
-		virtual void draw(Fenetre& w) = 0;
+		void draw(Fenetre& w);
 		//int getVision();
 		//void setVision(int degre); //définir un degré d'orientation à la vision
 		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré
@@ -31,6 +31,7 @@ class Entity{
 		void deplace(int x, int y);
 		int getVie();
 		void setVie(int);
+		sf::Sprite& getSprite();
 };
 
 #endif //Entity_h

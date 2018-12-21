@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include <string.h>
+#include <iostream>
 
 using namespace std;
 
@@ -11,20 +12,14 @@ const int Entity::bottom = 180;
 
 Entity::Entity() : position(100,100){
 	//vision = top;
-	texture = NULL;
 	vie = 100;
 }
 
 Entity::~Entity(){
-	if(texture != NULL){
-		delete texture;
-		texture = NULL;
-	}
 }
 
 Entity::Entity(int x, int y) : position(x,y){
 	//vision = top;
-	texture = NULL;
 	vie = 100;
 }
 
@@ -33,23 +28,26 @@ bool Entity::degats(int nb){
 	if(vie <= 0) return false;
 	else return true;
 }
+
 void Entity::set_texture(const char* name){
-	texture = new char();
-	int taille = strlen(name);
-	for (int i = 0; i < taille + 1; i++){
-		texture[i] = name[i];
-	}
-	sf::Texture texture;
 	string str = "Textures/";
-	if(file)str.append(file);
+	if(name)str.append(name);
 
 	if (!texture.loadFromFile(str)){
-		return false;
+		cout << "unable to load texture" << str << endl;
 	}
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, Xsize, Ysize));
-	sprite.setPosition(sf::Vector2f(position.x, position.y));
+	else {
+		cout << "texture " << str << " loaded" << endl;
+		sprite.setTexture(texture);
+		sprite.setPosition(sf::Vector2f(position.x, position.y));
+	}
 }
+
+
+void Entity::draw(Fenetre& w){
+	w.getWindow().draw(sprite);
+}
+
 /*
 int Entity::getVision(){
 	return vision;
@@ -73,11 +71,11 @@ sf::Vector2i Entity::getPosition(){
 void Entity::setPosition(int x, int y){
 	position.x = x;
 	position.y = y;
+	sprite.setPosition(sf::Vector2f(position.x, position.y));
 }
 
 void Entity::deplace(int x, int y){
-	position.x += x;
-	position.y += y;
+	setPosition(position.x + x, position.y + y);
 }
 
 int Entity::getVie(){
@@ -86,4 +84,8 @@ int Entity::getVie(){
 
 void Entity::setVie(int _vie){
 	vie = _vie;
+}
+
+sf::Sprite& getSprite(){
+	return sprite;
 }
