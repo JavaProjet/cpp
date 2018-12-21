@@ -1,12 +1,12 @@
 nom potentiel du jeu :
 mettre un M,S ou un T après chaque proposition selon vos gout.
 
- San Pedro MT
+ San Pedro MST
  Msillas
  Guerachi M
  Los Tanques
- cobachi MT
+ cobachi MTS
  Tubares
  Morelos M
- Sianori T
+ Sianori TS
  Los Haro T
