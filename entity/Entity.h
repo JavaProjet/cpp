@@ -8,6 +8,7 @@ class Entity{
 		int vie;
 		sf::Vector2i position;
 		char* texture;
+		sf::Sprite sprite;
 		//int vision;
 		//int degatArme;
 		
@@ -25,7 +26,8 @@ class Entity{
 		//int getVision();
 		//void setVision(int degre); //définir un degré d'orientation à la vision
 		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré
-		sf::Vector2i& getPosition();
+		sf::Vector2i getPosition();
+		void setPosition(int x, int y);
 		void deplace(int x, int y);
 		int getVie();
 		void setVie(int);

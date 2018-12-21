@@ -13,7 +13,11 @@ run:
 valgrind:
 	$(RSFML) valgrind ./main
 
-main: $(ficO)
+reset:
+	reset
+
+main: reset $(ficO)
+	
 	g++ -Wall $(ficO) $(LSFML) -o main
 	rm -f *.gch entity/*.gch
 

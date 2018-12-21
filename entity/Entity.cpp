@@ -39,6 +39,16 @@ void Entity::set_texture(const char* name){
 	for (int i = 0; i < taille + 1; i++){
 		texture[i] = name[i];
 	}
+	sf::Texture texture;
+	string str = "Textures/";
+	if(file)str.append(file);
+
+	if (!texture.loadFromFile(str)){
+		return false;
+	}
+	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(0, 0, Xsize, Ysize));
+	sprite.setPosition(sf::Vector2f(position.x, position.y));
 }
 /*
 int Entity::getVision(){
@@ -56,8 +66,13 @@ void Entity::tourneVision(int degre){
 }
 */
 
-sf::Vector2i& Entity::getPosition(){
+sf::Vector2i Entity::getPosition(){
 	return position;
+}
+
+void Entity::setPosition(int x, int y){
+	position.x = x;
+	position.y = y;
 }
 
 void Entity::deplace(int x, int y){
