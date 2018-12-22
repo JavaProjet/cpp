@@ -12,10 +12,11 @@ Carte::Carte(int largeur, int hauteur) : jb(20,20,100,true), jr(60,20,100,false)
 
 Carte::~Carte(){
 	if(nom) delete nom, nom = NULL;
-	vector <Entity*>::iterator i;
-	 for (i = entity.begin(); i < entity.end(); i++){
-		 entity.erase(i);
+	
+	 for (Entity* v : entity){
+		 delete v;
 	 }
+	 entity.clear();
 }
 
 void Carte::draw(Fenetre& w){
@@ -69,6 +70,18 @@ bool Carte::ajoutEntity(int x, int y, int size, int entity){
 		return true;
 	}
 	else return false;
+}
+
+void Carte::deleteEntity(int x, int y){
+	int j = entity.size();
+	vector <Entity*>::iterator i = entity.end();
+	bool sup = false;
+	for (; i >= entity.begin() && !sup; i--,j--){
+		//pas fini, permettra de supprimer en cliquant sur le sprite, non testé
+		delete entity[j];
+		entity.erase(i);
+	}
+	
 }
 
 Joueur& Carte::getJoueurBleu(){

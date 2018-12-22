@@ -27,7 +27,6 @@ class Carte{
 		char *nom;
 		int largeur;
 		int hauteur;
-		
 		void allocTab();
 		void freeTab();
 	public :
@@ -36,6 +35,7 @@ class Carte{
 		~Carte();
 		virtual void draw(Fenetre& w);
 		bool ajoutEntity(int x, int y,int size, int entity);
+		void deleteEntity(int x, int y);
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
 };

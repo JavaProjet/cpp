@@ -8,13 +8,14 @@ int Input::focus = -1;
 bool maj = false;
 
 void Input::drawInput(){
-	if(clic.x >= posInput.x && clic.x <= posInput.x + sizeX && clic.y >= posInput.y && clic.y <= posInput.y + sizeText){
+	if(clic.x >= posInput.x && clic.x <= posInput.x + 200 && clic.y >= posInput.y && clic.y <= posInput.y + sizeText){
 		focus = id;
 		findFocus = true;
 	}
-
+	int reduce;
+	string s;
+	int sizeX;
 	if(focus == id){
-		
 		sf::Event event;
 		while (w->getWindow().pollEvent(event)){
 			if (event.type == sf::Event::Closed){
@@ -43,12 +44,17 @@ void Input::drawInput(){
 				}
 			}
 		}
-		printf("size : %d\r",sizeX);
 	}
-	sizeX = w->getFont(str, sizeText); if(sizeX < 200) sizeX = 200;
-	w->drawRect(posInput.x,posInput.y,sizeX, sizeText, sf::Color(127,127,127));
-	if(focus != id) w->drawRect(posInput.x,posInput.y,sizeX, sizeText, sf::Color::White);
-	w->write(str,sizeText - 1, sf::Color::Black, posInput.x, posInput.y - sizeText / 8);
+	reduce = 0;
+	sizeX = w->getFont(str, sizeText);
+	s = str;
+	while(sizeX > 200){
+		reduce++;
+		sizeX = w->getFont(s.substr(reduce,s.length()).c_str(), sizeText);
+	}
+	w->drawRect(posInput.x,posInput.y,200, sizeText, sf::Color(127,127,127));
+	if(focus != id) w->drawRect(posInput.x,posInput.y,200, sizeText, sf::Color::White);
+	w->write(s.substr(reduce,s.length()).c_str(),sizeText - 1, sf::Color::Black, posInput.x, posInput.y - sizeText / 8);
 }
 
 Input::Input(Fenetre* _w, sf::Vector2i posInput, int sizeText, int maxChar) {
@@ -75,7 +81,7 @@ char* Input::getString(){
 	return str;
 }
 
-sf::Vector2i Input::get_clic(Fenetre& w){
+sf::Keyboard::Key Input::get_clic(Fenetre& w){
 	if(findFocus == false) focus = -1;
 	if(focus == -1){
 		sf::Event event;
@@ -88,8 +94,11 @@ sf::Vector2i Input::get_clic(Fenetre& w){
 					clic = sf::Mouse::getPosition(w.getWindow());
 				}
 			}
+			 if(event.type == sf::Event::KeyPressed){
+				return event.key.code;
+			}
 		}
 	}
 	findFocus = false;
-	return clic;
+	return sf::Keyboard::Unknown;
 }

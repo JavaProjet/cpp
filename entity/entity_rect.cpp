@@ -1,9 +1,13 @@
 #include "entity_rect.h"
+#include <iostream>
+
+using namespace std;
 
 Entity_rect::Entity_rect() : Entity() {
 }
 
 Entity_rect::~Entity_rect(){
+	cout << "Destruction entité rectangulaire" << endl;
 }
 
 Entity_rect::Entity_rect(int x, int y, int sizeX,int sizeY, int vie) : Entity(x,y){

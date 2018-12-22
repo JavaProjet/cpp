@@ -16,6 +16,7 @@ Entity::Entity() : position(100,100){
 }
 
 Entity::~Entity(){
+	cout << "Destruction entité" << endl;
 }
 
 Entity::Entity(int x, int y) : position(x,y){

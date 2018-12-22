@@ -13,20 +13,20 @@ class Input{
         int id;
         static int nbInstance;
         static int nbInstanceActif;
-        static sf::Vector2i clic;
         static int focus;
         sf::Vector2i posInput;
         int sizeText; //sizeY
-        int sizeX;
         int maxChar;
         Fenetre *w;
         int cursor;
     public :
+        static sf::Vector2i clic;
+		
         Input(Fenetre* w, sf::Vector2i posInput, int sizeText, int maxChar);
         ~Input();
         char* getString();
         void drawInput();
-        static sf::Vector2i get_clic(Fenetre& w);
+        static sf::Keyboard::Key get_clic(Fenetre& w);
 };
 
 

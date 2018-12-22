@@ -1,4 +1,7 @@
 #include "entity_ronde.h"
+#include <iostream>
+
+using namespace std;
 
 Entity_ronde::Entity_ronde() : Entity() {
 	
@@ -6,6 +9,7 @@ Entity_ronde::Entity_ronde() : Entity() {
 }
 
 Entity_ronde::~Entity_ronde(){
+	cout << "Destruction entité ronde" << endl;
 }
 
 Entity_ronde::Entity_ronde(int x, int y, int rayon, int vie) : Entity(x,y){

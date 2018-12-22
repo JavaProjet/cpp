@@ -32,7 +32,7 @@ RenderWindow& Fenetre::getWindow(){
 sf::Font font;
 bool fontLoaded = false;
 
-float Fenetre::getFont(char* str, int police){
+float Fenetre::getFont(const char* str, int police){
 	if(fontLoaded == false){
 		if (!font.loadFromFile("dynasty.ttf"))
 			return 0.f;
@@ -86,6 +86,15 @@ bool Fenetre::write(const char* str, int police, sf::Color color, int x, int y){
 }
 
 void Fenetre::drawRect(int x, int y, int largeur, int hauteur, sf::Color color){
+	sf::RectangleShape rectangle(sf::Vector2f(largeur, hauteur));
+	rectangle.setPosition(sf::Vector2f(x, y));
+	rectangle.setFillColor(color);
+	rectangle.setOutlineThickness(1);
+	rectangle.setOutlineColor(sf::Color::Black);
+	window->draw(rectangle);
+}
+
+void Fenetre::draw_fillRect(int x, int y, int largeur, int hauteur, sf::Color color){
 	sf::RectangleShape rectangle(sf::Vector2f(largeur, hauteur));
 	rectangle.setPosition(sf::Vector2f(x, y));
 	rectangle.setFillColor(color);

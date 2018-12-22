@@ -3,35 +3,57 @@
 #include "input.h"
 #include "Carte.h"
 #include <iostream>
+#include "entity/Collision.h"
 
 using namespace std;
 
-void draw_menu(Fenetre &w){
-	unsigned int size = 60;
-	w.drawRect(0, w.getHauteur() - size, w.getLargeur(), size, sf::Color(190,190,190));
+#define size 60
+
+void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int choix, bool& modifchoix){
+	w.drawRect(0, w.getHauteur() - 60, w.getLargeur(), size, sf::Color(190,190,190));
+	if(cursorPos.y < w.getHauteur() - size && choix != 0){
+		w.getWindow().setMouseCursorVisible(false);
+	}
+	else w.getWindow().setMouseCursorVisible(true);
+	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - size, 60, size, sf::Color(190,190,190));
+	w.write("Nom de la carte :", 20, sf::Color::Black, 10, w.getHauteur() - 55);
+	if(Input::clic.y > w.getHauteur() - size && Input::clic.x > w.getLargeur() - 60 - 1 && Input::clic.x < w.getLargeur() - 1){
+		w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - size * 2 - 1, 60, size, sf::Color(190,190,190));
+		w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - size * 2 - 1 + 10, 40, 40, "Somb3-bleu.png");
+		
+		w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - size * 3 - 1, 60, size, sf::Color(190,190,190));
+		w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - size * 3 - 1 + 10, 40, 40, "Somb3-red.png");
+		modifchoix = true;
+	}
+	else modifchoix = false;
 }
 
 void nouvelle(){
-	Fenetre window(600,500,"Editeur de cartes");
-	window.getWindow().clear();
-	window.getWindow().display();
+	sf::Vector2i cursorPos;
+	Fenetre window(600,500 + size,"Editeur de cartes");
 	Carte c(600,500);
-	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 40), 20, 15);
-	sf::Vector2i clic;
+	c.ajoutEntity(100,100,petit,arbre);
+	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
+	int choix = 0;
+	bool modifchoix = false;
+	
 	while(window.isOpen()){
+		cursorPos = sf::Mouse::getPosition(window.getWindow());
 		window.getWindow().clear(sf::Color(160,62,35));
+		
 		window.drawSprite(0,0,600,500,"Terre.png");
-		draw_menu(window);
 		c.draw(window);
-		clic = Input::get_clic(window);
+		Input::get_clic(window);
+		draw_menu(window, cursorPos, choix, modifchoix);
 		nomCarte.drawInput();
+		
 		window.getWindow().display();
 	}
 }
 
 void modifier(){
     Fenetre window(600,500,"test clic");
-    Input a(&window,sf::Vector2i(10,10),30,20);	
+    Input a(&window, sf::Vector2i(10,10),30,20);	
     while(window.isOpen()){
 		window.drawSprite(0,0,600,500,"fond.png");
         Input::get_clic(window);
