@@ -9,12 +9,14 @@
 #define cactus 2
 #define rocher 3
 #define tronc 4
+#define mur 5
 
 #include "entity/Entity.h"
 #include "entity/arbre.h"
 #include "entity/Cactus.h"
 #include "entity/Rocher.h"
 #include "entity/Tronc.h"
+#include "entity/Mur.h"
 #include "entity/Joueur.h"
 #include "fenetre.h"
 

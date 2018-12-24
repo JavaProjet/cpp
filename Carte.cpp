@@ -65,6 +65,15 @@ bool Carte::ajoutEntity(int x, int y, int size, int entity){
 			ent = new Tronc(x,y,120,60,100);
 	}
 	
+	else if(entity == mur) {
+		if(size == petit)
+			ent = new Mur(x,y,50,10,100);
+		else if (size == moyen)
+			ent = new Mur(x,y,100,20,100);
+		else if (size == grand)
+			ent = new Mur(x,y,160,30,100);
+	}
+	
 	if(ent != NULL) {
 		this->entity.push_back(ent);
 		return true;

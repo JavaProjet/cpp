@@ -20,6 +20,8 @@ void affiche(){
         window.drawSprite(210,10,40,40,"Rocher_40px.png");
         window.drawSprite(260,10,60,40,"Tronc_50x25px.png");
         
+        
+        
         window.getWindow().display();
     }
 }

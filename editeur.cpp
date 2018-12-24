@@ -33,6 +33,8 @@ void nouvelle(){
 	Fenetre window(600,500 + size,"Editeur de cartes");
 	Carte c(600,500);
 	c.ajoutEntity(100,100,petit,arbre);
+	c.ajoutEntity(50,100,moyen,mur);
+	
 	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
 	int choix = 0;
 	bool modifchoix = false;
