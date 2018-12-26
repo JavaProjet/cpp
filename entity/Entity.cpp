@@ -47,6 +47,8 @@ void Entity::set_texture(const char* name){
 
 void Entity::draw(Fenetre& w){
 	w.getWindow().draw(sprite);
+
+	
 }
 
 /*

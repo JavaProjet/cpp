@@ -22,7 +22,7 @@ class Entity{
 		Entity(int x, int y);
 		bool degats(int); //infliger des degats à l'entité, retourne faux si les points de vies atteignent 0
 		void set_texture(const char* name);
-		void draw(Fenetre& w);
+		virtual void draw(Fenetre& w);
 		//int getVision();
 		//void setVision(int degre); //définir un degré d'orientation à la vision
 		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré

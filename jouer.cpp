@@ -36,6 +36,8 @@ void affiche(){
 		}
 		printf ("fin x = %d,y = %d\n",x,y);
 		Jb.setPosition(x, y);
+	
+        window.drawSprite(0,0,600,500,"Terre.png");
 		c.draw(window);
         
             

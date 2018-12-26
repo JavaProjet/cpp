@@ -9,6 +9,7 @@ class Joueur : public Entity_ronde{
 	public :
 	Joueur(int x, int y, int vie, bool bleu);
 	virtual ~Joueur();
+	virtual void draw(Fenetre& w);
 	
 };
 
