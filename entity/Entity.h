@@ -27,8 +27,7 @@ class Entity{
 		//void setVision(int degre); //définir un degré d'orientation à la vision
 		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré
 		sf::Vector2i getPosition();
-		void setPosition(int x, int y);
-		void deplace(int x, int y);
+		virtual void setPosition(int x, int y);
 		int getVie();
 		void setVie(int);
 		sf::Sprite& getSprite();

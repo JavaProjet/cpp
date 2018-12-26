@@ -12,6 +12,7 @@ class Entity_ronde : public Entity{
 		virtual ~Entity_ronde();
 		Entity_ronde(int x, int y, int rayon, int vie);
 		int get_rayon();
+		virtual void setPosition(int x, int y);
 };
 
 #endif // Entity_ronde

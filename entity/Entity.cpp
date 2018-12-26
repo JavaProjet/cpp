@@ -74,11 +74,7 @@ sf::Vector2i Entity::getPosition(){
 void Entity::setPosition(int x, int y){
 	position.x = x;
 	position.y = y;
-	sprite.setPosition(sf::Vector2f(position.x, position.y));
-}
-
-void Entity::deplace(int x, int y){
-	setPosition(position.x + x, position.y + y);
+	sprite.setPosition(sf::Vector2f(x, y));
 }
 
 int Entity::getVie(){

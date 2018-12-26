@@ -24,3 +24,9 @@ Entity_ronde::Entity_ronde(int x, int y, int rayon, int vie) : Entity(x,y){
 int Entity_ronde::get_rayon(){
 	return rayon;
 }
+
+void Entity_ronde::setPosition(int x, int y){
+	Entity::setPosition(x, y);
+	centre.x = rayon + x;
+	centre.y = rayon + y;
+}
