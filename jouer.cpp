@@ -11,6 +11,8 @@ void affiche(){
        
     Carte c(600,500);
 	c.ajoutEntity(100,100,petit,arbre);
+	c.ajoutEntity(200,100,moyen,rocher);
+	c.ajoutEntity(200,200,petit,rocher);
 	int x = 0, y = 0;
 	
 	int move = 1;
@@ -33,7 +35,7 @@ void affiche(){
 		}
 		Jb.setPosition(x, y);
 	
-        window.drawSprite(0,0,600,500,"Terre.png");
+        window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		c.draw(window);
         
         window.getWindow().display();

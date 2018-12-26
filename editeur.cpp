@@ -70,7 +70,7 @@ void nouvelle(){
 		cursorPos = sf::Mouse::getPosition(window.getWindow());
 		window.getWindow().clear(sf::Color(160,62,35));
 		
-		window.drawSprite(0,0,600,500,"Terre.png");
+		window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		c.draw(window);
 		Input::get_clic(window);
 		draw_menu(window, cursorPos, choix, modifchoix);
