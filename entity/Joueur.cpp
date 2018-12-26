@@ -1,13 +1,13 @@
 #include "Joueur.h"
 
-Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie){
+Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), rectangle(sf::Vector2f(25.f, 4.f)){
 
-	if(bleu){
-		 set_texture("Somb3-bleu.png");
-		 
-		 
-	 }
+	if(bleu) set_texture("Somb3-bleu.png"); 
+	
 	else set_texture("Somb3-red.png");
+	
+	rectangle.setFillColor(sf::Color(80, 57, 50));
+	rectangle.setPosition(centre.x-2,centre.y-2);
 }
 
 Joueur::~Joueur(){
@@ -15,11 +15,13 @@ Joueur::~Joueur(){
 }
 
 void Joueur::draw(Fenetre& w){
-	sf::RectangleShape rectangle(sf::Vector2f(25.f, 5.f));
-	rectangle.setFillColor(sf::Color(80, 57, 50));
-	rectangle.setPosition(centre.x-2,centre.y-2);
 	w.getWindow().draw(rectangle);
 	Entity::draw(w);
 
+	
+}
+void Joueur::setPosition(int x, int y){
+	Entity_ronde::setPosition(x, y);
+	rectangle.setPosition(centre.x-2,centre.y-2);
 	
 }

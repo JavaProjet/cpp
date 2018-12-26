@@ -20,7 +20,10 @@ void affiche(){
             if (event.type == sf::Event::Closed)
 				window.close();
             if(event.type == sf::Event::KeyPressed){
-				if(event.key.code == sf::Keyboard::Left) x = x - move;					
+				if(event.key.code == sf::Keyboard::Left){
+					 x = x - move;
+					 		
+				 }		
 				if(event.key.code == sf::Keyboard::Right) x = x + move;				
 				if(event.key.code == sf::Keyboard::Up) y = y - move;
 				if(event.key.code == sf::Keyboard::Down) y = y + move;
