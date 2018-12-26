@@ -5,9 +5,9 @@
 
 class Joueur : public Entity_ronde{
 	private :
-	//bool bleu;
+
 	public :
-	Joueur(int x, int y, int vie,bool bleu);
+	Joueur(int x, int y, int vie, bool bleu);
 	virtual ~Joueur();
 	
 };
