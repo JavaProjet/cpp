@@ -48,8 +48,8 @@ entity_rect.o: entity/entity_rect.cpp entity/entity_rect.h entity/Entity.h fenet
 arbre.o: entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h Carte.h
 	g++ -c -Wall entity/arbre.cpp entity/arbre.h entity/entity_ronde.h entity/Entity.h fenetre.h Carte.h $(ISFML)
 
-Carte.o: Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h
-	g++ -c -Wall Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h $(ISFML)
+Carte.o: Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h
+	g++ -c -Wall Carte.cpp Carte.h entity/Entity.h entity/arbre.h fenetre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h $(ISFML)
 	
 Cactus.o: entity/Cactus.cpp entity/Cactus.h entity/entity_ronde.h entity/Entity.h fenetre.h
 	g++ -c -Wall entity/Cactus.cpp entity/Cactus.h entity/entity_ronde.h entity/Entity.h fenetre.h $(ISFML)
