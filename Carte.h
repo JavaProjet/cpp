@@ -44,7 +44,7 @@ class Carte{
 		
 		// indique la position de l'element dans le vecteur en collision avec le sprite en parametre -1 sinon 
 		int collisionEntity(sf::Sprite& s);
-		
+		bool collisionJoueur(sf::Sprite& s, bool bleu);
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
 };

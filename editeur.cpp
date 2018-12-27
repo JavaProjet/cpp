@@ -134,40 +134,44 @@ void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 			c.deleteEntity(Input::clic.x, Input::clic.y); //si l'on clique sur un item, il est supprimé sauf si c'est un joueur
 		}
 		else { //le cursor n'est pas la souris
-			if(c.collisionEntity(spriteCursor) == -1){ // si aucune collision on peut ajouter l'entité
+			if(c.collisionEntity(spriteCursor) == -1){ // si aucune collision avec une entity
 				if(choix == joueurBleu){ 
+					if(!(c.collisionJoueur(spriteCursor,false)))
+						c.getJoueurBleu().setPosition(Input::clic.x - 20, Input::clic.y - 20);
 					//le joueur est obligatoirement présent, il n'est donc pas supprimé et il est déplacé au lieu d'être ajouté
-					c.getJoueurBleu().setPosition(Input::clic.x - 20, Input::clic.y - 20);
-				}
-				if(choix == joueurRouge){
-					c.getJoueurRouge().setPosition(Input::clic.x - 20, Input::clic.y - 20);
-				}
 					
-				else if(taille == petit){
-					switch(choix){
-						case arbre		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 40, petit, arbre);  break;
-						case cactus		 : c.ajoutEntity(cursorPos.x - 20, cursorPos.y - 20, petit, cactus); break;
-						case rocher		 : c.ajoutEntity(cursorPos.x - 20, cursorPos.y - 20, petit, rocher); break;
-						case tronc		 : c.ajoutEntity(cursorPos.x - 25, cursorPos.y - 12, petit, tronc);  break;
-						default 		 : break;
-					}
 				}
-				else if(taille == moyen){
-					switch(choix){
-						case arbre		 : c.ajoutEntity(cursorPos.x - 60, cursorPos.y - 60, moyen, arbre);  break;
-						case cactus		 : c.ajoutEntity(cursorPos.x - 30, cursorPos.y - 30, moyen, cactus); break;
-						case rocher		 : c.ajoutEntity(cursorPos.x - 50, cursorPos.y - 50, moyen, rocher); break;
-						case tronc		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 20, moyen, tronc);  break;
-						default 		 : break;
-					}
+				else if(choix == joueurRouge){
+					if(!(c.collisionJoueur(spriteCursor,true)))
+						c.getJoueurRouge().setPosition(Input::clic.x - 20, Input::clic.y - 20);
 				}
-				else if(taille == grand){
-					switch(choix){
-						case arbre		 : c.ajoutEntity(cursorPos.x - 90, cursorPos.y - 90, grand, arbre);  break;
-						case cactus		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 40, grand, cactus); break;
-						case rocher		 : c.ajoutEntity(cursorPos.x - 80, cursorPos.y - 80, grand, rocher); break;
-						case tronc		 : c.ajoutEntity(cursorPos.x - 60, cursorPos.y - 30, grand, tronc);  break;
-						default 		 : break;
+				if(!(c.collisionJoueur(spriteCursor,false)) && !(c.collisionJoueur(spriteCursor,true))){
+					if(taille == petit){
+						switch(choix){
+							case arbre		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 40, petit, arbre);  break;
+							case cactus		 : c.ajoutEntity(cursorPos.x - 20, cursorPos.y - 20, petit, cactus); break;
+							case rocher		 : c.ajoutEntity(cursorPos.x - 20, cursorPos.y - 20, petit, rocher); break;
+							case tronc		 : c.ajoutEntity(cursorPos.x - 25, cursorPos.y - 12, petit, tronc);  break;
+							default 		 : break;
+						}
+					}
+					else if(taille == moyen){
+						switch(choix){
+							case arbre		 : c.ajoutEntity(cursorPos.x - 60, cursorPos.y - 60, moyen, arbre);  break;
+							case cactus		 : c.ajoutEntity(cursorPos.x - 30, cursorPos.y - 30, moyen, cactus); break;
+							case rocher		 : c.ajoutEntity(cursorPos.x - 50, cursorPos.y - 50, moyen, rocher); break;
+							case tronc		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 20, moyen, tronc);  break;
+							default 		 : break;
+						}
+					}
+					else if(taille == grand){
+						switch(choix){
+							case arbre		 : c.ajoutEntity(cursorPos.x - 90, cursorPos.y - 90, grand, arbre);  break;
+							case cactus		 : c.ajoutEntity(cursorPos.x - 40, cursorPos.y - 40, grand, cactus); break;
+							case rocher		 : c.ajoutEntity(cursorPos.x - 80, cursorPos.y - 80, grand, rocher); break;
+							case tronc		 : c.ajoutEntity(cursorPos.x - 60, cursorPos.y - 30, grand, tronc);  break;
+							default 		 : break;
+						}
 					}
 				}
 			}

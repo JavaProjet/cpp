@@ -103,30 +103,51 @@ void Carte::deleteEntity(int x, int y){
 	if(!initialised) initialise();
 	sprite.setPosition(sf::Vector2f(x, y));
 	
-	int j = entity.size();
-	vector <Entity*>::iterator i = entity.end();
 	bool sup = false;
-	for (; i >= entity.begin() && !sup; i--,j--){
-		if(Collision::BoundingBoxTest(sprite,entity[j]->getSprite())){
-			entity.erase(i);
+	for (unsigned int i = 0; i < entity.size() && !sup; i++){
+		if(Collision::BoundingBoxTest(sprite,entity[i]->getSprite())){
+			this->deleteEntity(i);
+			sup = true;
 		}
 	}
 }
 
 void Carte::deleteEntity(int i){
-	vector <Entity*> part_left;
-	vector <Entity*> part_right;
+	vector <Entity*> tmp;
 	Entity* toSupp = NULL;
-	//this->entity.push_back(ent);
+	unsigned int j;
+	for(j = 0; j < (unsigned)i; j++){
+		tmp.push_back(entity[j]);
+	}
+	toSupp = entity[j++];
+	for(; j < entity.size(); j++){
+		tmp.push_back(entity[j]);
+	}
+	delete toSupp;
+	entity.clear();
+	for(j = 0; j < tmp.size(); j++){
+		entity.push_back(tmp[j]);
+	}
+	tmp.clear();
 }
 
 int Carte::collisionEntity(sf::Sprite& s){
 	int i;
 	for (i = 0; (unsigned)i < entity.size(); i++){
-		if(Collision::BoundingBoxTest(s, entity[i]->getSprite()))
+		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),127))
 			return i;
 	}
 	return -1;
+}
+
+bool Carte::collisionJoueur(sf::Sprite& s, bool bleu){
+	if(bleu){
+		if(Collision::PixelPerfectTest(s, jb.getSprite(),127)) return true;
+	}
+	else {
+		if(Collision::PixelPerfectTest(s, jr.getSprite(),127)) return true;
+	}
+	return false;
 }
 
 Joueur& Carte::getJoueurBleu(){
