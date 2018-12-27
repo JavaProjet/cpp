@@ -18,23 +18,25 @@ void draw_item(Fenetre &w){
 }
 
 void draw_selection(Fenetre &w, int& choix, bool& modifchoix){
-	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - size, 60, size, sf::Color(190,190,190));
-	w.write("Nom de la carte :", 20, sf::Color::Black, 10, w.getHauteur() - 55);
-	if(Input::clic.y > w.getHauteur() - size && Input::clic.x > w.getLargeur() - 60 - 1 && Input::clic.x < w.getLargeur() - 1 && !modifchoix){
-		draw_item(w);
-		modifchoix = true;
-	}
-	else if(modifchoix){
-		draw_item(w);
+	if(modifchoix){
 		if(Input::clic.x > w.getLargeur() - 60 - 1){
 			if((Input::clic.y > w.getHauteur() - size * 2 - 1) && (Input::clic.y < w.getHauteur() - size - 1)){
 				choix = 1;
+				modifchoix = false;
 			}
-			else if((Input::clic.y > w.getHauteur() - size * 3 - 1) && (Input::clic.y < w.getHauteur() - size - 1)){
+			else if((Input::clic.y > w.getHauteur() - size * 3 - 1) && (Input::clic.y < w.getHauteur() - size * 2 - 1)){
 				choix = 2;
+				modifchoix = false;
 			}
 		}
-		modifchoix = false;
+	}
+	
+	if(Input::clic.x > w.getLargeur() - 60 - 1){
+		if((Input::clic.y > w.getHauteur() - size - 1) && (Input::clic.y < w.getHauteur() - 1)){
+			modifchoix = !modifchoix;
+			if(modifchoix) draw_item(w);
+		}
+		else modifchoix = false;
 	}
 	else modifchoix = false;
 	
@@ -43,16 +45,14 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix){
 		case 2 : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - size + 10, 40, 40, "Somb3-red.png"); break;
 		default : /*on affiche rien*/ break;
 	}
-
-	
 }
 
 void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix){
 	w.drawRect(0, w.getHauteur() - 60, w.getLargeur(), size, sf::Color(190,190,190));
-	if(cursorPos.y < w.getHauteur() - size && choix != 0){
-		w.getWindow().setMouseCursorVisible(false);
-	}
-	else w.getWindow().setMouseCursorVisible(true);
+	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - size, 60, size, sf::Color(190,190,190));
+	w.write("Nom de la carte :", 20, sf::Color::Black, 10, w.getHauteur() - 55);
+	
+	printf("on dessine le menu\n");
 	
 	draw_selection(w,choix,modifchoix);
 }
@@ -63,30 +63,36 @@ void nouvelle(){
 	Carte c(600,500);
 	c.ajoutEntity(100,100,petit,arbre);
 	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
-	int choix = 0;
+	int choix = 1;
 	bool modifchoix = false;
+	
+	window.drawSprite(0,0,600,500,"Terre.png");
+	c.draw(window);
+	draw_menu(window, cursorPos, choix, modifchoix);
+	nomCarte.drawInput();
+	window.getWindow().display();
 	
 	while(window.isOpen()){
 		cursorPos = sf::Mouse::getPosition(window.getWindow());
-		window.getWindow().clear(sf::Color(160,62,35));
 		
-		window.drawSprite(0,0,600,500,"Sol_600x500.png");
+		window.drawSprite(0,0,600,500,"Terre.png");
 		c.draw(window);
 		Input::get_clic(window);
 		draw_menu(window, cursorPos, choix, modifchoix);
 		nomCarte.drawInput();
-		
 		window.getWindow().display();
 	}
 }
 
 void modifier(){
     Fenetre window(600,500,"test clic");
-    Input a(&window, sf::Vector2i(10,10),30,20);	
+    Input a(&window, sf::Vector2i(10,10),30,20);
+    Input b(&window, sf::Vector2i(10,40),30,20);
     while(window.isOpen()){
 		window.drawSprite(0,0,600,500,"fond.png");
         Input::get_clic(window);
         a.drawInput();
+        b.drawInput();
         window.getWindow().display();
     }
     cout << endl;
