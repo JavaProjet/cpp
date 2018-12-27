@@ -1,4 +1,12 @@
 #include "Carte.h"
+#include <iostream>
+#include "entity/Collision.h"
+
+using namespace std;
+
+sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient invalide
+sf::Sprite sprite; //variable contenant un sprite de 1px, pour tester si le clic est dans un autre sprite
+bool initialised = false; //pour initialiser le sprite si ce n'est pas fais
 
 Carte::Carte(const char* name) : jb(20,20,100,true), jr(60,20,100,false){
 	nom = NULL;
@@ -14,7 +22,7 @@ Carte::~Carte(){
 	if(nom) delete nom, nom = NULL;
 	
 	 for (Entity* v : entity){
-		 delete v;
+		 if(v) delete v;
 	 }
 	 entity.clear();
 }
@@ -81,16 +89,28 @@ bool Carte::ajoutEntity(int x, int y, int size, int entity){
 	else return false;
 }
 
+void initialise(){ //initialise le sprite de 1px
+	if (!texture.loadFromFile("Textures/Somb_red_1px.png")){
+		cout << "unable to load texture Textures/Somb_red_1px.png" << endl;
+	}
+	else {
+		sprite.setTexture(texture);
+	}
+	initialised = true;
+}
+
 void Carte::deleteEntity(int x, int y){
+	if(!initialised) initialise();
+	sprite.setPosition(sf::Vector2f(x, y));
+	
 	int j = entity.size();
 	vector <Entity*>::iterator i = entity.end();
 	bool sup = false;
 	for (; i >= entity.begin() && !sup; i--,j--){
-		//pas fini, permettra de supprimer en cliquant sur le sprite, non testé
-		delete entity[j];
-		entity.erase(i);
+		if(Collision::BoundingBoxTest(sprite,entity[j]->getSprite())){
+			entity.erase(i);
+		}
 	}
-	
 }
 
 Joueur& Carte::getJoueurBleu(){

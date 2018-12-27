@@ -56,7 +56,6 @@ void Input::drawInput(){
 	w->drawRect(posInput.x,posInput.y,200, sizeText, sf::Color(127,127,127));
 	if(focus != id) w->drawRect(posInput.x,posInput.y,200, sizeText, sf::Color::White);
 	w->write(s.substr(reduce,s.length()).c_str(),sizeText - 1, sf::Color::Black, posInput.x, posInput.y - sizeText / 8);
-	(focus != id)?printf("blanc\n"):printf("gris\n");
 }
 
 Input::Input(Fenetre* _w, sf::Vector2i posInput, int sizeText, int maxChar) {
@@ -87,16 +86,13 @@ sf::Keyboard::Key Input::get_clic(Fenetre& w){
 	if(findFocus == false) focus = -1;
 	if(focus == -1){
 		sf::Event event;
-		bool encore = true;
-		while (encore && w.getWindow().waitEvent(event)){
+		while (w.getWindow().pollEvent(event)){
 			if (event.type == sf::Event::Closed){
 				w.close();
 			}
 			if (event.type == sf::Event::MouseButtonPressed){
 				if (event.mouseButton.button == sf::Mouse::Left){
 					clic = sf::Mouse::getPosition(w.getWindow());
-					printf("clic en %d,%d\n",clic.x,clic.y);
-					encore = false;
 				}
 			}
 			if(event.type == sf::Event::KeyPressed){
