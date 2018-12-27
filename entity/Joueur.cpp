@@ -28,8 +28,6 @@ void Joueur::setPosition(int x, int y){
 
 void Joueur::setRotation(int i){
 	rectangle.rotate(i);
-	sf::Sprite sprite=Entity::getSprite();
-	sprite.rotate(i);
 }
 
 float Joueur::getRotation(){
