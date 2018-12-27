@@ -2,6 +2,7 @@
 #include "fenetre.h"
 #include "Carte.h"
 #include "entity/Joueur.h"
+#include <math.h>
 
 #define Jb c.getJoueurBleu()
 #define Jr c.getJoueurRouge()
@@ -14,7 +15,6 @@ void affiche(){
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
 	int x = 0, y = 0;
-	//sf::Transform t;
 	int move = 1;
 	sf::Event event;	
     while (window.isOpen()){
@@ -23,18 +23,27 @@ void affiche(){
 				window.close();
             if(event.type == sf::Event::KeyPressed){
 				if(event.key.code == sf::Keyboard::Left){
-					 x = x - move;
-				//	t.rotate(90);
-					 Jb.setRotation(move);//fonctionne pas 
+					x = x + move + cos(Jb.getRotation());
+					y = y + move + sin(Jb.getRotation());
+					Jb.setPosition(x, y);
 				 }		
-				if(event.key.code == sf::Keyboard::Right) x = x + move;				
-				if(event.key.code == sf::Keyboard::Up) y = y - move;
-				if(event.key.code == sf::Keyboard::Down) y = y + move;
+				 
+				if(event.key.code == sf::Keyboard::Right){
+					x = x - cos(Jb.getRotation());
+					printf("%f\n",Jb.getRotation());
+					y = y - sin(Jb.getRotation());
+					Jb.setPosition(x, y);
+					
+				}
+								
+				if(event.key.code == sf::Keyboard::Up) Jb.setRotation(move);
+				if(event.key.code == sf::Keyboard::Down) Jb.setRotation(-move);
 				if(event.key.code == sf::Keyboard::A)move++;
 				if(move > 0 && event.key.code == sf::Keyboard::Q)move--;	
 			}	
 		}
-		Jb.setPosition(x, y);
+		
+		
 	
         window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		//Jb.draw(Jb,t);

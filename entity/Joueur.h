@@ -12,6 +12,7 @@ class Joueur : public Entity_ronde{
 	virtual void draw(Fenetre& w);
 	virtual void setPosition(int x, int y);
 	void setRotation (int i);
+	float getRotation();
 };
 
 #endif // Joueur_h
