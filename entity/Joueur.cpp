@@ -25,3 +25,10 @@ void Joueur::setPosition(int x, int y){
 	rectangle.setPosition(centre.x-2,centre.y-2);
 	
 }
+
+void Joueur::setRotation(int i){
+	
+	rectangle.rotate(i);
+	sf::Sprite sprite=Entity::getSprite();
+	sprite.rotate(i);
+}
