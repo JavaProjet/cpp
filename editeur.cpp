@@ -4,6 +4,7 @@
 #include "Carte.h"
 #include <iostream>
 #include "entity/Collision.h"
+#include <string>
 
 using namespace std;
 
@@ -49,7 +50,7 @@ void draw_item(Fenetre &w){
 	w.drawSprite(w.getLargeur() - 38 - 3, w.getHauteur() - 60 * 4 - 3 + 12, 23, 35, "Souris_23x35px.png");
 }
 
-void draw_selection(Fenetre &w, int& choix, bool& modifchoix){
+void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 	//clique dans le menu pour changer d'item
 	if(modifchoix){
 		if(Input::clic.x > w.getLargeur() - 60 - 1){
@@ -100,6 +101,20 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix){
 				changeSprite = true;
 				Input::clic.x = Input::clic.y = -10;
 			}
+		}
+	}
+	
+	//modifie la taille selon la flèche
+	if(Input::clic.x > w.getLargeur() - 60 * 2 - 2 && Input::clic.x < w.getLargeur() - 60 - 1){
+		if(Input::clic.y > w.getHauteur() - 60 && Input::clic.y < w.getHauteur() - 30){
+			if(taille < grand) taille++;
+			changeSprite = true;
+			Input::clic.x = Input::clic.y = -10;
+		}
+		else if(Input::clic.y > w.getHauteur() - 30 && Input::clic.y < w.getHauteur()){
+			if(taille > petit)taille--;
+			changeSprite = true;
+			Input::clic.x = Input::clic.y = -10;
 		}
 	}
 	
@@ -180,12 +195,7 @@ void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 	}
 }
 
-void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix, int& taille, Carte& c){
-	//dessine la barre grise en bas de l'ecran ainsi que le carré contenant le choix et une phrase juste au dessus de la barre ou on ecrit
-	w.drawRect(0, w.getHauteur() - 60, w.getLargeur(), 60, sf::Color(190,190,190));
-	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - 60, 60, 60, sf::Color(190,190,190));
-	w.write("Nom de la carte :", 20, sf::Color::Black, 10, w.getHauteur() - 55);
-	
+void gestionCursor(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix, int& taille){
 	//afficher le curseur ou une image a sa place selon ou il est
 	if(cursorPos.y > w.getHauteur() - 60 || modifchoix) //dans le menu
 		w.getWindow().setMouseCursorVisible(true);
@@ -243,14 +253,34 @@ void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 			w.getWindow().draw(spriteCursor);
 		}
 	}
-	draw_selection(w,choix,modifchoix);
+}
+
+void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix, int& taille, Carte& c){
+	gestionCursor(w, cursorPos, choix, modifchoix, taille);
+	
+	//dessine la barre grise en bas de l'ecran ainsi que le carré contenant le choix et une phrase juste au dessus de la barre ou on ecrit
+	w.drawRect(0, w.getHauteur() - 60, w.getLargeur(), 60, sf::Color(190,190,190));
+	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - 60, 60, 60, sf::Color(190,190,190));
+	w.write("Nom de la carte :", 20, sf::Color::Black, 10, w.getHauteur() - 55);
+	
+	//dessin de taille
+	string str = "Taille : ";
+	if(taille == petit) str.append("petit");
+	if(taille == moyen) str.append("moyen");
+	if(taille == grand) str.append("grand");
+	w.drawRect(360 - 3, w.getHauteur() - 60, 120, 60, sf::Color(190,190,190));
+	w.write(str.c_str(), 20, sf::Color::Black, 365, w.getHauteur() - 40);
+	w.drawRect(w.getLargeur() - 60 * 2 - 2, w.getHauteur() - 60, 60, 30, sf::Color(190,190,190));
+	w.write("/\\", 20, sf::Color::Black, w.getLargeur() - 60 * 2 - 2 + 25, w.getHauteur() - 58);
+	w.write("\\/", 20, sf::Color::Black, w.getLargeur() - 60 * 2 - 2 + 25, w.getHauteur() - 25);
+	
+	draw_selection(w,choix,modifchoix,taille);
 }
 
 void nouvelle(){
 	sf::Vector2i cursorPos;
 	Fenetre window(600,500 + 60,"Editeur de cartes");
 	Carte c(600,500);
-	c.ajoutEntity(100,100,petit,arbre);
 	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
 	int choix = 0;
 	bool modifchoix = false;
