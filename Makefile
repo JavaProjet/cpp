@@ -79,7 +79,7 @@ install:
 
 #SFML est installé dans /usr/local
 
-git: clean
+git:
 	git add -A
 	git commit
 	git push
