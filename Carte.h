@@ -40,6 +40,11 @@ class Carte{
 		virtual void draw(Fenetre& w);
 		bool ajoutEntity(int x, int y,int size, int entity);
 		void deleteEntity(int x, int y);
+		void deleteEntity(int i);
+		
+		// indique la position de l'element dans le vecteur en collision avec le sprite en parametre -1 sinon 
+		int collisionEntity(sf::Sprite& s);
+		
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
 };

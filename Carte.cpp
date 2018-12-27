@@ -113,6 +113,22 @@ void Carte::deleteEntity(int x, int y){
 	}
 }
 
+void Carte::deleteEntity(int i){
+	vector <Entity*> part_left;
+	vector <Entity*> part_right;
+	Entity* toSupp = NULL;
+	//this->entity.push_back(ent);
+}
+
+int Carte::collisionEntity(sf::Sprite& s){
+	int i;
+	for (i = 0; (unsigned)i < entity.size(); i++){
+		if(Collision::BoundingBoxTest(s, entity[i]->getSprite()))
+			return i;
+	}
+	return -1;
+}
+
 Joueur& Carte::getJoueurBleu(){
 	return jb;
 }
