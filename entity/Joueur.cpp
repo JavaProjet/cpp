@@ -17,13 +17,17 @@ Joueur::~Joueur(){
 void Joueur::draw(Fenetre& w){
 	w.getWindow().draw(rectangle);
 	Entity::draw(w);
-
-	
 }
+
+void Joueur::drawAt(Fenetre& w, sf::Vector2i point){
+	rectangle.setPosition(point.x, point.y);
+	this->drawAt(w, point);
+	rectangle.setPosition(centre.x,centre.y);
+}
+
 void Joueur::setPosition(int x, int y){
 	Entity_ronde::setPosition(x, y);
 	rectangle.setPosition(centre.x,centre.y);
-	
 }
 
 void Joueur::setRotation(int i){

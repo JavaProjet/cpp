@@ -23,6 +23,7 @@ class Entity{
 		bool degats(int); //infliger des degats à l'entité, retourne faux si les points de vies atteignent 0
 		void set_texture(const char* name);
 		virtual void draw(Fenetre& w);
+		virtual void drawAt(Fenetre& w, sf::Vector2i);
 		//int getVision();
 		//void setVision(int degre); //définir un degré d'orientation à la vision
 		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré

@@ -35,6 +35,31 @@ void Carte::draw(Fenetre& w){
 	jr.draw(w);
 }
 
+void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
+	sf::Vector2i point;
+	for (unsigned int i = 0; i < entity.size(); i++){
+		if(jb.getPosition().x > min.x && jb.getPosition().x < max.x && jb.getPosition().y > min.y && jb.getPosition().y < max.y){
+			point.x = entity[i]->getPosition().x - min.x;
+			point.y = entity[i]->getPosition().y - min.y;
+			entity[i]->drawAt(w, point);
+		}
+	}
+	if(jb.getPosition().x > min.x && jb.getPosition().x < max.x && jb.getPosition().y > min.y && jb.getPosition().y < max.y){
+		point.x = jb.getPosition().x - min.x;
+		point.y = jb.getPosition().y - min.y;
+		jb.draw(w);
+	}
+	if(jr.getPosition().x > min.x && jr.getPosition().x < max.x && jr.getPosition().y > min.y && jr.getPosition().y < max.y){
+		point.x = jr.getPosition().x - min.x;
+		point.y = jr.getPosition().y - min.y;
+		jr.draw(w);
+	}
+}
+
+void Carte::drawAroundJoueur(Fenetre& w){
+	
+}
+
 bool Carte::ajoutEntity(int x, int y, int size, int entity){
 	Entity* ent = NULL;
 	

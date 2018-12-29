@@ -4,14 +4,7 @@
 
 using namespace std;
 
-/*const int Entity::top = 0;
-const int Entity::left = 270;
-const int Entity::right = 90;
-const int Entity::bottom = 180;
-*/
-
 Entity::Entity() : position(100,100){
-	//vision = top;
 	vie = 100;
 }
 
@@ -20,7 +13,6 @@ Entity::~Entity(){
 }
 
 Entity::Entity(int x, int y) : position(x,y){
-	//vision = top;
 	vie = 100;
 }
 
@@ -46,26 +38,14 @@ void Entity::set_texture(const char* name){
 
 
 void Entity::draw(Fenetre& w){
-	w.getWindow().draw(sprite);
-
-	
+	w.getWindow().draw(sprite);	
 }
 
-/*
-int Entity::getVision(){
-	return vision;
+void Entity::drawAt(Fenetre& w, sf::Vector2i point){
+	this->sprite.setPosition(point.x, point.y);
+	this->draw(w);
+	this->sprite.setPosition(position.x, position.y);
 }
-
-void Entity::setVision(int degre){
-	vision = degre;
-}
-
-void Entity::tourneVision(int degre){
-	vision += degre;
-	if(vision >= 360) vision -= 360; 
-	if(vision < 0) vision += 360; 
-}
-*/
 
 sf::Vector2i Entity::getPosition(){
 	return position;

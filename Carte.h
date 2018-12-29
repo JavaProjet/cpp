@@ -37,7 +37,9 @@ class Carte{
 		Carte(const char* name);
 		Carte(int, int);
 		~Carte();
-		virtual void draw(Fenetre& w);
+		void draw(Fenetre& w);
+		void drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max);
+		void drawAroundJoueur(Fenetre& w);
 		bool ajoutEntity(int x, int y,int size, int entity);
 		void deleteEntity(int x, int y);
 		void deleteEntity(int i);
