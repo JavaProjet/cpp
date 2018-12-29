@@ -9,6 +9,9 @@
 
 #define PI 3.14159265
 
+#define Fenetre_x 600
+#define Fenetre_y 500
+
 void affiche(){
     Fenetre window(600,500,"Menu");
        
@@ -33,14 +36,41 @@ void affiche(){
 				}
 								
 				if(event.key.code == sf::Keyboard::Up) {
-					x += cos(Jb.getRotation() * PI / 180) * 10;
-					y += sin(Jb.getRotation() * PI / 180) * 10;
-					Jb.setPosition(x, y);
+					if(((x + (cos(Jb.getRotation() * PI / 180) * 10) + 40) < window.getLargeur()) && ((y + (sin(Jb.getRotation() * PI / 180) * 10) + 40) < window.getHauteur())) //ne dépace pas la fenêtre
+					{				
+						x += cos(Jb.getRotation() * PI / 180) * 10;
+						y += sin(Jb.getRotation() * PI / 180) * 10;
+						
+						if( (c.collisionEntity(Jb.getSprite()) == -1) && (c.collisionJoueur(Jb.getSprite(), false) == false) ) //collision objet et joueur
+						{
+							Jb.setPosition(x, y);
+						}
+						else 
+						{
+							x -= cos(Jb.getRotation() * PI / 180) * 10;
+							y -= sin(Jb.getRotation() * PI / 180) * 10;
+							Jb.setPosition(x, y);
+						}
+					}
 				}
 				if(event.key.code == sf::Keyboard::Down) {
-					x -= cos(Jb.getRotation() * PI / 180)* 10;
-					y -= sin(Jb.getRotation() * PI / 180)* 10;
-					Jb.setPosition(x, y);
+					if( ((x - cos(Jb.getRotation() * PI / 180) * 10)> 0 ) && (y - (sin(Jb.getRotation() * PI / 180) * 10) > 0) )
+					{
+						x -= cos(Jb.getRotation() * PI / 180)* 10;
+						y -= sin(Jb.getRotation() * PI / 180)* 10;
+						
+						if(c.collisionEntity(Jb.getSprite()) == -1)
+						{
+							Jb.setPosition(x, y);
+						}
+						else 
+						{
+							x += cos(Jb.getRotation() * PI / 180) * 10;
+							y += sin(Jb.getRotation() * PI / 180) * 10;
+							Jb.setPosition(x, y);
+						}
+						
+					}
 				}
 				if(event.key.code == sf::Keyboard::A)move++;
 				if(move > 0 && event.key.code == sf::Keyboard::Q)move--;	
