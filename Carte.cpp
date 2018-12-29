@@ -182,3 +182,7 @@ Joueur& Carte::getJoueurBleu(){
 Joueur& Carte::getJoueurRouge(){
 	return jr;
 }
+
+Entity* Carte::getEntity(int i){
+	return entity[i];
+}

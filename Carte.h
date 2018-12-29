@@ -49,6 +49,7 @@ class Carte{
 		bool collisionJoueur(sf::Sprite& s, bool bleu);
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
+		Entity* getEntity(int i);
 };
 
 #endif //Carte_h
