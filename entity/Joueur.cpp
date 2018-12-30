@@ -20,8 +20,8 @@ void Joueur::draw(Fenetre& w){
 }
 
 void Joueur::drawAt(Fenetre& w, sf::Vector2i point){
-	rectangle.setPosition(point.x, point.y);
-	this->drawAt(w, point);
+	rectangle.setPosition(point.x + rayon, point.y + rayon);
+	Entity::drawAt(w, point);
 	rectangle.setPosition(centre.x,centre.y);
 }
 

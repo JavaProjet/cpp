@@ -50,6 +50,8 @@ class Carte{
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
 		Entity* getEntity(int i);
+		int getLargeur();
+		int getHauteur();
 };
 
 #endif //Carte_h

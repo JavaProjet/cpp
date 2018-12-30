@@ -38,7 +38,7 @@ void Carte::draw(Fenetre& w){
 void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
 	sf::Vector2i point;
 	for (unsigned int i = 0; i < entity.size(); i++){
-		if(jb.getPosition().x > min.x && jb.getPosition().x < max.x && jb.getPosition().y > min.y && jb.getPosition().y < max.y){
+		if(entity[i]->getPosition().x > min.x && entity[i]->getPosition().x < max.x && entity[i]->getPosition().y > min.y && entity[i]->getPosition().y < max.y){
 			point.x = entity[i]->getPosition().x - min.x;
 			point.y = entity[i]->getPosition().y - min.y;
 			entity[i]->drawAt(w, point);
@@ -47,12 +47,12 @@ void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
 	if(jb.getPosition().x > min.x && jb.getPosition().x < max.x && jb.getPosition().y > min.y && jb.getPosition().y < max.y){
 		point.x = jb.getPosition().x - min.x;
 		point.y = jb.getPosition().y - min.y;
-		jb.draw(w);
+		jb.drawAt(w, point);
 	}
 	if(jr.getPosition().x > min.x && jr.getPosition().x < max.x && jr.getPosition().y > min.y && jr.getPosition().y < max.y){
 		point.x = jr.getPosition().x - min.x;
 		point.y = jr.getPosition().y - min.y;
-		jr.draw(w);
+		jr.drawAt(w, point);
 	}
 }
 
@@ -185,4 +185,12 @@ Joueur& Carte::getJoueurRouge(){
 
 Entity* Carte::getEntity(int i){
 	return entity[i];
+}
+
+int Carte::getLargeur(){
+	return largeur;
+}
+
+int Carte::getHauteur(){
+	return hauteur;
 }
