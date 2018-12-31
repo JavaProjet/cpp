@@ -9,8 +9,63 @@
 
 #define PI 3.14159265
 
-#define Fenetre_x 600
-#define Fenetre_y 500
+typedef struct {
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+} Key;
+
+void get_key(Fenetre& window, Key& k){
+	sf::Event event;
+	while (window.getWindow().pollEvent(event)){
+		if (event.type == sf::Event::Closed){
+			window.close();
+		}
+		if(event.type == sf::Event::KeyPressed){
+			if(event.key.code == sf::Keyboard::Left)
+				k.left = true;
+			if(event.key.code == sf::Keyboard::Right)
+				k.right = true;
+			if(event.key.code == sf::Keyboard::Up)
+				k.up = true;
+			if(event.key.code == sf::Keyboard::Down)
+				k.down = true;
+		}
+		
+		if(event.type == sf::Event::KeyReleased){
+			if(event.key.code == sf::Keyboard::Left)
+				k.left = false;
+			if(event.key.code == sf::Keyboard::Right)
+				k.right = false;
+			if(event.key.code == sf::Keyboard::Up)
+				k.up = false;
+			if(event.key.code == sf::Keyboard::Down)
+				k.down = false;
+		}
+	}
+}
+
+void gestion_touches(Key& k, Carte& c, Joueur& J, int move){
+	double Cos = cos(J.getRotation() * PI / 180) * 10;
+	double Sin = sin(J.getRotation() * PI / 180) * 10;
+	if(k.down) Cos *= -1.0, Sin *= -1.0;
+	int x = J.getPosition().x, y = J.getPosition().y;
+	
+	if(k.left){
+		J.setRotation(-move);
+	}
+	if(k.right){
+		J.setRotation(move);
+	}
+	if((k.up && !k.down) || (k.down && !k.up)){ //une seule des 2 est appuyé sinon le déplacement s'annule
+		if(x + Cos > 0 && x + 40 + Cos < c.getLargeur() && y + Sin > 0 && y + 40 + Sin < c.getHauteur())
+			J.setPosition(x + Cos, y + Sin);
+		
+		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true))//collision avec un autre sprite
+			J.setPosition(x,y);//on annule le deplacement	
+	}
+}
 
 void affiche(){
     Fenetre window(600,500,"Menu");
@@ -19,71 +74,18 @@ void affiche(){
 	c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
-	int x = Jb.getPosition().x, y = Jb.getPosition().y;
-	int move = 2;
-	sf::Event event;	
-    while (window.isOpen()){
-		while (window.getWindow().pollEvent(event)){
-            if (event.type == sf::Event::Closed)
-				window.close();
-            if(event.type == sf::Event::KeyPressed){
-				if(event.key.code == sf::Keyboard::Left){
-					Jb.setRotation(-move);
-				 }		
-				 
-				if(event.key.code == sf::Keyboard::Right){
-					Jb.setRotation(move);
-				}
-								
-				if(event.key.code == sf::Keyboard::Up) {
-					if(((x + (cos(Jb.getRotation() * PI / 180) * 10) + 40) < window.getLargeur()) && ((y + (sin(Jb.getRotation() * PI / 180) * 10) + 40) < window.getHauteur())) //ne dépace pas la fenêtre
-					{				
-						x += cos(Jb.getRotation() * PI / 180) * 10;
-						y += sin(Jb.getRotation() * PI / 180) * 10;
-						
-						if( (c.collisionEntity(Jb.getSprite()) == -1) && (c.collisionJoueur(Jb.getSprite(), false) == false) ) //collision objet et joueur
-						{
-							Jb.setPosition(x, y);
-						}
-						else 
-						{
-							x -= cos(Jb.getRotation() * PI / 180) * 10;
-							y -= sin(Jb.getRotation() * PI / 180) * 10;
-							Jb.setPosition(x, y);
-						}
-					}
-				}
-				if(event.key.code == sf::Keyboard::Down) {
-					if( ((x - cos(Jb.getRotation() * PI / 180) * 10)> 0 ) && (y - (sin(Jb.getRotation() * PI / 180) * 10) > 0) )
-					{
-						x -= cos(Jb.getRotation() * PI / 180)* 10;
-						y -= sin(Jb.getRotation() * PI / 180)* 10;
-						
-						if(c.collisionEntity(Jb.getSprite()) == -1)
-						{
-							Jb.setPosition(x, y);
-						}
-						else 
-						{
-							x += cos(Jb.getRotation() * PI / 180) * 10;
-							y += sin(Jb.getRotation() * PI / 180) * 10;
-							Jb.setPosition(x, y);
-						}
-						
-					}
-				}
-				if(event.key.code == sf::Keyboard::A)move++;
-				if(move > 0 && event.key.code == sf::Keyboard::Q)move--;	
-			}	
-		}
-		
-		
+	Jr.setPosition(400,400);
 	
+	int move = 2;
+	Key k = {false, false, false, false};
+		
+    while (window.isOpen()){
         window.drawSprite(0,0,600,500,"Sol_600x500.png");
-		//Jb.draw(Jb,t);
-		c.draw(window);
         
-		printf("degré de rotation : %f, cos : %6f, sin : %6f\r",Jb.getRotation(),cos(Jb.getRotation() * PI / 180),sin(Jb.getRotation() * PI / 180));
+        get_key(window, k);
+        gestion_touches(k,c,Jb,move);
+        
+		c.draw(window);
         window.getWindow().display();
     }
     
