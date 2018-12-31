@@ -14,3 +14,7 @@ Cactus::Cactus(int x, int y, int rayon, int vie) : Entity_ronde(x,y,rayon,vie){
 Cactus::~Cactus(){
 	printf("destruction Cactus\n");
 }
+
+int Cactus::getType(){
+	return cactus; //2
+}

@@ -13,3 +13,7 @@ Arbre::Arbre(int x, int y, int rayon, int vie) : Entity_ronde(x,y,rayon,vie){
 Arbre::~Arbre(){
 	printf("destruction arbre\n");
 }
+
+int Arbre::getType(){
+	return arbre; //1
+}

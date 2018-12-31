@@ -1,6 +1,15 @@
 #ifndef Entity_h
 #define Entity_h
 
+#define arbre 1
+#define cactus 2
+#define rocher 3
+#define tronc 4
+#define mur 5
+#define joueur 6
+#define joueurBleu 7
+#define joueurRouge 8
+
 #include "../fenetre.h"
 
 class Entity{
@@ -32,6 +41,7 @@ class Entity{
 		int getVie();
 		void setVie(int);
 		sf::Sprite& getSprite();
+		virtual int getType() = 0;
 };
 
 #endif //Entity_h

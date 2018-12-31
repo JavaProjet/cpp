@@ -9,6 +9,7 @@ class Arbre : public Entity_ronde{
 	public :
 	Arbre(int x, int y, int rayon, int vie);
 	virtual ~Arbre();
+	virtual int getType();
 };
 
 #endif // arbre_h

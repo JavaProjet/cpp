@@ -13,3 +13,7 @@ Rocher::Rocher(int x, int y, int rayon, int vie) : Entity_ronde(x,y,rayon,vie){
 Rocher::~Rocher(){
 	printf("destruction Rocher\n");
 }
+
+int Rocher::getType(){
+	return rocher; //3
+}

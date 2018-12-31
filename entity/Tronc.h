@@ -9,6 +9,7 @@ class Tronc : public Entity_rect{
 	public :
 	Tronc(int x, int y, int sizeX,int sizeY, int vie);
 	virtual ~Tronc();
+	virtual int getType();
 };
 
 #endif // Tronc_h

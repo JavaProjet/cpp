@@ -38,3 +38,7 @@ float Joueur::getRotation(){
 	return rectangle.getRotation();
 	
 }
+
+int Joueur::getType(){
+	return joueur; //6
+}

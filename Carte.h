@@ -5,14 +5,6 @@
 #define moyen 2
 #define grand 3
 
-#define arbre 1
-#define cactus 2
-#define rocher 3
-#define tronc 4
-#define mur 5
-#define joueurBleu 6
-#define joueurRouge 7
-
 #include "entity/Entity.h"
 #include "entity/arbre.h"
 #include "entity/Cactus.h"

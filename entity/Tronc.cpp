@@ -13,3 +13,7 @@ Tronc::Tronc(int x, int y, int sizeX,int sizeY, int vie) : Entity_rect(x,y,sizeX
 Tronc::~Tronc(){
 	printf("destruction Tronc\n");
 }
+
+int Tronc::getType(){
+	return tronc; //4
+}
