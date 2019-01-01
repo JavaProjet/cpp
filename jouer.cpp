@@ -54,9 +54,17 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 }
 
 void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int move, int& cptMove, bool avancer){
-	double Cos = cos(J.getRotation() * PI / 180) * 10;
-	double Sin = sin(J.getRotation() * PI / 180) * 10;
-	if(k.down) Cos *= (double)-1, Sin *= (double)-1;
+	double Cos, Sin;
+	
+	int rotation = J.getRotation();
+	if(k.down){
+		rotation += 180;
+		if(rotation > 360) rotation -= 360;
+	}
+	
+	Cos = cos(rotation * PI / 180) * 10;
+	Sin = sin(rotation * PI / 180) * 10;
+	
 	int x = J.getPosition().x, y = J.getPosition().y;
 	
 	if(k.left){
@@ -66,8 +74,8 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 		J.setRotation(move);
 	}
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
-		if(x + Cos > 0 && x + 60 + Cos < c.getLargeur() && y + Sin > 0 && y + 60 + Sin < c.getHauteur())
-			J.setPosition(x + Cos, y + Sin), cptMove++;
+		if(x + Cos - 20 > 0 && x + 20 + Cos < c.getLargeur() && y + Sin - 20 > 0 && y + 20 + Sin < c.getHauteur())
+			J.setPosition(J.getPosition().x + Cos, J.getPosition().y + Sin), cptMove++;
 		
 		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true))//collision avec un autre sprite
 			J.setPosition(x,y), cptMove--;//on annule le deplacement	
@@ -75,6 +83,8 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 	if(touche == sf::Keyboard::Space){
 		
 	}
+	
+	printf("cos(%3f), sin(%3f), rotation(%3d)\r", Cos, Sin, rotation);
 }
 
 void changeJoueur(Fenetre& w, bool bleu){
@@ -91,19 +101,17 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
 	w.getWindow().clear();
 	sf::Vector2i position, beginTo, size; // points pour dessiner en decalé la photo de fond
 	
-	position.x = J.getPosition().x + J.get_rayon() - w.getLargeur() / 2;
-	beginTo.x = (position.x > 0)? position.x : 0;
-	position.x = (position.x > 0)? 0 : w.getLargeur() / 2 - J.getPosition().x;
+	position.x = w.getLargeur() / 2 - J.getPosition().x;
+	beginTo.x = (position.x >= 0)? 0 : -position.x;
+	if(position.x < 0) position.x = 0;
 	size.x = largeur;
-	if(J.getPosition().x + J.get_rayon() * 2 + w.getLargeur() / 2) size.x -= (J.getPosition().x + J.get_rayon() * 2 + w.getLargeur() / 2) - largeur;
+	size.x -= (J.getPosition().x + w.getLargeur() / 2) - largeur;
 	
-	printf("pos(%d,%d) begin(%d,%d) size(%d,%d)\n",position.x,position.y,beginTo.x,beginTo.y,size.x,size.y);
-	
-	position.y = J.getPosition().y + J.get_rayon() - w.getHauteur() / 2;
-	beginTo.y = (position.y > 0)? position.y : 0;
-	position.y = (position.y > 0)? 0 : w.getHauteur() / 2 - J.getPosition().y;
+	position.y = w.getHauteur() / 2 - J.getPosition().y;
+	beginTo.y = (position.y >= 0)? 0 : -position.y;
+	if(position.y < 0) position.y = 0;
 	size.y = hauteur;
-	if(J.getPosition().y + J.get_rayon() * 2 + w.getHauteur() / 2) size.y -= (J.getPosition().y + J.get_rayon() * 2 + w.getHauteur() / 2) - hauteur;
+	size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
 	
 	w.drawSprite(position, beginTo, size,"Sol_600x500.png");
 }
