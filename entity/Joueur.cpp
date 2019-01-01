@@ -39,6 +39,6 @@ float Joueur::getRotation(){
 	
 }
 
-int Joueur::getType(){
+entityType Joueur::getType(){
 	return joueur; //6
 }

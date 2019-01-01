@@ -54,9 +54,8 @@ float Fenetre::getFont(const char* str, int police){
 }
 
 sf::Color Fenetre::getPixelColor(int x, int y){
-	sf::Vector2u windowSize = window->getSize();
 	sf::Texture texture;
-	texture.create(windowSize.x, windowSize.y);
+	texture.create(largeur, hauteur);
 	texture.update(*window);
 	sf::Image screenshot = texture.copyToImage();
 	return screenshot.getPixel(x,y);
@@ -134,6 +133,27 @@ bool Fenetre::drawSprite(int x, int y, int Xsize, int Ysize, const char* file){
 	return true;
 }
 
+bool Fenetre::drawSprite(sf::Vector2i position, sf::Vector2i beginTo, sf::Vector2i size, const char* file){
+	sf::Texture texture;
+	string str = "Textures/";
+	if(file)str.append(file);
+
+	if (!texture.loadFromFile(str)){
+		return false;
+	}
+	
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	
+	sprite.setTextureRect(sf::IntRect(beginTo.x, beginTo.y, size.x, size.y));
+	
+	sprite.setPosition(sf::Vector2f(position.x, position.y));
+
+	window->draw(sprite);
+	return true;
+}
+
+//fonction prise dans uvsqgraphics
 void Fenetre::draw_line(sf::Vector2i p1, sf::Vector2i p2, sf::Color coul) {
 	int xmin, xmax;
 	int ymin, ymax;
@@ -176,6 +196,8 @@ void Fenetre::draw_line(sf::Vector2f p1, sf::Vector2f p2, sf::Color color){
 	draw_line(sf::Vector2i((double) p1.x, (double) p1.y), sf::Vector2i((double) p2.x, (double) p2.y), color);
 }
 
+
+//fonction prise dans uvsqgraphics
 sf::Vector2f Fenetre::wait_clic(){
 	bool encore = true;
 	sf::Vector2i mousePos = sf::Mouse::getPosition(*window);

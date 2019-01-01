@@ -30,3 +30,7 @@ void Entity_ronde::setPosition(int x, int y){
 	centre.x = rayon + x;
 	centre.y = rayon + y;
 }
+
+entityType Entity_ronde::getPrimaryType(){
+	return ronde;
+}

@@ -35,32 +35,93 @@ void Carte::draw(Fenetre& w){
 	jr.draw(w);
 }
 
+//dessine si c'est compris entre min et max, en decalant les positions pour afficher dans la fenetre si les coordonnées sont superieurs a la taille de la fenetre
 void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
 	sf::Vector2i point;
 	for (unsigned int i = 0; i < entity.size(); i++){
-		if(entity[i]->getPosition().x > min.x && entity[i]->getPosition().x < max.x && entity[i]->getPosition().y > min.y && entity[i]->getPosition().y < max.y){
+		if(entity[i]->getPosition().x + jr.get_rayon() * 2 > min.x && entity[i]->getPosition().x < max.x && entity[i]->getPosition().y + jr.get_rayon() * 2 > min.y && entity[i]->getPosition().y < max.y){
 			point.x = entity[i]->getPosition().x - min.x;
 			point.y = entity[i]->getPosition().y - min.y;
 			entity[i]->drawAt(w, point);
 		}
 	}
-	if(jb.getPosition().x > min.x && jb.getPosition().x < max.x && jb.getPosition().y > min.y && jb.getPosition().y < max.y){
+	if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
 		point.x = jb.getPosition().x - min.x;
 		point.y = jb.getPosition().y - min.y;
 		jb.drawAt(w, point);
 	}
-	if(jr.getPosition().x > min.x && jr.getPosition().x < max.x && jr.getPosition().y > min.y && jr.getPosition().y < max.y){
+	if(jr.getPosition().x + jr.get_rayon() * 2 > min.x && jr.getPosition().x < max.x && jr.getPosition().y + jr.get_rayon() * 2 > min.y && jr.getPosition().y < max.y){
 		point.x = jr.getPosition().x - min.x;
 		point.y = jr.getPosition().y - min.y;
 		jr.drawAt(w, point);
 	}
 }
 
-void Carte::drawAroundJoueur(Fenetre& w){
+void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
+	sf::Vector2i point, min, max;
+	Entity_ronde* e_ronde;
+	Entity_rect* e_rect;
 	
+	if(bleu){ //on dessine en decalé en mettant le joueur bleu au centre de la fenetre
+		min.x = jb.getPosition().x + jb.get_rayon() - w.getLargeur() / 2;
+		min.y = jb.getPosition().y + jb.get_rayon() - w.getHauteur() / 2;
+		max.x = min.x + w.getLargeur();
+		max.y = min.y + w.getHauteur();
+	}
+	
+	else { //on dessine en decalé en mettant le joueur rouge au centre de la fenetre
+		min.x = jr.getPosition().x + jb.get_rayon() - w.getLargeur() / 2;
+		min.y = jr.getPosition().y + jb.get_rayon() - w.getHauteur() / 2;
+		max.x = min.x + w.getLargeur();
+		max.y = min.y + w.getHauteur();
+	}
+	
+	for (unsigned int i = 0; i < entity.size(); i++){ //on dessine les entités qui sont autour
+		if(entity[i]->getPrimaryType() == ronde){
+			e_ronde = (Entity_ronde*)entity[i];
+			if(e_ronde->getPosition().x + e_ronde->get_rayon() * 2 > min.x && e_ronde->getPosition().x < max.x && e_ronde->getPosition().y + e_ronde->get_rayon() * 2 > min.y && e_ronde->getPosition().y < max.y){
+				point.x = entity[i]->getPosition().x - min.x;
+				point.y = entity[i]->getPosition().y - min.y;
+				entity[i]->drawAt(w, point);
+			}
+		}
+		else if(entity[i]->getPrimaryType() == rect){
+			e_rect = (Entity_rect*)entity[i];
+			if(e_rect->getPosition().x + e_rect->get_size().x > min.x && e_rect->getPosition().x < max.x && e_rect->getPosition().y + e_rect->get_size().y > min.y && e_rect->getPosition().y < max.y){
+				point.x = entity[i]->getPosition().x - min.x;
+				point.y = entity[i]->getPosition().y - min.y;
+				entity[i]->drawAt(w, point);
+			}
+		}
+	}
+	if(bleu){ //on dessine le joueur bleu, et s'il n'y a pas d'obstacle entre les deux joueurs, on dessine le rouge s'il est aux alentours
+		point.x = jb.getPosition().x - min.x;
+		point.y = jb.getPosition().y - min.y;
+		jb.drawAt(w, point);
+		if(jr.getPosition().x + jr.get_rayon() * 2 > min.x && jr.getPosition().x < max.x && jr.getPosition().y + jr.get_rayon() * 2 > min.y && jr.getPosition().y < max.y){
+			if(!(obstacle_entre_joueurs())){
+				point.x = jr.getPosition().x - min.x;
+				point.y = jr.getPosition().y - min.y;
+				jr.drawAt(w, point);
+			}
+		}
+	}
+	
+	else { //on dessine le joueur rouge, et s'il n'y a pas d'obstacle entre les deux joueurs, on dessine le bleu s'il est aux alentours
+		point.x = jr.getPosition().x - min.x;
+		point.y = jr.getPosition().y - min.y;
+		jr.drawAt(w, point);
+		if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
+			if(!(obstacle_entre_joueurs())){
+				point.x = jb.getPosition().x - min.x;
+				point.y = jb.getPosition().y - min.y;
+				jb.drawAt(w, point);
+			}
+		}
+	}
 }
 
-bool Carte::ajoutEntity(int x, int y, int size, int entity){
+bool Carte::ajoutEntity(int x, int y, int size, entityType entity){
 	Entity* ent = NULL;
 	
 	if(entity == arbre) {
@@ -193,4 +254,51 @@ int Carte::getLargeur(){
 
 int Carte::getHauteur(){
 	return hauteur;
+}
+
+//fonction qui calcul une ligne entre les 2 points et teste si une entité la croise, fonction draw_line de fenetre.cpp/.h (uvsqgraphics) modifié
+//retourne vrai si une entité dans le vecteur la croise et faux si aucune entité croise la ligne
+bool Carte::obstacle_entre_joueurs(){
+	int xmin, xmax;
+	int ymin, ymax;
+	int i,j;
+	float a,b,ii,jj;
+	
+	sf::Vector2i p1 = jb.getPosition(), p2 = jr.getPosition();
+	p1.x += jb.get_rayon(); p1.y += jb.get_rayon();
+	p2.x += jr.get_rayon(); p2.y += jr.get_rayon();
+	
+	if(!initialised) initialise();
+	
+	if (p1.x < p2.x) {xmin=p1.x; xmax=p2.x;} else{xmin=p2.x; xmax=p1.x;}
+	if (p1.y < p2.y) {ymin=p1.y; ymax=p2.y;} else{ymin=p2.y; ymax=p1.y;}
+	
+	// La variation la plus grande est en x
+	if ((xmax-xmin >= ymax-ymin) && (ymax-ymin>0)) {
+		a = (float)(p1.y-p2.y) / ((float)(p1.x-p2.x));
+		b = p1.y - a*p1.x;
+		for (i=xmin;i<=xmax;i++) {
+			jj = a*i+b;
+			j = jj;
+			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
+			sprite.setPosition(sf::Vector2f(i, j));
+			if(collisionEntity(sprite) != -1)
+				return true;
+		}
+	}
+	
+	// La variation la plus grande est en y
+	if ((ymax-ymin > xmax-xmin) && (xmax-xmin>0)) {
+		a = (float)(p1.y-p2.y) / ((float)(p1.x-p2.x));
+		b = p1.y - a*p1.x;
+		for (j=ymin;j<=ymax;j++) {
+			ii = (j-b)/a;
+			i = ii;
+			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
+			sprite.setPosition(sf::Vector2f(i, j));
+			if(collisionEntity(sprite) != -1)
+				return true;
+		}
+	}
+	return false;
 }

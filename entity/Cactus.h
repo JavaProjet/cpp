@@ -9,7 +9,7 @@ class Cactus : public Entity_ronde{
 	public :
 	Cactus(int x, int y, int rayon, int vie);
 	virtual ~Cactus();
-	virtual int getType();
+	virtual entityType getType();
 };
 
 #endif // Cactus_h

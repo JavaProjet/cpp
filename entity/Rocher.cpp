@@ -14,6 +14,6 @@ Rocher::~Rocher(){
 	printf("destruction Rocher\n");
 }
 
-int Rocher::getType(){
+entityType Rocher::getType(){
 	return rocher; //3
 }

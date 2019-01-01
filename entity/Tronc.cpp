@@ -14,6 +14,6 @@ Tronc::~Tronc(){
 	printf("destruction Tronc\n");
 }
 
-int Tronc::getType(){
+entityType Tronc::getType(){
 	return tronc; //4
 }

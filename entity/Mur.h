@@ -9,7 +9,7 @@ class Mur : public Entity_rect{
 	public :
 	Mur(int x, int y, int sizeX,int sizeY, int vie);
 	virtual ~Mur();
-	virtual int getType();
+	virtual entityType getType();
 };
 
 #endif // Mur_h

@@ -15,6 +15,6 @@ Cactus::~Cactus(){
 	printf("destruction Cactus\n");
 }
 
-int Cactus::getType(){
+entityType Cactus::getType(){
 	return cactus; //2
 }

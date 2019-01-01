@@ -56,6 +56,6 @@ Mur::~Mur(){
 	printf("destruction Mur\n");
 }
 
-int Mur::getType(){
+entityType Mur::getType(){
 	return mur; //5
 }

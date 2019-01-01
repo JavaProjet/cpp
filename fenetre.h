@@ -25,6 +25,7 @@ class Fenetre{
 		void add_pix(int x, int y, sf::Color color);
 		void drawCircle(int x, int y, int rayon, sf::Color);
 		bool drawSprite(int x, int y, int Xsize, int Ysize, const char* file);
+		bool drawSprite(sf::Vector2i position, sf::Vector2i beginTo, sf::Vector2i size, const char* file);
 		void draw_line(sf::Vector2i p1, sf::Vector2i p2, sf::Color color);
 		void draw_line(sf::Vector2f p1, sf::Vector2f p2, sf::Color color);
 		sf::Vector2f wait_clic();

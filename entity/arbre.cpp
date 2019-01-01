@@ -14,6 +14,6 @@ Arbre::~Arbre(){
 	printf("destruction arbre\n");
 }
 
-int Arbre::getType(){
+entityType Arbre::getType(){
 	return arbre; //1
 }

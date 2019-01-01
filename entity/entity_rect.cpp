@@ -25,3 +25,7 @@ sf::Vector2i &Entity_rect::get_size(){
 void Entity_rect::setPosition(int x, int y){
 	Entity::setPosition(x, y);
 }
+
+entityType Entity_rect::getPrimaryType(){
+	return ronde;
+}

@@ -31,8 +31,8 @@ class Carte{
 		~Carte();
 		void draw(Fenetre& w);
 		void drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max);
-		void drawAroundJoueur(Fenetre& w);
-		bool ajoutEntity(int x, int y,int size, int entity);
+		void drawAroundJoueur(Fenetre& w, bool bleu);
+		bool ajoutEntity(int x, int y,int size, entityType entity);
 		void deleteEntity(int x, int y);
 		void deleteEntity(int i);
 		
@@ -44,6 +44,7 @@ class Carte{
 		Entity* getEntity(int i);
 		int getLargeur();
 		int getHauteur();
+		bool obstacle_entre_joueurs();
 };
 
 #endif //Carte_h

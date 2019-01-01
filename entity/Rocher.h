@@ -9,7 +9,7 @@ class Rocher : public Entity_ronde{
 	public :
 	Rocher(int x, int y, int rayon, int vie);
 	virtual ~Rocher();
-	virtual int getType();
+	virtual entityType getType();
 };
 
 #endif // Rocher_h

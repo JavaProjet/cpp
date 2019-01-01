@@ -15,7 +15,7 @@ class Joueur : public Entity_ronde{
 		virtual void setPosition(int x, int y);
 		void setRotation (int i);
 		float getRotation();
-		virtual int getType();
+		virtual entityType getType();
 };
 
 #endif // Joueur_h
