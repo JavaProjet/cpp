@@ -1,7 +1,7 @@
 #include "Carte.h"
 #include <iostream>
 #include "entity/Collision.h"
-
+#include  "string.h"
 using namespace std;
 
 sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient invalide
@@ -258,6 +258,26 @@ int Carte::getLargeur(){
 int Carte::getHauteur(){
 	return hauteur;
 }
+char* Carte :: getNom(){
+	return nom ;
+}
+void Carte :: setNom(char* tartine){
+	int taille = strlen (tartine);
+	if (nom !=NULL)
+	{
+		delete[] nom;
+	}
+	nom =new char [taille+1];
+	
+	if(tartine !=NULL && taille > 0){
+		
+		for (int i = 0; i <= taille; i++)
+		{
+			nom[i]=tartine[i] ;
+		}
+		
+	}
+}
 
 //fonction qui calcul une ligne entre les 2 points et teste si une entité la croise, fonction draw_line de fenetre.cpp/.h (uvsqgraphics) modifié
 //retourne vrai si une entité dans le vecteur la croise et faux si aucune entité croise la ligne
@@ -314,3 +334,19 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 	}
 	return obstacle;
 }
+
+ void Carte :: save (){
+	 FILE* fs = NULL ;
+	 if ( ( fs = fopen (nom,"w+") )){
+		 fprintf( fs, "%d %d\n",largeur, hauteur );
+		 fprintf( fs,"\n");
+		 for (int i = 0; i < entity.size(); i++)
+		 {
+			 entity[i]->save(fs);
+			 fprintf( fs,"\n");
+		 }
+		 
+		 fclose (fs);
+	 } 
+ }
+

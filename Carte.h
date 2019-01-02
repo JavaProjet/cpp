@@ -23,7 +23,7 @@ class Carte{
 		char *nom;
 		int largeur;
 		int hauteur;
-		void allocTab();
+		//void allocTab();
 		void freeTab();
 	public :
 		Carte(const char* name);
@@ -44,7 +44,10 @@ class Carte{
 		Entity* getEntity(int i);
 		int getLargeur();
 		int getHauteur();
+		char* getNom();
+		void setNom(char*);
 		bool obstacle_entre_joueurs(Fenetre& w);
+		void save ( );
 };
 
 #endif //Carte_h

@@ -15,6 +15,7 @@ class Entity_ronde : public Entity{
 		virtual void setPosition(int x, int y);
 		virtual entityType getType() = 0;
 		virtual entityType getPrimaryType();
+		virtual void save (FILE * fs  );
 };
 
 #endif // Entity_ronde

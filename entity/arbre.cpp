@@ -17,3 +17,8 @@ Arbre::~Arbre(){
 entityType Arbre::getType(){
 	return arbre; //1
 }
+void Arbre   :: save ( FILE* fs)
+{
+	fprintf( fs, "arbre \n" ); 
+	Entity_ronde :: save (fs); 
+}

@@ -10,6 +10,7 @@ class Arbre : public Entity_ronde{
 	Arbre(int x, int y, int rayon, int vie);
 	virtual ~Arbre();
 	virtual entityType getType();
+	virtual void  save (FILE* fs  );
 };
 
 #endif // arbre_h

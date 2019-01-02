@@ -68,3 +68,10 @@ void Entity::setVie(int _vie){
 sf::Sprite& Entity::getSprite(){
 	return sprite;
 }
+
+void Entity  :: save ( FILE* fs)
+{
+	fprintf( fs, "%d %d\n",position.x,position.y ); 
+	fprintf( fs, "%d\n", vie ); 
+}
+

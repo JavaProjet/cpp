@@ -64,7 +64,7 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int move, int& cptMove, bool avancer){
 	double Cos, Sin;
 	int res[3];
-	entityType t;
+	//entityType t;
 	string str = "";
 	
 	int rotation = J.getRotation();

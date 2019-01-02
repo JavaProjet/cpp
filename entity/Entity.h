@@ -9,7 +9,9 @@ enum entityType{
 	rocher,
 	tronc,
 	mur,
-	joueur
+	joueur,
+	joueurBleu,
+	joueurRouge
 };
 
 #include "../fenetre.h"
@@ -36,6 +38,7 @@ class Entity{
 		sf::Sprite& getSprite();
 		virtual entityType getType() = 0;
 		virtual entityType getPrimaryType() = 0;
+		virtual void  save (FILE* fs  );
 };
 
 #endif //Entity_h

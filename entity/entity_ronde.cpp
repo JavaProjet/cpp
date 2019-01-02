@@ -34,3 +34,10 @@ void Entity_ronde::setPosition(int x, int y){
 entityType Entity_ronde::getPrimaryType(){
 	return ronde;
 }
+
+
+void Entity_ronde  :: save ( FILE* fs)
+{
+	fprintf( fs, "%d\n", rayon  );
+	Entity :: save (fs); 
+}

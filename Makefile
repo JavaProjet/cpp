@@ -33,8 +33,8 @@ fenetre.o: fenetre.cpp fenetre.h
 input.o: input.cpp input.h fenetre.h
 	g++ -c -g -Wall input.cpp input.h fenetre.h $(ISFML)
 
-editeur.o: editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h
-	g++ -c -g -Wall editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h $(ISFML)
+editeur.o: editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h entity/Entity.h
+	g++ -c -g -Wall editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h entity/Entity.h $(ISFML)
 
 jouer.o: jouer.cpp jouer.h fenetre.h 
 	g++ -c -g -Wall jouer.cpp jouer.h fenetre.h $(ISFML)

@@ -310,6 +310,10 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 			max.x += deplacement;
 		}
 	}
+	if(key == sf::Keyboard::Key::Return ){
+		c.setNom("tartine");
+		c.save();
+	}
 }
 
 void nouvelle(){
