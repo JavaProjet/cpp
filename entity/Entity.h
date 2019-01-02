@@ -9,9 +9,7 @@ enum entityType{
 	rocher,
 	tronc,
 	mur,
-	joueur,
-	joueurBleu,
-	joueurRouge
+	joueur
 };
 
 #include "../fenetre.h"
@@ -22,14 +20,8 @@ class Entity{
 		sf::Vector2i position;
 		sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient invalide
 		sf::Sprite sprite; //variable contenant le sprite a afficher
-		//int vision;
-		//int degatArme;
 		
 	public :
-		/*static const int top;
-		static const int left;
-		static const int right;
-		static const int bottom;*/
 		Entity();
 		virtual ~Entity();
 		Entity(int x, int y);
@@ -37,9 +29,6 @@ class Entity{
 		void set_texture(const char* name);
 		virtual void draw(Fenetre& w);
 		virtual void drawAt(Fenetre& w, sf::Vector2i);
-		//int getVision();
-		//void setVision(int degre); //définir un degré d'orientation à la vision
-		//void tourneVision(int degre); //pour pivoter la vision d'un certain degré
 		sf::Vector2i getPosition();
 		virtual void setPosition(int x, int y);
 		int getVie();

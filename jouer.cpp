@@ -17,10 +17,7 @@ using namespace std;
 //vie
 
 void JoueurVie (Fenetre& w,int J_vie){
-	sf::RectangleShape rectangle (sf::Vector2f(2*J_vie, 4));
-	rectangle.setFillColor(sf::Color(0, 70, 33));
-	rectangle.setPosition(10,10);
-	w.getWindow().draw(rectangle);
+	w.draw_fillRect(10,10,2*J_vie, 4, sf::Color(0, 70, 33));
 }
 
 
@@ -66,7 +63,9 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 
 void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int move, int& cptMove, bool avancer){
 	double Cos, Sin;
-	int res;
+	int res[3];
+	entityType t;
+	string str = "";
 	
 	int rotation = J.getRotation();
 	if(k.down){
@@ -88,19 +87,22 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
 		
 		J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
-		if((res = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
-			J.setPosition(x, J.getPosition().y);
-			if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
-				J.setPosition(J.getPosition().x, y);
-				if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+		if((res[0] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
+			J.setPosition(x, y + (int)Sin);
+			if((res[1] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+				J.setPosition(x + (int)Cos, y);
+				if((res[2] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 					J.setPosition(x,y);
-					if(c.getEntity(res)->getType()== cactus){//collision avec un cactus
-						J.degats(1);
-						printf("vie du joueur %d \n",J.getVie());
-					}
 				}
 			}
 		}
+		/*for(int i = 0; i < 3; i++){ ca seg fault
+			if(res[i] != -1)
+				if(c.getEntity(res[i])->getType() == cactus)
+					res[i] = -2;
+		}
+		if(res[0] == -2 || res[1] == -2 || res[2] == -2) J.degats(1);*/
+		
 		if(x + Cos - 20 < 0 || x + 20 + Cos > c.getLargeur())
 			J.setPosition(x, J.getPosition().y);
 		if(y + Sin - 20 < 0 || y + 20 + Sin > c.getHauteur())
@@ -140,6 +142,25 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
 	size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
 	
 	w.drawSprite(position, beginTo, size,"Sol_600x500.png");
+}
+
+void fin(Fenetre& w, Carte& c){
+	string str = "";
+	if(Jb.getVie() == false && Jr.getVie() == false)
+		str.append("Egalité");
+	else if(Jb.getVie() == false)
+		str.append("Victoire pour Joueur rouge");
+	else if(Jr.getVie() == false)
+		str.append("Victoire pour Joueur bleu");
+	if(Jb.getVie() == false || Jr.getVie() == false){
+		sleep(1);
+		w.getWindow().clear();
+		int size = w.getFont(str.c_str(),40);
+		w.write(str.c_str(),40,sf::Color::White, (w.getLargeur() - size) / 2, (500 - 40) / 2);
+		w.getWindow().display();
+		sleep(3);
+		w.close();
+	}
 }
 
 void affiche(){
@@ -188,5 +209,6 @@ void affiche(){
 			changeJoueur(window,bleuJoue);
 			cptMove = 0;
 		}
+		fin(window,c);
 	}
 }
