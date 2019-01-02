@@ -44,7 +44,7 @@ class Carte{
 		Entity* getEntity(int i);
 		int getLargeur();
 		int getHauteur();
-		bool obstacle_entre_joueurs();
+		bool obstacle_entre_joueurs(Fenetre& w);
 };
 
 #endif //Carte_h

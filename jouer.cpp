@@ -62,8 +62,8 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 		if(rotation > 360) rotation -= 360;
 	}
 	
-	Cos = cos(rotation * PI / 180) * 10;
-	Sin = sin(rotation * PI / 180) * 10;
+	Cos = cos(rotation * PI / 180) * 5;
+	Sin = sin(rotation * PI / 180) * 5;
 	
 	int x = J.getPosition().x, y = J.getPosition().y;
 	
@@ -74,17 +74,26 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 		J.setRotation(move);
 	}
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
-		if(x + Cos - 20 > 0 && x + 20 + Cos < c.getLargeur() && y + Sin - 20 > 0 && y + 20 + Sin < c.getHauteur())
-			J.setPosition(J.getPosition().x + Cos, J.getPosition().y + Sin), cptMove++;
+		if(x + Cos - 20 > 0 && x + 20 + Cos < c.getLargeur())
+			J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y);
+		if(y + Sin - 20 > 0 && y + 20 + Sin < c.getHauteur())
+			J.setPosition(J.getPosition().x, J.getPosition().y + (int)Sin);
 		
-		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true))//collision avec un autre sprite
-			J.setPosition(x,y), cptMove--;//on annule le deplacement	
+		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
+			J.setPosition(x, J.getPosition().y + (int)Sin);
+			if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+				J.setPosition(J.getPosition().x + (int)Cos, y);
+				if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+					J.setPosition(x,y);
+				}
+			}
+		}		
 	}
 	if(touche == sf::Keyboard::Space){
 		
 	}
 	
-	printf("cos(%3f), sin(%3f), rotation(%3d)\r", Cos, Sin, rotation);
+	if(J.getPosition().x != x || J.getPosition().y != y) cptMove++;
 }
 
 void changeJoueur(Fenetre& w, bool bleu){
@@ -134,13 +143,14 @@ void affiche(){
 	while (window.isOpen()){
 		if(bleuJoue) drawFond(window, Jb, c.getLargeur(), c.getHauteur());
 		else 		 drawFond(window, Jr, c.getLargeur(), c.getHauteur());
-		
+		//window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		
 		touche = get_key(window, k);
-		if(bleuJoue) gestion_touches(k,touche,c,Jb,move, cptMove, /*cptMove < moveMa*/ true);
-		else 		 gestion_touches(k,touche,c,Jr,move, cptMove, cptMove < moveMax);
+		if(bleuJoue) gestion_touches(k,touche,c,Jb,move, cptMove, /*cptMove < moveMax*/ true);
+		else 		 gestion_touches(k,touche,c,Jr,move, cptMove, true);
 
 		c.drawAroundJoueur(window, bleuJoue);
+		//c.draw(window);
 		window.getWindow().display();
 		if(touche == sf::Keyboard::Escape){
 			bleuJoue = !bleuJoue;

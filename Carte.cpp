@@ -31,6 +31,7 @@ void Carte::draw(Fenetre& w){
 	for (unsigned int i = 0; i < entity.size(); i++){
 		entity[i]->draw(w);
 	}
+	obstacle_entre_joueurs(w);
 	jb.draw(w);
 	jr.draw(w);
 }
@@ -99,7 +100,7 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.y = jb.getPosition().y - min.y;
 		jb.drawAt(w, point);
 		if(jr.getPosition().x + jr.get_rayon() * 2 > min.x && jr.getPosition().x < max.x && jr.getPosition().y + jr.get_rayon() * 2 > min.y && jr.getPosition().y < max.y){
-			if(!(obstacle_entre_joueurs())){
+			if(obstacle_entre_joueurs(w) == false){
 				point.x = jr.getPosition().x - min.x;
 				point.y = jr.getPosition().y - min.y;
 				jr.drawAt(w, point);
@@ -112,7 +113,7 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.y = jr.getPosition().y - min.y;
 		jr.drawAt(w, point);
 		if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
-			if(!(obstacle_entre_joueurs())){
+			if(obstacle_entre_joueurs(w) == false){
 				point.x = jb.getPosition().x - min.x;
 				point.y = jb.getPosition().y - min.y;
 				jb.drawAt(w, point);
@@ -176,8 +177,8 @@ bool Carte::ajoutEntity(int x, int y, int size, entityType entity){
 }
 
 void initialise(){ //initialise le sprite de 1px
-	if (!texture.loadFromFile("Textures/Somb_red_1px.png")){
-		cout << "unable to load texture Textures/Somb_red_1px.png" << endl;
+	if (!texture.loadFromFile("Textures/pixel_rouge.png")){
+		cout << "unable to load texture Textures/pixel_rouge.png" << endl;
 	}
 	else {
 		sprite.setTexture(texture);
@@ -192,6 +193,7 @@ void Carte::deleteEntity(int x, int y){
 	bool sup = false;
 	for (unsigned int i = 0; i < entity.size() && !sup; i++){
 		if(Collision::BoundingBoxTest(sprite,entity[i]->getSprite())){
+		//if(Collision::PixelPerfectTest(sprite,entity[i]->getSprite(),127)){
 			this->deleteEntity(i);
 			sup = true;
 		}
@@ -220,7 +222,8 @@ void Carte::deleteEntity(int i){
 int Carte::collisionEntity(sf::Sprite& s){
 	int i;
 	for (i = 0; (unsigned)i < entity.size(); i++){
-		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),127))
+		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),126))
+		//if(Collision::BoundingBoxTest(s, entity[i]->getSprite()))
 			return i;
 	}
 	return -1;
@@ -228,10 +231,10 @@ int Carte::collisionEntity(sf::Sprite& s){
 
 bool Carte::collisionJoueur(sf::Sprite& s, bool bleu){
 	if(bleu){
-		if(Collision::PixelPerfectTest(s, jb.getSprite(),127)) return true;
+		if(Collision::PixelPerfectTest(s, jb.getSprite(),126)) return true;
 	}
 	else {
-		if(Collision::PixelPerfectTest(s, jr.getSprite(),127)) return true;
+		if(Collision::PixelPerfectTest(s, jr.getSprite(),126)) return true;
 	}
 	return false;
 }
@@ -258,11 +261,12 @@ int Carte::getHauteur(){
 
 //fonction qui calcul une ligne entre les 2 points et teste si une entité la croise, fonction draw_line de fenetre.cpp/.h (uvsqgraphics) modifié
 //retourne vrai si une entité dans le vecteur la croise et faux si aucune entité croise la ligne
-bool Carte::obstacle_entre_joueurs(){
+bool Carte::obstacle_entre_joueurs(Fenetre& w){
 	int xmin, xmax;
 	int ymin, ymax;
 	int i,j;
 	float a,b,ii,jj;
+	bool obstacle = false;
 	
 	sf::Vector2i p1 = jb.getPosition(), p2 = jr.getPosition();
 	p1.x += jb.get_rayon(); p1.y += jb.get_rayon();
@@ -282,8 +286,12 @@ bool Carte::obstacle_entre_joueurs(){
 			j = jj;
 			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
 			sprite.setPosition(sf::Vector2f(i, j));
-			if(collisionEntity(sprite) != -1)
-				return true;
+			if(collisionEntity(sprite) != -1){
+				//w.add_pix(i,j,sf::Color::Red);
+				//w.getWindow().draw(sprite);
+				obstacle = true;
+			}
+			//else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	
@@ -296,9 +304,13 @@ bool Carte::obstacle_entre_joueurs(){
 			i = ii;
 			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
 			sprite.setPosition(sf::Vector2f(i, j));
-			if(collisionEntity(sprite) != -1)
-				return true;
+			if(collisionEntity(sprite) != -1){
+				//w.add_pix(i,j,sf::Color::Red);
+				//w.getWindow().draw(sprite);
+				obstacle = true;
+			}
+			//else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
-	return false;
+	return obstacle;
 }

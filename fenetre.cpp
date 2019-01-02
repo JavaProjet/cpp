@@ -101,7 +101,7 @@ void Fenetre::draw_fillRect(int x, int y, int largeur, int hauteur, sf::Color co
 }
 
 void Fenetre::add_pix(int x, int y, sf::Color color){
-	drawRect(x,y,1,1,color);
+	draw_fillRect(x,y,1,1,color);
 }
 
 void Fenetre::drawCircle(int x, int y, int rayon, sf::Color color){
