@@ -14,6 +14,17 @@ using namespace std;
 
 #define PI 3.14159265
 
+//vie
+
+void JoueurVie (Fenetre& w,int J_vie){
+	sf::RectangleShape rectangle (sf::Vector2f(2*J_vie, 4));
+	rectangle.setFillColor(sf::Color(0, 70, 33));
+	rectangle.setPosition(10,10);
+	w.getWindow().draw(rectangle);
+}
+
+
+
 typedef struct {
 	bool up;
 	bool down;
@@ -55,6 +66,7 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 
 void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int move, int& cptMove, bool avancer){
 	double Cos, Sin;
+	int res;
 	
 	int rotation = J.getRotation();
 	if(k.down){
@@ -76,12 +88,16 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
 		
 		J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
-		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
+		if((res = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
 			J.setPosition(x, J.getPosition().y);
 			if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 				J.setPosition(J.getPosition().x, y);
 				if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 					J.setPosition(x,y);
+					if(c.getEntity(res)->getType()== cactus){//collision avec un cactus
+						J.degats(1);
+						printf("vie du joueur %d \n",J.getVie());
+					}
 				}
 			}
 		}
@@ -133,6 +149,7 @@ void affiche(){
 	c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
+	c.ajoutEntity(300,200,petit,cactus);
 
 	int move = 2, moveMax = (window.getLargeur() + window.getHauteur()) / 40 ;
 	printf("move max : %d\n", moveMax);
@@ -142,13 +159,26 @@ void affiche(){
 	sf::Keyboard::Key touche;
 	
 	while (window.isOpen()){
-		if(bleuJoue) drawFond(window, Jb, c.getLargeur(), c.getHauteur());
-		else 		 drawFond(window, Jr, c.getLargeur(), c.getHauteur());
+		if(bleuJoue){
+			 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
+			 JoueurVie(window,Jb.getVie()); //vie du joueur
+		 }
+		else {
+			drawFond(window, Jr, c.getLargeur(), c.getHauteur());
+			JoueurVie(window,Jr.getVie());
+				
+		}
 		//window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		
 		touche = get_key(window, k);
-		if(bleuJoue) gestion_touches(k,touche,c,Jb,move, cptMove, /*cptMove < moveMax*/ true);
-		else 		 gestion_touches(k,touche,c,Jr,move, cptMove, true);
+		if(bleuJoue){
+			 gestion_touches(k,touche,c,Jb,move, cptMove, /*cptMove < moveMax*/ true);
+			 JoueurVie(window,Jb.getVie());
+		 }
+		else {
+			gestion_touches(k,touche,c,Jr,move, cptMove, true);
+			JoueurVie(window,Jr.getVie());
+		}
 
 		c.drawAroundJoueur(window, bleuJoue);
 		//c.draw(window);
