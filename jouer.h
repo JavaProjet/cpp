@@ -1,6 +1,8 @@
 #ifndef jouer_h
 #define jouer_h
 
-void affiche();
+#include "fenetre.h"
+
+void affiche(Fenetre&);
 
 #endif //jouer_h

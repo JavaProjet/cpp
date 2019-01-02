@@ -1,5 +1,4 @@
 #include "jouer.h"
-#include "fenetre.h"
 #include "Carte.h"
 #include "entity/Joueur.h"
 #include <math.h>
@@ -163,8 +162,7 @@ void fin(Fenetre& w, Carte& c){
 	}
 }
 
-void affiche(){
-	Fenetre window(600,500,"Menu");
+void affiche(Fenetre& window){
 
 	Carte c(600,500);
 	c.ajoutEntity(100,100,petit,arbre);

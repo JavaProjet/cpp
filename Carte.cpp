@@ -1,19 +1,37 @@
 #include "Carte.h"
 #include <iostream>
 #include "entity/Collision.h"
-#include  "string.h"
+#include <string.h>
+#include <string>
 using namespace std;
 
 sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient invalide
 sf::Sprite sprite; //variable contenant un sprite de 1px, pour tester si le clic est dans un autre sprite
 bool initialised = false; //pour initialiser le sprite si ce n'est pas fais
 
-Carte::Carte(const char* name) : jb(20,20,100,true), jr(60,20,100,false){
-	nom = NULL;
+Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-100,20,100,false){
+	if(name){
+		//fonction de lecture
+		/*en attendant, les infos sont pré-remplis, il faudra les supprimer*/
+		
+		/////////////////////
+		
+		if(with_joueurs){
+			srand(time(NULL));
+			do{
+				jb.setPosition(rand()%(largeur - 41) + 1, rand()%(hauteur - 41) + 1);
+			}while(collisionEntity(jb.getSprite()) != -1 || collisionJoueur(jb.getSprite(), false));
+			
+			do{
+				jr.setPosition(rand()%(largeur - 41) + 1, rand()%(hauteur - 41) + 1);
+			}while(collisionEntity(jr.getSprite()) != -1 || collisionJoueur(jr.getSprite(), true));
+		}
+	}
 }
 
-Carte::Carte(int largeur, int hauteur) : jb(20,20,100,true), jr(60,20,100,false){
+Carte::Carte(int largeur, int hauteur) : jb(-100,20,100,true), jr(-100,20,100,false){
 	nom = NULL;
+	setNom("sans titre");
 	this->largeur = largeur;
 	this->hauteur = hauteur;
 }
@@ -258,24 +276,21 @@ int Carte::getLargeur(){
 int Carte::getHauteur(){
 	return hauteur;
 }
-char* Carte :: getNom(){
+
+char* Carte::getNom(){
 	return nom ;
 }
-void Carte :: setNom(char* tartine){
-	int taille = strlen (tartine);
-	if (nom !=NULL)
-	{
+
+void Carte::setNom(const char* name){
+	int taille = (name != NULL)? strlen(name) : 0;
+	if(taille > 0){
 		delete[] nom;
-	}
-	nom =new char [taille+1];
-	
-	if(tartine !=NULL && taille > 0){
+		nom = new char [taille+1];
 		
-		for (int i = 0; i <= taille; i++)
-		{
-			nom[i]=tartine[i] ;
+		if(name != NULL){
+			for (int i = 0; i <= taille; i++)
+				nom[i] = name[i] ;
 		}
-		
 	}
 }
 
@@ -335,18 +350,20 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 	return obstacle;
 }
 
- void Carte :: save (){
-	 FILE* fs = NULL ;
-	 if ( ( fs = fopen (nom,"w+") )){
-		 fprintf( fs, "%d %d\n",largeur, hauteur );
-		 fprintf( fs,"\n");
-		 for (int i = 0; i < entity.size(); i++)
-		 {
-			 entity[i]->save(fs);
-			 fprintf( fs,"\n");
-		 }
-		 
-		 fclose (fs);
-	 } 
- }
+void Carte::save(){
+	FILE* fs = NULL ;
+	system("mkdir Saves");
+	string str = "Saves/";
+	str.append(nom);
+	str.append(".carte");
+	if ( ( fs = fopen (str.c_str(),"w+") )){
+		fprintf( fs, "%d %d\n",largeur, hauteur );
+		fprintf( fs,"\n");
+		for (unsigned int i = 0; i < entity.size(); i++){
+			entity[i]->save(fs);
+			fprintf( fs,"\n");
+		}
+		fclose (fs);
+	} 
+}
 

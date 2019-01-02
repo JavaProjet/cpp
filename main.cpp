@@ -7,9 +7,8 @@
 
 using namespace std;
 
-int fenetreMenu(){
+int fenetreMenu(Fenetre& window){
 	int choix = -1;
-	Fenetre window(600,500,"Menu");
 	while (window.isOpen() && choix < 0){
         sf::Event event;
         while (window.getWindow().pollEvent(event)){
@@ -49,17 +48,18 @@ int fenetreMenu(){
 
 int main(int argc, char *argv[]){
     int choix = -1;
-    while(choix != 0){
-		choix = fenetreMenu();
+    Fenetre window(600,500, "Bataille en Forêt");
+    while(choix != 0 && window.isOpen()){
+		choix = fenetreMenu(window);
 		if(choix == 1){
 			cout << "lancement d'une partie\n";
 			//jouer
-			affiche();
+			affiche(window);
 		}
 		else if(choix == 2){
 			//editeur de carte
 			cout << "lancement de l'éditeur de cartes\n";
-			choix = editeur();
+			choix = editeur(window);
 		}
 	}
 	cout << "l'utilisateur a quitté\n";

@@ -1,5 +1,4 @@
 #include "editeur.h"
-#include "fenetre.h"
 #include "input.h"
 #include "Carte.h"
 #include <iostream>
@@ -30,23 +29,18 @@ void changeCursor(const char* filename, int sizeX, int sizeY){
 
 void draw_item(Fenetre &w){
 	//dessine le menu
+	
 	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - 60 * 2 - 1, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - 60 * 2 - 1 + 10, 40, 40, "Somb3-bleu.png");
+	w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - 60 * 2 - 1 + 10, 40, 40, "Arbre_40px.png");
 	
 	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - 60 * 3 - 2, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - 60 * 3 - 2 + 10, 40, 40, "Somb3-red.png");
+	w.drawSprite(w.getLargeur() - 50 - 1, w.getHauteur() - 60 * 3 - 2 + 10, 40, 40, "Cactus_40px.png");
 	
 	w.drawRect(w.getLargeur() - 60 * 2 - 2, w.getHauteur() - 60 * 2 - 1, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - (50 + 60) - 2, w.getHauteur() - 60 * 2 - 1 + 10, 40, 40, "Arbre_40px.png");
+	w.drawSprite(w.getLargeur() - (50 + 60) - 2, w.getHauteur() - 60 * 2 - 1 + 10, 40, 40, "Rocher_40px.png");
 	
 	w.drawRect(w.getLargeur() - 60 * 2 - 2, w.getHauteur() - 60 * 3 - 2, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - (50 + 60) - 2, w.getHauteur() - 60 * 3 - 2 + 10, 40, 40, "Cactus_40px.png");
-	
-	w.drawRect(w.getLargeur() - 60 * 3 - 3, w.getHauteur() - 60 * 2 - 1, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - (50 + 60 * 2) - 3, w.getHauteur() - 60 * 2 - 1 + 10, 40, 40, "Rocher_40px.png");
-	
-	w.drawRect(w.getLargeur() - 60 * 3 - 3, w.getHauteur() - 60 * 3 - 2, 60, 60, sf::Color(190,190,190));
-	w.drawSprite(w.getLargeur() - (55 + 60 * 2) - 3, w.getHauteur() - 60 * 3 - 2 + 17, 50, 25, "Tronc_50x25px.png");
+	w.drawSprite(w.getLargeur() - (55 + 60) - 2, w.getHauteur() - 60 * 3 - 2 + 17, 50, 25, "Tronc_50x25px.png");
 	
 	w.drawRect(w.getLargeur() - 60 - 1, w.getHauteur() - 60 * 4 - 3, 60, 60, sf::Color(190,190,190));
 	w.drawSprite(w.getLargeur() - 38 - 3, w.getHauteur() - 60 * 4 - 3 + 12, 23, 35, "Souris_23x35px.png");
@@ -56,14 +50,15 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 	//clique dans le menu pour changer d'item
 	if(modifchoix){
 		if(Input::clic.x > w.getLargeur() - 60 - 1){
+			printf("select choix\n");
 			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
-				choix = joueurBleu;
+				choix = arbre;
 				modifchoix = false;
 				changeSprite = true;
 				Input::clic.x = Input::clic.y = -10;
 			}
 			else if((Input::clic.y > w.getHauteur() - 60 * 3 - 2) && (Input::clic.y < w.getHauteur() - 60 * 2 - 1)){
-				choix = joueurRouge;
+				choix = cactus;
 				modifchoix = false;
 				changeSprite = true;
 				Input::clic.x = Input::clic.y = -10;
@@ -77,21 +72,6 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 		}
 		else if(Input::clic.x > w.getLargeur() - 60 * 2 - 2 && Input::clic.x < w.getLargeur() - 60 - 1){
 			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
-				choix = arbre;
-				modifchoix = false;
-				changeSprite = true;
-				Input::clic.x = Input::clic.y = -10;
-			}
-			else if((Input::clic.y > w.getHauteur() - 60 * 3 - 2) && (Input::clic.y < w.getHauteur() - 60 * 2 - 1)){
-				choix = cactus;
-				modifchoix = false;
-				changeSprite = true;
-				Input::clic.x = Input::clic.y = -10;
-			}
-		}
-		
-		else if(Input::clic.x > w.getLargeur() - 60 * 3 - 3 && Input::clic.x < w.getLargeur() - 60 * 2 - 2){
-			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
 				choix = rocher;
 				modifchoix = false;
 				changeSprite = true;
@@ -104,10 +84,20 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 				Input::clic.x = Input::clic.y = -10;
 			}
 		}
+		
+		/*else if(Input::clic.x > w.getLargeur() - 60 * 3 - 3 && Input::clic.x < w.getLargeur() - 60 * 2 - 2){
+			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
+				
+			}
+			else if((Input::clic.y > w.getHauteur() - 60 * 3 - 2) && (Input::clic.y < w.getHauteur() - 60 * 2 - 1)){
+				
+			}
+		}*/
 	}
 	
 	//modifie la taille selon la flèche
 	if(Input::clic.x > w.getLargeur() - 60 * 2 - 2 && Input::clic.x < w.getLargeur() - 60 - 1){
+		printf("fleches\n");
 		if(Input::clic.y > w.getHauteur() - 60 && Input::clic.y < w.getHauteur() - 30){
 			if(taille < grand) taille++;
 			changeSprite = true;
@@ -122,6 +112,7 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 	
 	//clique dans bouton pour ouvrir/fermer le menu
 	if(Input::clic.x > w.getLargeur() - 60 - 1){
+		printf("choix\n");
 		if((Input::clic.y > w.getHauteur() - 60 - 1) && (Input::clic.y < w.getHauteur() - 1)){
 			modifchoix = !modifchoix;
 			Input::clic.x = Input::clic.y = -42;
@@ -146,7 +137,7 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 }
 
 void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix, int& taille, Carte& c, sf::Vector2i min){
-	if(Input::clic.y < c.getHauteur() && Input::clic.y > 0 && Input::clic.x < c.getLargeur() && !modifchoix){ //le clic est dans la carte
+	if(Input::clic.y < w.getHauteur() - 60 && Input::clic.y > 0 && !modifchoix){ //le clic est dans la carte
 		if(choix == 0){ //le cursor est la souris
 			c.deleteEntity(Input::clic.x + min.x, Input::clic.y + min.y); //si l'on clique sur un item, il est supprimé sauf si c'est un joueur
 		}
@@ -155,47 +146,36 @@ void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 			spriteCursor.setPosition(spriteCursor.getPosition().x + min.x, spriteCursor.getPosition().y + min.y);
 			
 			if(c.collisionEntity(spriteCursor) == -1){ // si aucune collision avec une entity
-				if(choix == joueurBleu){ 
-					if(!(c.collisionJoueur(spriteCursor,false)))
-						c.getJoueurBleu().setPosition(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y);
-					//le joueur est obligatoirement présent, il n'est donc pas supprimé et il est déplacé au lieu d'être ajouté
-					
-				}
-				else if(choix == joueurRouge){
-					if(!(c.collisionJoueur(spriteCursor,true)))
-						c.getJoueurRouge().setPosition(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y);
-				}
-				if(!(c.collisionJoueur(spriteCursor,false)) && !(c.collisionJoueur(spriteCursor,true))){
-					if(taille == petit){
-						switch(choix){
-							case arbre	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 40 + min.y, petit, arbre);  break;
-							case cactus	 : c.ajoutEntity(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y, petit, cactus); break;
-							case rocher	 : c.ajoutEntity(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y, petit, rocher); break;
-							case tronc	 : c.ajoutEntity(Input::clic.x - 25 + min.x, Input::clic.y - 12 + min.y, petit, tronc);  break;
-							default 	 : break;
-						}
+				if(taille == petit){
+					switch(choix){
+						case arbre	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 40 + min.y, petit, arbre);  break;
+						case cactus	 : c.ajoutEntity(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y, petit, cactus); break;
+						case rocher	 : c.ajoutEntity(Input::clic.x - 20 + min.x, Input::clic.y - 20 + min.y, petit, rocher); break;
+						case tronc	 : c.ajoutEntity(Input::clic.x - 25 + min.x, Input::clic.y - 12 + min.y, petit, tronc);  break;
+						default 	 : break;
 					}
-					else if(taille == moyen){
-						switch(choix){
-							case arbre	 : c.ajoutEntity(Input::clic.x - 60 + min.x, Input::clic.y - 60 + min.y, moyen, arbre);  break;
-							case cactus	 : c.ajoutEntity(Input::clic.x - 30 + min.x, Input::clic.y - 30 + min.y, moyen, cactus); break;
-							case rocher	 : c.ajoutEntity(Input::clic.x - 50 + min.x, Input::clic.y - 50 + min.y, moyen, rocher); break;
-							case tronc	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 20 + min.y, moyen, tronc);  break;
-							default 	 : break;
-						}
+				}
+				else if(taille == moyen){
+					switch(choix){
+						case arbre	 : c.ajoutEntity(Input::clic.x - 60 + min.x, Input::clic.y - 60 + min.y, moyen, arbre);  break;
+						case cactus	 : c.ajoutEntity(Input::clic.x - 30 + min.x, Input::clic.y - 30 + min.y, moyen, cactus); break;
+						case rocher	 : c.ajoutEntity(Input::clic.x - 50 + min.x, Input::clic.y - 50 + min.y, moyen, rocher); break;
+						case tronc	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 20 + min.y, moyen, tronc);  break;
+						default 	 : break;
 					}
-					else if(taille == grand){
-						switch(choix){
-							case arbre	 : c.ajoutEntity(Input::clic.x - 90 + min.x, Input::clic.y - 90 + min.y, grand, arbre);  break;
-							case cactus	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 40 + min.y, grand, cactus); break;
-							case rocher	 : c.ajoutEntity(Input::clic.x - 80 + min.x, Input::clic.y - 80 + min.y, grand, rocher); break;
-							case tronc	 : c.ajoutEntity(Input::clic.x - 60 + min.x, Input::clic.y - 30 + min.y, grand, tronc);  break;
-							default 	 : break;
-						}
+				}
+				else if(taille == grand){
+					switch(choix){
+						case arbre	 : c.ajoutEntity(Input::clic.x - 90 + min.x, Input::clic.y - 90 + min.y, grand, arbre);  break;
+						case cactus	 : c.ajoutEntity(Input::clic.x - 40 + min.x, Input::clic.y - 40 + min.y, grand, cactus); break;
+						case rocher	 : c.ajoutEntity(Input::clic.x - 80 + min.x, Input::clic.y - 80 + min.y, grand, rocher); break;
+						case tronc	 : c.ajoutEntity(Input::clic.x - 60 + min.x, Input::clic.y - 30 + min.y, grand, tronc);  break;
+						default 	 : break;
 					}
 				}
 			}
 		}
+		printf("ajout\n");
 		Input::clic.x = Input::clic.y = -10; //on enleve le clic de la carte pour eviter de repeter l'action
 	}
 }
@@ -245,14 +225,7 @@ void gestionCursor(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifc
 				default 	: break;
 			}
 		}
-		if(choix == joueurBleu){
-			spriteCursor.setPosition(cursorPos.x - 20,cursorPos.y - 20);
-			if(changeSprite)changeCursor("Somb3-bleu.png",40,40);
-		}
-		else if(choix == joueurRouge){
-			spriteCursor.setPosition(cursorPos.x - 20,cursorPos.y - 20);
-			if(changeSprite)changeCursor("Somb3-red.png",40,40);
-		}
+		
 		if(choix != 0){ //on n'affiche pas le cursor souris mais le sprite
 			w.getWindow().setMouseCursorVisible(false); 
 			w.getWindow().draw(spriteCursor);
@@ -311,15 +284,13 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 		}
 	}
 	if(key == sf::Keyboard::Key::Return ){
-		c.setNom("tartine");
 		c.save();
 	}
 }
 
-void nouvelle(){
+void nouvelle(Fenetre& window, int largeur, int hauteur){
 	sf::Vector2i cursorPos;
-	Fenetre window(600,500 + 60,"Editeur de cartes");
-	Carte c(1500,1500);
+	Carte c(largeur,hauteur);
 	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
 	int choix = 0;
 	bool modifchoix = false;
@@ -345,6 +316,7 @@ void nouvelle(){
 		c.drawIfIn(window,min,max);
 		draw_menu(window, cursorPos, choix, modifchoix, taille, c);
 		nomCarte.drawInput();
+		c.setNom(nomCarte.getString());
 		AjoutSupp(window, cursorPos, choix, modifchoix, taille, c, min);
 		
 		window.getWindow().display();
@@ -365,9 +337,8 @@ void modifier(){
     cout << endl;
 }
 
-int menuEdition(){
+int menuEdition(Fenetre& window){
     int choix = -1;
-	Fenetre window(600,500,"Menu");
 	while (window.isOpen() && choix < 0){
         sf::Event event;
         while (window.getWindow().pollEvent(event)){
@@ -403,14 +374,56 @@ int menuEdition(){
     return choix;
 }
 
-int editeur(){
+int choixTailleCarte(Fenetre& window){
+    int choix = -1;
+	while (window.isOpen() && choix < 0){
+        sf::Event event;
+        while (window.getWindow().pollEvent(event)){
+            if (event.type == sf::Event::Closed){
+                window.close();
+                choix = 0;
+			}
+            if(event.type == sf::Event::KeyPressed){
+				if(event.key.code == sf::Keyboard::Up && choix < -1) choix++;
+				if(event.key.code == sf::Keyboard::Down && choix > -4 ) choix--;
+				if(event.key.code == sf::Keyboard::Return) choix = -choix;
+			}
+        }
+        window.drawSprite(0,0,600,500,"fond.png");
+        
+        window.write("Petite carte (600,500)", 40, sf::Color::Black, 200, 100);
+        window.write("Moyenne carte (1000,1000)", 40, sf::Color::Black, 170, 220);
+        window.write("Grande carte (1500,1500)", 40, sf::Color::Black, 165, 340);
+        window.write("Revenir en arrière", 40, sf::Color::Black, 165, 460);
+        
+        if(choix == -1){
+			window.write(">", 40, sf::Color::Black, 120, 70);
+		}
+		else if(choix == -2){
+			window.write(">", 40, sf::Color::Black, 120, 190);
+		}
+        else if(choix == -3){
+			window.write(">", 40, sf::Color::Black, 120, 310);
+		}
+        else if(choix == -4){
+			window.write(">", 40, sf::Color::Black, 120, 430);
+		}
+
+        window.getWindow().display();
+    }
+    return choix;
+}
+
+int editeur(Fenetre& w){
     int choix = -1;
 
-    choix = menuEdition();
+    choix = menuEdition(w);
     
     if(choix == 1){
+        //choixTailleCarte(w);
         //nouvelle carte
-        nouvelle();
+        nouvelle(w,1500,1500);
+        
     }
     else if(choix == 2){
         //modification de carte

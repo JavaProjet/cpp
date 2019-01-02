@@ -1,10 +1,8 @@
 #ifndef editeur_h
 #define editeur_h
 
+#include "fenetre.h"
 
-
-int menuEdition();
-
-int editeur();
+int editeur(Fenetre&);
 
 #endif //editeur_h

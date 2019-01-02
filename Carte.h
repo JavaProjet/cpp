@@ -26,7 +26,7 @@ class Carte{
 		//void allocTab();
 		void freeTab();
 	public :
-		Carte(const char* name);
+		Carte(const char* name, bool with_joueurs);
 		Carte(int, int);
 		~Carte();
 		void draw(Fenetre& w);
@@ -45,9 +45,9 @@ class Carte{
 		int getLargeur();
 		int getHauteur();
 		char* getNom();
-		void setNom(char*);
+		void setNom(const char*);
 		bool obstacle_entre_joueurs(Fenetre& w);
-		void save ( );
+		void save();
 };
 
 #endif //Carte_h
