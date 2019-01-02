@@ -287,11 +287,11 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
 			sprite.setPosition(sf::Vector2f(i, j));
 			if(collisionEntity(sprite) != -1){
-				w.add_pix(i,j,sf::Color::Red);
-				w.getWindow().draw(sprite);
+				//w.add_pix(i,j,sf::Color::Red);
+				//w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			else w.add_pix(i,j,sf::Color::Blue);
+			//else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	
@@ -305,11 +305,11 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
 			sprite.setPosition(sf::Vector2f(i, j));
 			if(collisionEntity(sprite) != -1){
-				w.add_pix(i,j,sf::Color::Red);
-				w.getWindow().draw(sprite);
+				//w.add_pix(i,j,sf::Color::Red);
+				//w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			else w.add_pix(i,j,sf::Color::Blue);
+			//else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	return obstacle;
