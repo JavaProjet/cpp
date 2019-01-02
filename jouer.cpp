@@ -74,20 +74,21 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 		J.setRotation(move);
 	}
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
-		if(x + Cos - 20 > 0 && x + 20 + Cos < c.getLargeur())
-			J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y);
-		if(y + Sin - 20 > 0 && y + 20 + Sin < c.getHauteur())
-			J.setPosition(J.getPosition().x, J.getPosition().y + (int)Sin);
 		
+		J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
 		if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
-			J.setPosition(x, J.getPosition().y + (int)Sin);
+			J.setPosition(x, J.getPosition().y);
 			if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
-				J.setPosition(J.getPosition().x + (int)Cos, y);
+				J.setPosition(J.getPosition().x, y);
 				if(c.collisionEntity(J.getSprite()) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 					J.setPosition(x,y);
 				}
 			}
-		}		
+		}
+		if(x + Cos - 20 < 0 || x + 20 + Cos > c.getLargeur())
+			J.setPosition(x, J.getPosition().y);
+		if(y + Sin - 20 < 0 || y + 20 + Sin > c.getHauteur())
+			J.setPosition(J.getPosition().x, y);	
 	}
 	if(touche == sf::Keyboard::Space){
 		
