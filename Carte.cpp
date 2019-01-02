@@ -13,13 +13,15 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 	if(name){
 		//fonction de lecture
 		/*en attendant, les infos sont pré-remplis, il faudra les supprimer*/
-		
+		largeur = 600; hauteur = 500;
+		nom = NULL;
+		setNom("sans titre");
 		/////////////////////
 		
 		if(with_joueurs){
 			srand(time(NULL));
 			do{
-				jb.setPosition(rand()%(largeur - 41) + 1, rand()%(hauteur - 41) + 1);
+				jb.setPosition(rand()%(largeur - 62) + 21, rand()%(hauteur - 62) + 21);
 			}while(collisionEntity(jb.getSprite()) != -1 || collisionJoueur(jb.getSprite(), false));
 			
 			do{

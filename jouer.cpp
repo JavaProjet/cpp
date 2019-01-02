@@ -164,7 +164,7 @@ void fin(Fenetre& w, Carte& c){
 
 void affiche(Fenetre& window){
 
-	Carte c(600,500);
+	Carte c("bonjour", true);
 	c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);

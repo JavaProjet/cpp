@@ -3,6 +3,6 @@
 
 #include "fenetre.h"
 
-int editeur(Fenetre&);
+void editeur(Fenetre&);
 
 #endif //editeur_h

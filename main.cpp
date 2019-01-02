@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
 		else if(choix == 2){
 			//editeur de carte
 			cout << "lancement de l'éditeur de cartes\n";
-			choix = editeur(window);
+			editeur(window);
 		}
 	}
 	cout << "l'utilisateur a quitté\n";

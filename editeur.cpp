@@ -376,6 +376,8 @@ int menuEdition(Fenetre& window){
 
 int choixTailleCarte(Fenetre& window){
     int choix = -1;
+    int size = window.getFont("Grande carte (1500,1500)", 40);
+    printf("%d\n", (600 - size)/2);
 	while (window.isOpen() && choix < 0){
         sf::Event event;
         while (window.getWindow().pollEvent(event)){
@@ -391,22 +393,22 @@ int choixTailleCarte(Fenetre& window){
         }
         window.drawSprite(0,0,600,500,"fond.png");
         
-        window.write("Petite carte (600,500)", 40, sf::Color::Black, 200, 100);
-        window.write("Moyenne carte (1000,1000)", 40, sf::Color::Black, 170, 220);
-        window.write("Grande carte (1500,1500)", 40, sf::Color::Black, 165, 340);
-        window.write("Revenir en arrière", 40, sf::Color::Black, 165, 460);
+        window.write("Petite carte (600,500)", 40, sf::Color::Black, 132, 50);
+        window.write("Moyenne carte (1000,1000)", 40, sf::Color::Black, 90, 170);
+        window.write("Grande carte (1500,1500)", 40, sf::Color::Black, 107, 290);
+        window.write("Revenir en arriere", 40, sf::Color::Black, 165, 410);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::Black, 120, 70);
+			window.write(">", 40, sf::Color::Black, 60, 50);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::Black, 120, 190);
+			window.write(">", 40, sf::Color::Black, 60, 170);
 		}
         else if(choix == -3){
-			window.write(">", 40, sf::Color::Black, 120, 310);
+			window.write(">", 40, sf::Color::Black, 60, 290);
 		}
         else if(choix == -4){
-			window.write(">", 40, sf::Color::Black, 120, 430);
+			window.write(">", 40, sf::Color::Black, 60, 410);
 		}
 
         window.getWindow().display();
@@ -414,21 +416,28 @@ int choixTailleCarte(Fenetre& window){
     return choix;
 }
 
-int editeur(Fenetre& w){
-    int choix = -1;
+void editeur(Fenetre& w){
+	int choix = -1;
+	
+	while(choix != 0 && w.isOpen()){
+		
+		choix = menuEdition(w);
 
-    choix = menuEdition(w);
-    
-    if(choix == 1){
-        //choixTailleCarte(w);
-        //nouvelle carte
-        nouvelle(w,1500,1500);
-        
-    }
-    else if(choix == 2){
-        //modification de carte
-        modifier();
-    }
-
-	return choix;
+		if(choix == 1){
+			choix = choixTailleCarte(w);
+			//nouvelle carte
+			switch(choix){
+				case 1 : nouvelle(w,600,500);
+				case 2 : nouvelle(w,1000,1000);
+				case 3 : nouvelle(w,1500,1500);
+			}
+		}
+		else if(choix == 2){
+			//modification de carte
+			modifier();
+		}
+		else if(choix == 3){
+			choix = 0;
+		}
+	}
 }
