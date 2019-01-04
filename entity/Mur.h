@@ -10,6 +10,7 @@ class Mur : public Entity_rect{
 	Mur(int x, int y, int sizeX,int sizeY, int vie);
 	virtual ~Mur();
 	virtual entityType getType();
+	virtual void  save (FILE* fs  );
 };
 
 #endif // Mur_h

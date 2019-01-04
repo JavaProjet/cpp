@@ -20,5 +20,8 @@ entityType Arbre::getType(){
 void Arbre   :: save ( FILE* fs)
 {
 	fprintf( fs, "arbre \n" ); 
+	if (rayon == 40) fprintf( fs, "%d\n",petit  );
+	if (rayon == 60) fprintf( fs, "%d\n",moyen );
+	if (rayon == 85) fprintf( fs, "%d\n",grand );
 	Entity_ronde :: save (fs); 
 }

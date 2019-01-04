@@ -42,3 +42,9 @@ float Joueur::getRotation(){
 entityType Joueur::getType(){
 	return joueur; //6
 }
+
+void Joueur  :: save ( FILE* fs)
+{
+	fprintf( fs, "joueur  \n" ); 
+	Entity_ronde :: save (fs); 
+}

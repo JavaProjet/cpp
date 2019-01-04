@@ -164,12 +164,12 @@ void fin(Fenetre& w, Carte& c){
 
 void affiche(Fenetre& window){
 
-	Carte c("bonjour", true);
-	c.ajoutEntity(100,100,petit,arbre);
+	Carte c("tmp", true);
+	/*c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
 	c.ajoutEntity(300,200,petit,cactus);
-
+*/
 	int move = 2, moveMax = (window.getLargeur() + window.getHauteur()) / 40 ;
 	printf("move max : %d\n", moveMax);
 	Key k = {false, false, false, false};

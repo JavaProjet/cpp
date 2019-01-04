@@ -17,3 +17,11 @@ Rocher::~Rocher(){
 entityType Rocher::getType(){
 	return rocher; //3
 }
+void Rocher   :: save ( FILE* fs)
+{
+	fprintf( fs, "rocher  \n" ); 
+	if (rayon == 20) fprintf( fs, "%d\n",petit  );
+	if (rayon == 50) fprintf( fs, "%d\n",moyen );
+	if (rayon == 80) fprintf( fs, "%d\n",grand );
+	Entity_ronde :: save (fs); 
+}

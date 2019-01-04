@@ -1,6 +1,10 @@
 #ifndef Entity_h
 #define Entity_h
 
+#define petit 1
+#define moyen 2
+#define grand 3
+
 enum entityType{
 	ronde,
 	rect,

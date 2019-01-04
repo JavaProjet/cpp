@@ -286,6 +286,10 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 	if(key == sf::Keyboard::Key::Return ){
 		c.save();
 	}
+	if(key == sf::Keyboard::Key::B ){
+		c.suprimerA();
+		
+	}
 }
 
 void nouvelle(Fenetre& window, int largeur, int hauteur){

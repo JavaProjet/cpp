@@ -18,3 +18,11 @@ Cactus::~Cactus(){
 entityType Cactus::getType(){
 	return cactus; //2
 }
+void Cactus  :: save ( FILE* fs)
+{
+	fprintf( fs, "cactus \n" ); 
+	if (rayon == 20) fprintf( fs, "%d\n",petit  );
+	if (rayon == 30) fprintf( fs, "%d\n",moyen );
+	if (rayon == 40) fprintf( fs, "%d\n",grand );
+	Entity_ronde :: save (fs); 
+}

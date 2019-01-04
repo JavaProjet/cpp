@@ -38,6 +38,6 @@ entityType Entity_ronde::getPrimaryType(){
 
 void Entity_ronde  :: save ( FILE* fs)
 {
-	fprintf( fs, "%d\n", rayon  );
+	
 	Entity :: save (fs); 
 }

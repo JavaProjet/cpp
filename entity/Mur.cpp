@@ -59,3 +59,12 @@ Mur::~Mur(){
 entityType Mur::getType(){
 	return mur; //5
 }
+
+void Mur :: save ( FILE* fs)
+{
+	fprintf( fs, "mur \n" ); 
+	if (size.x== 50) fprintf( fs, "%d\n",petit  );
+	if (size.x== 100) fprintf( fs, "%d\n",moyen );
+	if (size.x == 160) fprintf( fs, "%d\n",grand );
+	Entity_rect :: save (fs); 
+}

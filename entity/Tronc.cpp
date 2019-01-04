@@ -17,3 +17,11 @@ Tronc::~Tronc(){
 entityType Tronc::getType(){
 	return tronc; //4
 }
+void Tronc  :: save ( FILE* fs)
+{
+	fprintf( fs, "tronc \n" ); 
+	if (size.x== 50) fprintf( fs, "%d\n",petit  );
+	if (size.x== 80) fprintf( fs, "%d\n",moyen );
+	if (size.x == 120) fprintf( fs, "%d\n",grand );
+	Entity_rect :: save (fs); 
+}

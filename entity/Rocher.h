@@ -10,6 +10,7 @@ class Rocher : public Entity_ronde{
 	Rocher(int x, int y, int rayon, int vie);
 	virtual ~Rocher();
 	virtual entityType getType();
+	virtual void  save (FILE* fs  );
 };
 
 #endif // Rocher_h

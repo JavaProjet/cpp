@@ -13,8 +13,8 @@ Entity_rect::~Entity_rect(){
 Entity_rect::Entity_rect(int x, int y, int sizeX,int sizeY, int vie) : Entity(x,y){
 		
 	this->vie = vie;
-	size.x = position.x+sizeX;
-	size.y = position.y+sizeY;
+	size.x = sizeX;
+	size.y = sizeY;
 	
 }
 
@@ -28,4 +28,9 @@ void Entity_rect::setPosition(int x, int y){
 
 entityType Entity_rect::getPrimaryType(){
 	return ronde;
+}
+void Entity_rect :: save ( FILE* fs)
+{
+	
+	Entity :: save (fs); 
 }

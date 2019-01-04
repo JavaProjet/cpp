@@ -1,9 +1,7 @@
 #ifndef Carte_h
 #define Carte_h
 
-#define petit 1
-#define moyen 2
-#define grand 3
+
 
 #include "entity/Entity.h"
 #include "entity/arbre.h"
@@ -48,6 +46,7 @@ class Carte{
 		void setNom(const char*);
 		bool obstacle_entre_joueurs(Fenetre& w);
 		void save();
+		void suprimerA ();
 };
 
 #endif //Carte_h
