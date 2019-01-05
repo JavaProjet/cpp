@@ -13,6 +13,7 @@ enum entityType{
 	rocher,
 	tronc,
 	mur,
+	balle,
 	joueur,
 	joueurBleu,
 	joueurRouge

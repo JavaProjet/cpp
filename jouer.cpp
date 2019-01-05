@@ -19,7 +19,7 @@ void JoueurVie (Fenetre& w,int J_vie){
 	w.draw_fillRect(10,10,2*J_vie, 4, sf::Color(0, 70, 33));
 }
 
-
+ 
 
 typedef struct {
 	bool up;
@@ -60,7 +60,7 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 	return sf::Keyboard::Unknown;
 }
 
-void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int move, int& cptMove, bool avancer){
+void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool bleu, int move, int& cptMove, bool avancer, Fenetre & w){
 	double Cos, Sin;
 	int res[3];
 	//entityType t;
@@ -107,8 +107,66 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, int 
 		if(y + Sin - 20 < 0 || y + 20 + Sin > c.getHauteur())
 			J.setPosition(J.getPosition().x, y);	
 	}
+	
 	if(touche == sf::Keyboard::Space){
 		
+		int limite_gauche = J.getRotation() - 45;
+		if(limite_gauche < 0) limite_gauche += 360;
+		int limite_droite = J.getRotation() + 45;
+		if(limite_droite > 360) limite_droite -= 360;		
+		Joueur &Adversaire = (bleu) ? Jr : Jb;
+		touche = sf::Keyboard::A;
+		while(touche != sf::Keyboard::Space){
+			
+			touche = get_key(w, k);
+			
+			if(k.left){
+				J.setRotation(-move);
+				if(J.getRotation() > limite_gauche - move &&  J.getRotation() < limite_gauche){
+					J.setRotation(move);
+				}
+				
+			}
+			if(k.right){
+				J.setRotation(move);
+				if(J.getRotation()  > limite_droite &&  J.getRotation() < limite_droite + move){
+					J.setRotation(-move);
+				}
+			}
+			if(touche == sf::Keyboard::Space && J.getVie() - J.get_balle().get_dommage() > 0 ){
+				
+				Cos = cos(J.getRotation() * PI / 180) ;
+				Sin = sin(J.getRotation() * PI / 180) ;
+				 
+				 J.get_balle().setPosition(J.getPosition().x + 20 - 7, J.getPosition().y + 20 - 7);
+				 int i,j;
+				 
+				 J.degats(J.get_balle().get_dommage());
+				 for(i=0 ; i < J.get_balle().get_distance()*8 && (j = c.collisionEntity(J.get_balle().getSprite())) == -1 && c.collisionJoueur(J.get_balle().getSprite(), !bleu) == false; i++){
+					sleep(0.01);
+					J.get_balle().setPosition(J.get_balle().getPosition().x + Cos * 2 , J.get_balle().getPosition().y + Sin * 2 );
+					w.drawSprite(0,0,600,500,"Sol_600x500.png");
+					J.get_balle().draw(w);
+					c.draw(w);
+					w.getWindow().display();
+					
+				 }
+				 
+				 if(j != -1){
+					if(c.getEntity(j)->degats(J.get_balle().get_dommage())==false)c.deleteEntity(j);
+				}
+				else if(c.collisionJoueur(J.get_balle().getSprite(), !bleu)){
+					Adversaire.degats(Adversaire.getVie());
+				}
+				
+				 
+			}
+			w.drawSprite(0,0,600,500,"Sol_600x500.png");
+			c.draw(w);
+			w.getWindow().display();
+			
+			
+		}
 	}
 	
 	if(J.getPosition().x != x || J.getPosition().y != y) cptMove++;
@@ -145,13 +203,11 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
 
 void fin(Fenetre& w, Carte& c){
 	string str = "";
-	if(Jb.getVie() == false && Jr.getVie() == false)
-		str.append("Egalité");
-	else if(Jb.getVie() == false)
+	if(Jb.getVie() < 1)
 		str.append("Victoire pour Joueur rouge");
-	else if(Jr.getVie() == false)
+	else if(Jr.getVie() < 1)
 		str.append("Victoire pour Joueur bleu");
-	if(Jb.getVie() == false || Jr.getVie() == false){
+	if(Jb.getVie() < 1 || Jr.getVie() < 1){
 		sleep(1);
 		w.getWindow().clear();
 		int size = w.getFont(str.c_str(),40);
@@ -164,7 +220,7 @@ void fin(Fenetre& w, Carte& c){
 
 void affiche(Fenetre& window){
 
-	Carte c("test", true);
+	Carte c("tmp", true);
 	/*c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
@@ -191,12 +247,12 @@ void affiche(Fenetre& window){
 		
 		touche = get_key(window, k);
 		if(bleuJoue){
-			 gestion_touches(k,touche,c,Jb,move, cptMove, /*cptMove < moveMax*/ true);
-			 JoueurVie(window,Jb.getVie());
+			 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, window);
+			 JoueurVie(window, Jb.getVie());
 		 }
 		else {
-			gestion_touches(k,touche,c,Jr,move, cptMove, true);
-			JoueurVie(window,Jr.getVie());
+			gestion_touches(k, touche,c, Jr, false, move, cptMove, true, window);
+			JoueurVie(window,Jr.getVie()); 
 		}
 
 		//c.drawAroundJoueur(window, bleuJoue);
@@ -204,9 +260,9 @@ void affiche(Fenetre& window){
 		window.getWindow().display();
 		if(touche == sf::Keyboard::Escape){
 			bleuJoue = !bleuJoue;
-			changeJoueur(window,bleuJoue);
+			changeJoueur(window, bleuJoue);
 			cptMove = 0;
 		}
-		fin(window,c);
+		fin(window, c);
 	}
 }

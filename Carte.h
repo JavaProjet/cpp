@@ -8,6 +8,7 @@
 #include "entity/Cactus.h"
 #include "entity/Rocher.h"
 #include "entity/Tronc.h"
+#include "entity/Balle.h"
 #include "entity/Mur.h"
 #include "entity/Joueur.h"
 #include "fenetre.h"
@@ -47,6 +48,7 @@ class Carte{
 		bool obstacle_entre_joueurs(Fenetre& w);
 		void save();
 		void suprimerA ();
+		
 };
 
 #endif //Carte_h

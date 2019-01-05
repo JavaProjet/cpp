@@ -42,10 +42,10 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 							}
 							
 							else if (str =="tronc"){
-								ajoutEntity(param[2],param[3],param[0],tronc);
+								ajoutEntity(param[1],param[2],param[0],tronc);
 							}
 							else if (str =="mur"){
-								ajoutEntity(param[2],param[3],param[0],mur);
+								ajoutEntity(param[1],param[2],param[0],mur);
 							}
 							else testLectur = false;
 						}
@@ -204,46 +204,46 @@ bool Carte::ajoutEntity(int x, int y, int size, entityType entity){
 	
 	if(entity == arbre) {
 		if(size == petit)
-			ent = new Arbre(x,y,40,100);
+			ent = new Arbre(x,y,40,2);
 		else if (size == moyen)
-			ent = new Arbre(x,y,60,100);
+			ent = new Arbre(x,y,60,6);
 		else if (size == grand)
-			ent = new Arbre(x,y,85,100);
+			ent = new Arbre(x,y,85,12);
 	}
 	else if(entity == cactus) {
 		if(size == petit)
-			ent = new Cactus(x,y,20,100);
+			ent = new Cactus(x,y,20,1);
 		else if (size == moyen)
-			ent = new Cactus(x,y,30,100);
+			ent = new Cactus(x,y,30,4);
 		else if (size == grand)
-			ent = new Cactus(x,y,40,100);
+			ent = new Cactus(x,y,40,8);
 	}
 	else if(entity == rocher) {
 		if(size == petit)
-			ent = new Rocher(x,y,20,100);
+			ent = new Rocher(x,y,20,6);
 		else if (size == moyen)
-			ent = new Rocher(x,y,50,100);
+			ent = new Rocher(x,y,50,12);
 		else if (size == grand)
-			ent = new Rocher(x,y,80,100);
+			ent = new Rocher(x,y,80,18);
 		
 		
 	}
 	else if(entity == tronc) {
 		if(size == petit)
-			ent = new Tronc(x,y,50,25,100);
+			ent = new Tronc(x,y,50,25,2);
 		else if (size == moyen)
-			ent = new Tronc(x,y,80,40,100);
+			ent = new Tronc(x,y,80,40,6);
 		else if (size == grand)
-			ent = new Tronc(x,y,120,60,100);
+			ent = new Tronc(x,y,120,60,12);
 	}
 	
 	else if(entity == mur) {
 		if(size == petit)
-			ent = new Mur(x,y,50,10,100);
+			ent = new Mur(x,y,50,10,10);
 		else if (size == moyen)
-			ent = new Mur(x,y,100,20,100);
+			ent = new Mur(x,y,100,20,14);
 		else if (size == grand)
-			ent = new Mur(x,y,160,30,100);
+			ent = new Mur(x,y,160,30,18);
 	}
 	
 	if(ent != NULL) {
