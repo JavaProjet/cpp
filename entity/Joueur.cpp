@@ -51,5 +51,5 @@ void Joueur  :: save ( FILE* fs){
 }
 
 Balle& Joueur :: get_balle(){
-	return balle;
+	return *balle;
 }
