@@ -1,9 +1,9 @@
 ISFML=-I/usr/local/SFML/include
 LSFML=-lsfml-graphics -lsfml-window -lsfml-system -L/usr/local/SFML/lib
 RSFML=export LD_LIBRARY_PATH=/usr/local/SFML/lib &&
-ficCpp = main.cpp	entity/Entity.cpp fenetre.cpp input.cpp editeur.cpp jouer.cpp entity/entity_rect.cpp entity/entity_ronde.cpp entity/arbre.cpp Carte.cpp entity/Cactus.cpp entity/Rocher.cpp entity/Tronc.cpp entity/Mur.cpp entity/Joueur.cpp entity/Collision.cpp entity/Balle.cpp
-ficH   = 			entity/Entity.h   fenetre.h   input.h   editeur.h   jouer.h   entity/entity_rect.h   entity/entity_ronde.h   entity/arbre.h   Carte.h   entity/Cactus.h   entity/Rocher.h   entity/Tronc.h   entity/Mur.h   entity/Joueur.h   entity/Collision.h   entity/Balle.h
-ficO   = main.o			   Entity.o   fenetre.o   input.o   editeur.o   jouer.o          entity_rect.o          entity_ronde.o   arbre.o          Carte.o   Cactus.o          Rocher.o          Tronc.o          Mur.o			Joueur.o		   Collision.o   	    Balle.o
+ficCpp = main.cpp	entity/Entity.cpp fenetre.cpp input.cpp editeur.cpp jouer.cpp entity/entity_rect.cpp entity/entity_ronde.cpp entity/arbre.cpp Carte.cpp entity/Cactus.cpp entity/Rocher.cpp entity/Tronc.cpp entity/Mur.cpp entity/Joueur.cpp entity/Collision.cpp entity/Balle.cpp selecteur_carte.cpp
+ficH   = 			entity/Entity.h   fenetre.h   input.h   editeur.h   jouer.h   entity/entity_rect.h   entity/entity_ronde.h   entity/arbre.h   Carte.h   entity/Cactus.h   entity/Rocher.h   entity/Tronc.h   entity/Mur.h   entity/Joueur.h   entity/Collision.h   entity/Balle.h	selecteur_carte.h
+ficO   = main.o			   Entity.o   fenetre.o   input.o   editeur.o   jouer.o          entity_rect.o          entity_ronde.o   arbre.o          Carte.o   Cactus.o          Rocher.o          Tronc.o          Mur.o			Joueur.o		  Collision.o   	   Balle.o			selecteur_carte.o
 
 all: main run
 
@@ -33,8 +33,8 @@ fenetre.o: fenetre.cpp fenetre.h
 input.o: input.cpp input.h fenetre.h
 	g++ -c -g -Wall input.cpp input.h fenetre.h $(ISFML)
 
-editeur.o: editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h entity/Entity.h 
-	g++ -c -g -Wall editeur.cpp editeur.h fenetre.h input.h Carte.h entity/arbre.h entity/Cactus.h entity/Rocher.h entity/Tronc.h entity/Mur.h entity/Joueur.h entity/Collision.h entity/Entity.h $(ISFML)
+editeur.o: editeur.cpp editeur.h fenetre.h input.h Carte.h  entity/Joueur.h entity/Collision.h entity/Entity.h selecteur_carte.h
+	g++ -c -g -Wall editeur.cpp editeur.h fenetre.h input.h Carte.h entity/Joueur.h entity/Collision.h entity/Entity.h selecteur_carte.h $(ISFML)
 
 jouer.o: jouer.cpp jouer.h fenetre.h 
 	g++ -c -g -Wall jouer.cpp jouer.h fenetre.h $(ISFML)
@@ -71,6 +71,9 @@ Balle.o: entity/Balle.cpp entity/Balle.h entity/entity_ronde.h entity/Entity.h f
 
 Collision.o: entity/Collision.cpp entity/Collision.h
 	g++ -c -g -Wall entity/Collision.cpp entity/Collision.h $(ISFML)
+
+selecteur_carte.o: selecteur_carte.cpp selecteur_carte.h Carte.h entity/Entity.h fenetre.h
+	g++ -c -g -Wall selecteur_carte.cpp selecteur_carte.h Carte.h entity/Entity.h fenetre.h $(ISFML)
 
 clean:
 	rm -f *.o main entity/*.gch

@@ -381,8 +381,6 @@ int menuEdition(Fenetre& window){
 
 int choixTailleCarte(Fenetre& window){
     int choix = -1;
-    int size = window.getFont("Grande carte (1500,1500)", 40);
-    printf("%d\n", (600 - size)/2);
 	while (window.isOpen() && choix < 0){
         sf::Event event;
         while (window.getWindow().pollEvent(event)){

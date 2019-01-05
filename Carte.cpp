@@ -29,7 +29,6 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 					str = "";
 					str.append (type) ;
 					if (fscanf(fs , "%d%d%d%d",&param[0], &param[1] , &param[2],&param[3]) ==4)  {
-						printf("%d %d %d %d",param[0], param[1] , param[2],param[3]);
 						if(param[0]>=1 && param[0]<=3){
 							if (str =="arbre"){
 								ajoutEntity(param[1],param[2],param[0],arbre);
@@ -52,10 +51,8 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 						else testLectur = false;						
 					}
 					else testLectur = false;
-					printf ("arbre %d %d %d \n",param[1],param[2],param[0]);
 				}
 				else testLectur = false;
-				printf("%lu \n",entity.size());
 			}
 			fclose(fs);	 
 		}
@@ -75,7 +72,7 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 
 Carte::Carte(int largeur, int hauteur) : jb(-100,20,100,true), jr(-100,20,100,false){
 	nom = NULL;
-	setNom("sans titre");
+	setNom("sans_titre");
 	this->largeur = largeur;
 	this->hauteur = hauteur;
 }
@@ -102,25 +99,25 @@ void Carte::drawMiniature(Fenetre& w){
 	int miniaturisation = 0;
 	sf::Vector2i decalage;
 	if(largeur == 600 && hauteur == 500){
-		miniaturisation = 1;
-		decalage.x = 0;
-		decalage.y = 0;
+		miniaturisation = 2;
+		decalage.x = 150;
+		decalage.y = 125;
 	}
 	if(largeur == 1000 && hauteur == 1000){
 		miniaturisation = 2;
-		decalage.x = 250;
-		decalage.y = 250;
+		decalage.x = 50;
+		decalage.y = 0;
 	}
 	if(largeur == 1500 && hauteur == 1500){
 		miniaturisation = 3;
-		decalage.x = 375;
-		decalage.y = 375;
+		decalage.x = 50;
+		decalage.y = 0;
 	}
 	
 	Entity_ronde* e_ronde;
 	Entity_rect* e_rect;
 	sf::Color colorEntity;
-	w.draw_fillRect(decalage.x,decalage.y,largeur / miniaturisation, hauteur / miniaturisation, sf::Color(160,62,35));
+	w.draw_fillRect(decalage.x, decalage.y, largeur / miniaturisation, hauteur / miniaturisation, sf::Color(160,62,35));
 	for (unsigned int i = 0; i < entity.size(); i++){
 		if	   (entity[i]->getType() == arbre ) colorEntity = sf::Color(0,200,0);
 		else if(entity[i]->getType() == cactus) colorEntity = sf::Color::Green;
@@ -480,7 +477,6 @@ int Carte::save(bool forcer){
 		fprintf( fs, "%d %d\n",largeur, hauteur );
 		fprintf( fs,"\n");
 		for (unsigned int i = 0; i < entity.size(); i++){
-			printf( "dans carte : %d %d\n",entity[i]->getPosition().x,entity[i]->getPosition().y);	
 			entity[i]->save(fs);
 			fprintf( fs,"\n");
 		}

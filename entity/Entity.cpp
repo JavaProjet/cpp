@@ -30,7 +30,7 @@ void Entity::set_texture(const char* name){
 		cout << "unable to load texture" << str << endl;
 	}
 	else {
-		cout << "texture " << str << " loaded" << endl;
+		//cout << "texture " << str << " loaded" << endl;
 		sprite.setTexture(texture);
 		sprite.setPosition(sf::Vector2f(position.x, position.y));
 	}

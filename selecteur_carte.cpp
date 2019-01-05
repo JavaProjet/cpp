@@ -2,6 +2,7 @@
 #include "Carte.h"
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 using namespace std;
 
@@ -10,16 +11,19 @@ namespace Selecteur {
 vector <string> liste_cartes(){
 	vector <string> nomCartes;
 	char* cstr = new char[37] (); //30 : taille max d'un nom de carte, 6 : taille de ".carte", 1 pour '\0' 
+	cstr[0] = '\0';
 	system("ls -1 Saves/ > liste_cartes.txt");
 	
-	string str = "";
+	string str;
 	
 	FILE* lc_txt = NULL;
-	if( (lc_txt = fopen("liste_cartes.txt", "r")) ){
-		while(fscanf(lc_txt, "%36s",cstr)){
+	if( (lc_txt = fopen("liste_cartes.txt", "r"))){
+		while(fscanf(lc_txt, "%36s",cstr) == 1){
 			str = ""; str.append(cstr);
-			if((str.substr(str.length() - 6,str.length())) == ".carte"){
-				nomCartes.push_back(str);
+			if(str.length() > 6){
+				if((str.substr(str.length() - 6,str.length())) == ".carte"){
+					nomCartes.push_back(str);
+				}
 			}
 		}
 		fclose(lc_txt);
@@ -28,36 +32,31 @@ vector <string> liste_cartes(){
 	return nomCartes;
 }
 
-void insert_in_tab(Carte** tabCartes, bool* sup, vector<string> nomCartes){
-	tabCartes = new Carte* [nomCartes.size()] ();
-	for (unsigned int i = 0; i < nomCartes.size(); i++){
-		tabCartes[i] = new Carte(nomCartes[i].c_str(), false);
-	}
-	sup = new bool[nomCartes.size()] ();
-	for (unsigned int i = 0; i < nomCartes.size(); i++){
-		sup[i] = false;
-	}
-	
-}
-
-void supprimer_carte(const char* nom){
-	if(nom){
-		string str = "Saves/";
-		str.append(nom);
-		system(str.c_str());
-	}
-}
-
-Carte* deleteTab(Carte** tabCartes, int sauf_lui, int size){
+void insert_in_tab(vector <Carte*> & tabCartes, vector<string> nomCartes, Fenetre& w){
 	Carte* c = NULL;
-	if(sauf_lui > 0 && sauf_lui < size) c = tabCartes[sauf_lui];
-	else return NULL;
-	
-	for (int i = 0; i < size; i++){
-		if(i != sauf_lui)delete[] tabCartes[i];
+	for (unsigned int i = 0; i < nomCartes.size(); i++){
+		c = new Carte(nomCartes[i].substr(0,nomCartes[i].length() - 6).c_str(), false);
+		tabCartes.push_back(c);
 	}
-	delete[] tabCartes;
-	return c;
+}
+
+void supprimer_carte(vector <Carte*> & tabCartes, int i){
+	vector <Carte*> tmp;
+	Carte* toSupp = NULL;
+	unsigned int j;
+	for(j = 0; j < (unsigned)i; j++){
+		tmp.push_back(tabCartes[j]);
+	}
+	toSupp = tabCartes[j++];
+	for(; j < tabCartes.size(); j++){
+		tmp.push_back(tabCartes[j]);
+	}
+	delete toSupp;
+	tabCartes.clear();
+	for(j = 0; j < tmp.size(); j++){
+		tabCartes.push_back(tmp[j]);
+	}
+	tmp.clear();
 }
 
 sf::Keyboard::Key keyPressed(Fenetre& w){
@@ -73,47 +72,39 @@ sf::Keyboard::Key keyPressed(Fenetre& w){
 	return sf::Keyboard::Unknown;
 }
 
-void gestionTouches(sf::Keyboard::Key touche, Carte** tabCartes, bool* sup, vector <string> nomCartes, int &i){
-	if(touche == sf::Keyboard::Left && i > 1 )
-		while(i > 1 && sup[i]) i--;
+void gestionTouches(sf::Keyboard::Key touche, vector <Carte*> & tabCartes, vector <string> nomCartes, int &i){
+	if(touche == sf::Keyboard::Left && i > 0) i--;
 	
-	if(touche == sf::Keyboard::Left && i < (int)(nomCartes.size() - 1))
-		while(i < (int)(nomCartes.size() - 1) && sup[i]) i++;
+	if(touche == sf::Keyboard::Right && i < (int)(nomCartes.size() - 1)) i++;
 	
 	if(touche == sf::Keyboard::Backspace){
-		bool allRM = true;
-		sup[i] = true;
-		supprimer_carte(nomCartes[i].c_str());
-		for (unsigned int j = 0; j < nomCartes.size(); j++){
-			if(sup[i] == false) allRM = false;
-		}
-		if(allRM) i = -1;
+		supprimer_carte(tabCartes, i);
+		if(tabCartes.size() == 0) i = -1;
 	}
 }
 
 Carte* select_carte(Fenetre& w){
 	
-	Carte** tabCartes = NULL;
-	bool* sup = NULL;
+	vector <Carte*> tabCartes;
 	vector <string> nomCartes = liste_cartes();
-	insert_in_tab(tabCartes, sup, nomCartes);
+	insert_in_tab(tabCartes, nomCartes, w);
 	
-	int i = 0;
+	int i = (tabCartes.size() > 0)? 0 : -1;
 	sf::Keyboard::Key touche = sf::Keyboard::R;
 	
 	while(w.isOpen() && touche != sf::Keyboard::Return && i != -1){
 		touche = keyPressed(w);
-		gestionTouches(touche, tabCartes, sup, nomCartes, i);
+		gestionTouches(touche, tabCartes, nomCartes, i);
 		w.getWindow().clear();
 		
 		if(i != -1) tabCartes[i]->drawMiniature(w);
 		else w.write("Aucune carte n'existe", 50, sf::Color::White, 50, 225);
-		w.write("[Entree] : valider    [Backspace] : Supprimer la carte", 30, sf::Color::White, 10, w.getHauteur() - 40);
+		w.write("[Entree] : valider    [Backspace] : Supprimer la carte", 20, sf::Color::White, 10, w.getHauteur() - 40);
 		w.getWindow().display();
 	}
 	
-	Carte* toKeep = deleteTab(tabCartes, i, nomCartes.size());
-	return toKeep;
+	
+	return NULL;
 }
 
 
