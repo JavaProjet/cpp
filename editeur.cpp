@@ -5,6 +5,7 @@
 #include "entity/Collision.h"
 #include <string>
 #include <unistd.h>
+#include "selecteur_carte.h"
 
 using namespace std;
 
@@ -337,8 +338,8 @@ void nouvelle(Fenetre& window, Carte& c){
 }
 
 void modifier(Fenetre& w, Carte* c){
-   c = new Carte("test", false);
-   nouvelle(w,*c);
+   c = Selecteur::select_carte(w);
+   if(c) nouvelle(w,*c);
 }
 
 int menuEdition(Fenetre& window){

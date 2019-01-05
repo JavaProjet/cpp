@@ -27,6 +27,7 @@ class Carte{
 		Carte(int, int);
 		~Carte();
 		void draw(Fenetre& w);
+		void drawMiniature(Fenetre& w);
 		void drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max);
 		void drawAroundJoueur(Fenetre& w, bool bleu);
 		bool ajoutEntity(int x, int y,int size, entityType entity);

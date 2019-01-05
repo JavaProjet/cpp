@@ -98,6 +98,51 @@ void Carte::draw(Fenetre& w){
 	jr.draw(w);
 }
 
+void Carte::drawMiniature(Fenetre& w){
+	int miniaturisation = 0;
+	sf::Vector2i decalage;
+	if(largeur == 600 && hauteur == 500){
+		miniaturisation = 1;
+		decalage.x = 0;
+		decalage.y = 0;
+	}
+	if(largeur == 1000 && hauteur == 1000){
+		miniaturisation = 2;
+		decalage.x = 250;
+		decalage.y = 250;
+	}
+	if(largeur == 1500 && hauteur == 1500){
+		miniaturisation = 3;
+		decalage.x = 375;
+		decalage.y = 375;
+	}
+	
+	Entity_ronde* e_ronde;
+	Entity_rect* e_rect;
+	sf::Color colorEntity;
+	w.draw_fillRect(decalage.x,decalage.y,largeur / miniaturisation, hauteur / miniaturisation, sf::Color(160,62,35));
+	for (unsigned int i = 0; i < entity.size(); i++){
+		if	   (entity[i]->getType() == arbre ) colorEntity = sf::Color(0,200,0);
+		else if(entity[i]->getType() == cactus) colorEntity = sf::Color::Green;
+		else if(entity[i]->getType() == rocher) colorEntity = sf::Color(170,104,51);
+		else if(entity[i]->getType() == tronc ) colorEntity = sf::Color(103,78,57);
+		else if(entity[i]->getType() == mur   ) colorEntity = sf::Color::Black;
+		
+		if(entity[i]->getPrimaryType() == ronde){
+			e_ronde = (Entity_ronde*)entity[i];
+			w.drawCircle(	(e_ronde->getPosition().x + e_ronde->get_rayon()) / miniaturisation + decalage.x,
+							(e_ronde->getPosition().y + e_ronde->get_rayon()) / miniaturisation + decalage.y,
+							 e_ronde->get_rayon() / miniaturisation, colorEntity);
+		}
+		else if(entity[i]->getPrimaryType() == rect){
+			e_rect = (Entity_rect*)entity[i];
+			w.draw_fillRect(e_rect->getPosition().x / miniaturisation + decalage.x, 
+							e_rect->getPosition().y / miniaturisation + decalage.y,
+							e_rect->get_size().x / miniaturisation, e_rect->get_size().y / miniaturisation, colorEntity);
+		}
+	}
+}
+
 //dessine si c'est compris entre min et max, en decalant les positions pour afficher dans la fenetre si les coordonnées sont superieurs a la taille de la fenetre
 void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
 	sf::Vector2i point;
