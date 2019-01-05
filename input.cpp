@@ -90,9 +90,13 @@ sf::Keyboard::Key Input::get_clic(Fenetre& w){
 			if (event.type == sf::Event::Closed){
 				w.close();
 			}
+			if (event.type == sf::Event::MouseMoved){
+				printf("En attente de clic GAUCHE ... %4d %4d\r",sf::Mouse::getPosition(w.getWindow()).x,sf::Mouse::getPosition(w.getWindow()).y); fflush(stdout);
+			}
 			if (event.type == sf::Event::MouseButtonPressed){
 				if (event.mouseButton.button == sf::Mouse::Left){
 					clic = sf::Mouse::getPosition(w.getWindow());
+					printf("Clic GAUCHE en %4d %4d               \n",clic.x, clic.y); fflush(stdout);
 				}
 			}
 			if(event.type == sf::Event::KeyPressed){

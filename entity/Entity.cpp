@@ -69,9 +69,8 @@ sf::Sprite& Entity::getSprite(){
 	return sprite;
 }
 
-void Entity  :: save ( FILE* fs)
-{
-	fprintf( fs, "%d %d\n",position.x,position.y ); 
-	fprintf( fs, "%d\n", vie ); 
+void Entity  :: save ( FILE* fs){
+	fprintf(fs, "%d %d\n", position.x, position.y);
+	fprintf( fs, "%d\n", vie );
 }
 

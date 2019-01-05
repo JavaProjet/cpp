@@ -12,16 +12,10 @@ bool initialised = false; //pour initialiser le sprite si ce n'est pas fais
 Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-100,20,100,false){
 	nom=NULL;
 	if(name){
-		//fonction de lecture
-		/*en attendant, les infos sont pré-remplis, il faudra les supprimer*/
-	/*	largeur = 600; hauteur = 500;
-		nom = NULL;
-		setNom("sans titre");*/
 		FILE* fs = NULL ;
 		string str = "Saves/";
 		str.append(name);
 		str.append(".carte");
-	//	Entity* tmp=NULL;
 		char* type= new char[20]();
 		 type[0]='\0';
 		 int param[5];
@@ -31,44 +25,38 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 			if (fscanf(fs , "%d%d", &largeur , &hauteur) ==2);
 			else testLectur =false ;
 			while ( testLectur  ){
-		//	printf("ouverture %d\n",testLectur);
 				if (fscanf(fs , "%19s", type  ) ==1){
 					str = "";
 					str.append (type) ;
-					
-					
 					if (fscanf(fs , "%d%d%d%d",&param[0], &param[1] , &param[2],&param[3]) ==4)  {
+						printf("%d %d %d %d",param[0], param[1] , param[2],param[3]);
 						if(param[0]>=1 && param[0]<=3){
 							if (str =="arbre"){
 								ajoutEntity(param[1],param[2],param[0],arbre);
 							}
-							if (str =="cactus"){
+							else if (str =="cactus"){
 								ajoutEntity(param[1],param[2],param[0],cactus);
 							}
-							if (str =="rocher"){
+							else if (str =="rocher"){
 								ajoutEntity(param[1],param[2],param[0],rocher);
 							}
 							
-							if (str =="tronc"){
+							else if (str =="tronc"){
 								ajoutEntity(param[2],param[3],param[0],tronc);
 							}
-							if (str =="mur"){
+							else if (str =="mur"){
 								ajoutEntity(param[2],param[3],param[0],mur);
-							}	
+							}
+							else testLectur = false;
 						}
 						else testLectur = false;						
 					}
 					else testLectur = false;
 					printf ("arbre %d %d %d \n",param[1],param[2],param[0]);
-				
-					
-					//else testLectur = false;
 				}
 				else testLectur = false;
 				printf("%lu \n",entity.size());
 			}
-			
-			
 			fclose(fs);	 
 		}
 		
@@ -112,15 +100,29 @@ void Carte::draw(Fenetre& w){
 
 //dessine si c'est compris entre min et max, en decalant les positions pour afficher dans la fenetre si les coordonnées sont superieurs a la taille de la fenetre
 void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
-	//printf("lolol %d %d  ! %d %d\n",min.x,min.y,max.x,max.y);
 	sf::Vector2i point;
-	for (unsigned int i = 0; i < entity.size(); i++){
-		if(entity[i]->getPosition().x + jr.get_rayon() * 2 > min.x && entity[i]->getPosition().x < max.x && entity[i]->getPosition().y + jr.get_rayon() * 2 > min.y && entity[i]->getPosition().y < max.y){
-			point.x = entity[i]->getPosition().x - min.x;
-			point.y = entity[i]->getPosition().y - min.y;
-			entity[i]->drawAt(w, point);
+	Entity_ronde* e_ronde;
+	Entity_rect* e_rect;
+	
+	for (unsigned int i = 0; i < entity.size(); i++){ //on dessine les entités qui sont autour
+		if(entity[i]->getPrimaryType() == ronde){
+			e_ronde = (Entity_ronde*)entity[i];
+			if(e_ronde->getPosition().x + e_ronde->get_rayon() * 2 > min.x && e_ronde->getPosition().x < max.x && e_ronde->getPosition().y + e_ronde->get_rayon() * 2 > min.y && e_ronde->getPosition().y < max.y){
+				point.x = entity[i]->getPosition().x - min.x;
+				point.y = entity[i]->getPosition().y - min.y;
+				entity[i]->drawAt(w, point);
+			}
+		}
+		else if(entity[i]->getPrimaryType() == rect){
+			e_rect = (Entity_rect*)entity[i];
+			if(e_rect->getPosition().x + e_rect->get_size().x > min.x && e_rect->getPosition().x < max.x && e_rect->getPosition().y + e_rect->get_size().y > min.y && e_rect->getPosition().y < max.y){
+				point.x = entity[i]->getPosition().x - min.x;
+				point.y = entity[i]->getPosition().y - min.y;
+				entity[i]->drawAt(w, point);
+			}
 		}
 	}
+	
 	if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
 		point.x = jb.getPosition().x - min.x;
 		point.y = jb.getPosition().y - min.y;
@@ -418,6 +420,7 @@ void Carte::save(){
 		fprintf( fs, "%d %d\n",largeur, hauteur );
 		fprintf( fs,"\n");
 		for (unsigned int i = 0; i < entity.size(); i++){
+			printf( "dans carte : %d %d\n",entity[i]->getPosition().x,entity[i]->getPosition().y);	
 			entity[i]->save(fs);
 			fprintf( fs,"\n");
 		}

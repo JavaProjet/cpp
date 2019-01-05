@@ -125,8 +125,6 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 	
 	//affiche l'item choisit dans le bouton d'ouverture de menu
 	switch(choix){
-		case joueurBleu  : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - 60 + 10, 40, 40, "Somb3-bleu.png");    break;
-		case joueurRouge : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - 60 + 10, 40, 40, "Somb3-red.png");     break;
 		case arbre		 : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - 60 + 10, 40, 40, "Arbre_40px.png");    break;
 		case cactus		 : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - 60 + 10, 40, 40, "Cactus_40px.png");   break;
 		case rocher		 : w.drawSprite(w.getLargeur() - 61 + 10, w.getHauteur() - 60 + 10, 40, 40, "Rocher_40px.png");   break;
@@ -175,7 +173,7 @@ void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 				}
 			}
 		}
-		printf("ajout\n");
+		printf("ajout tronc moyen en %d ,%d\n", Input::clic.x - 40 + min.x, Input::clic.y - 20 + min.y);
 		Input::clic.x = Input::clic.y = -10; //on enleve le clic de la carte pour eviter de repeter l'action
 	}
 }
@@ -292,9 +290,8 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 	}
 }
 
-void nouvelle(Fenetre& window, int largeur, int hauteur){
+void nouvelle(Fenetre& window, Carte& c){
 	sf::Vector2i cursorPos;
-	Carte c(largeur,hauteur);
 	Input nomCarte(&window,sf::Vector2i(10,window.getHauteur() - 25), 20, 30);
 	int choix = 0;
 	bool modifchoix = false;
@@ -327,18 +324,9 @@ void nouvelle(Fenetre& window, int largeur, int hauteur){
 	}
 }
 
-void modifier(){
-    Fenetre window(600,500,"test clic");
-    Input a(&window, sf::Vector2i(10,10),30,20);
-    Input b(&window, sf::Vector2i(10,40),30,20);
-    while(window.isOpen()){
-		window.drawSprite(0,0,600,500,"fond.png");
-        Input::get_clic(window);
-        a.drawInput();
-        b.drawInput();
-        window.getWindow().display();
-    }
-    cout << endl;
+void modifier(Fenetre& w, Carte* c){
+   c = new Carte("test", false);
+   nouvelle(w,*c);
 }
 
 int menuEdition(Fenetre& window){
@@ -422,7 +410,7 @@ int choixTailleCarte(Fenetre& window){
 
 void editeur(Fenetre& w){
 	int choix = -1;
-	
+	Carte* c = NULL;
 	while(choix != 0 && w.isOpen()){
 		
 		choix = menuEdition(w);
@@ -431,17 +419,18 @@ void editeur(Fenetre& w){
 			choix = choixTailleCarte(w);
 			//nouvelle carte
 			switch(choix){
-				case 1 : nouvelle(w,600,500);
-				case 2 : nouvelle(w,1000,1000);
-				case 3 : nouvelle(w,1500,1500);
+				case 1 : c = new Carte(600,500); nouvelle(w,*c);
+				case 2 : c = new Carte(1000,1000); nouvelle(w,*c);
+				case 3 : c = new Carte(1500,1500); nouvelle(w,*c);
 			}
 		}
 		else if(choix == 2){
 			//modification de carte
-			modifier();
+			modifier(w,c);
 		}
 		else if(choix == 3){
 			choix = 0;
 		}
+		delete c; c = NULL;
 	}
 }

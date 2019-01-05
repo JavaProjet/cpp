@@ -27,10 +27,9 @@ void Entity_rect::setPosition(int x, int y){
 }
 
 entityType Entity_rect::getPrimaryType(){
-	return ronde;
+	return rect;
 }
-void Entity_rect :: save ( FILE* fs)
-{
-	
+
+void Entity_rect :: save ( FILE* fs){
 	Entity :: save (fs); 
 }

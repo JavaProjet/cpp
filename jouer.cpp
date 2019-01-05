@@ -164,7 +164,7 @@ void fin(Fenetre& w, Carte& c){
 
 void affiche(Fenetre& window){
 
-	Carte c("tmp", true);
+	Carte c("test", true);
 	/*c.ajoutEntity(100,100,petit,arbre);
 	c.ajoutEntity(200,100,moyen,rocher);
 	c.ajoutEntity(200,200,petit,rocher);
@@ -178,7 +178,7 @@ void affiche(Fenetre& window){
 	sf::Keyboard::Key touche;
 	
 	while (window.isOpen()){
-		if(bleuJoue){
+		/*if(bleuJoue){
 			 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
 			 JoueurVie(window,Jb.getVie()); //vie du joueur
 		 }
@@ -186,8 +186,8 @@ void affiche(Fenetre& window){
 			drawFond(window, Jr, c.getLargeur(), c.getHauteur());
 			JoueurVie(window,Jr.getVie());
 				
-		}
-		//window.drawSprite(0,0,600,500,"Sol_600x500.png");
+		}*/
+		window.drawSprite(0,0,600,500,"Sol_600x500.png");
 		
 		touche = get_key(window, k);
 		if(bleuJoue){
@@ -199,8 +199,8 @@ void affiche(Fenetre& window){
 			JoueurVie(window,Jr.getVie());
 		}
 
-		c.drawAroundJoueur(window, bleuJoue);
-		//c.draw(window);
+		//c.drawAroundJoueur(window, bleuJoue);
+		c.draw(window);
 		window.getWindow().display();
 		if(touche == sf::Keyboard::Escape){
 			bleuJoue = !bleuJoue;
