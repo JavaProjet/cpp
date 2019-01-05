@@ -270,7 +270,6 @@ void Carte::deleteEntity(int x, int y){
 	bool sup = false;
 	for (unsigned int i = 0; i < entity.size() && !sup; i++){
 		if(Collision::BoundingBoxTest(sprite,entity[i]->getSprite())){
-		//if(Collision::PixelPerfectTest(sprite,entity[i]->getSprite(),127)){
 			this->deleteEntity(i);
 			sup = true;
 		}
@@ -300,7 +299,6 @@ int Carte::collisionEntity(sf::Sprite& s){
 	int i;
 	for (i = 0; (unsigned)i < entity.size(); i++){
 		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),126))
-		//if(Collision::BoundingBoxTest(s, entity[i]->getSprite()))
 			return i;
 	}
 	return -1;
@@ -409,13 +407,18 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 	return obstacle;
 }
 
-void Carte::save(){
+int Carte::save(bool forcer){
 	FILE* fs = NULL ;
 	system("mkdir Saves");
 	string str = "Saves/";
 	str.append(nom);
 	str.append(".carte");
-	if ( ( fs = fopen (str.c_str(),"w+") )){
+	if((fs = fopen (str.c_str(),"r")) && !forcer){
+		//un fichier de sauvegarde existe deja a ce nom donc on annule la sauvegarde
+		fclose(fs);
+		return 0;
+	}
+	if ( (fs = fopen (str.c_str(),"w") )){
 		
 		fprintf( fs, "%d %d\n",largeur, hauteur );
 		fprintf( fs,"\n");
@@ -425,12 +428,8 @@ void Carte::save(){
 			fprintf( fs,"\n");
 		}
 		fclose (fs);
-	} 
-}
-void Carte :: suprimerA(){
-	for (int i = 0; i < entity.size(); i++)
-	{
-	printf("pute %d  ! %d %d \n",i,entity[i]->getPosition().x,entity[i]->getPosition().y);	
+		return 1;
 	}
-	
+	return -1; 
 }
+

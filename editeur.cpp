@@ -4,6 +4,7 @@
 #include <iostream>
 #include "entity/Collision.h"
 #include <string>
+#include <unistd.h>
 
 using namespace std;
 
@@ -46,11 +47,10 @@ void draw_item(Fenetre &w){
 	w.drawSprite(w.getLargeur() - 38 - 3, w.getHauteur() - 60 * 4 - 3 + 12, 23, 35, "Souris_23x35px.png");
 }
 
-void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
+void draw_selection(Fenetre &w, Carte& c, int& choix, bool& modifchoix, int& taille){
 	//clique dans le menu pour changer d'item
 	if(modifchoix){
 		if(Input::clic.x > w.getLargeur() - 60 - 1){
-			printf("select choix\n");
 			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
 				choix = arbre;
 				modifchoix = false;
@@ -84,20 +84,10 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 				Input::clic.x = Input::clic.y = -10;
 			}
 		}
-		
-		/*else if(Input::clic.x > w.getLargeur() - 60 * 3 - 3 && Input::clic.x < w.getLargeur() - 60 * 2 - 2){
-			if((Input::clic.y > w.getHauteur() - 60 * 2 - 1) && (Input::clic.y < w.getHauteur() - 60 - 1)){
-				
-			}
-			else if((Input::clic.y > w.getHauteur() - 60 * 3 - 2) && (Input::clic.y < w.getHauteur() - 60 * 2 - 1)){
-				
-			}
-		}*/
 	}
 	
 	//modifie la taille selon la flèche
 	if(Input::clic.x > w.getLargeur() - 60 * 2 - 2 && Input::clic.x < w.getLargeur() - 60 - 1){
-		printf("fleches\n");
 		if(Input::clic.y > w.getHauteur() - 60 && Input::clic.y < w.getHauteur() - 30){
 			if(taille < grand) taille++;
 			changeSprite = true;
@@ -110,9 +100,35 @@ void draw_selection(Fenetre &w, int& choix, bool& modifchoix, int& taille){
 		}
 	}
 	
+	//clique sur le bouton save
+	if(Input::clic.x > 270 - 4 && Input::clic.x < 360 - 3){
+		if(Input::clic.y > w.getHauteur() - 60 && Input::clic.y < w.getHauteur()){
+			int res = c.save(false);
+			if(res == 1) w.write("Sauvegarde reussi", 40, sf::Color::Black, 100, 230);
+			if(res == -1) w.write("Echec de la sauvegarde", 40, sf::Color::Black, 100, 230);
+			if(res == 0) w.write("Ecraser l'ancienne sauvegarde ? y/n", 40, sf::Color::Black, 20, 230);
+			w.getWindow().display();
+			sf::Keyboard::Key touche = sf::Keyboard::A;
+			sf::Event event;
+			while(w.isOpen() && touche != sf::Keyboard::Y && touche != sf::Keyboard::N){
+				while (w.getWindow().pollEvent(event)){
+					if (event.type == sf::Event::Closed)
+						w.close();
+					if(event.type == sf::Event::KeyPressed){
+						touche = event.key.code;
+					}
+				}
+			}
+			if(touche != sf::Keyboard::A && touche == sf::Keyboard::N) w.write("La sauvegarde n'a pas eut lieu", 40, sf::Color::Black, 70, 280);
+			if(touche != sf::Keyboard::A && touche == sf::Keyboard::Y) w.write("Sauvegarde reussi", 40, sf::Color::Black, 170, 280);
+			Input::clic.x = Input::clic.y = -10;
+			w.getWindow().display();
+			sleep(2);
+		}
+	}
+	
 	//clique dans bouton pour ouvrir/fermer le menu
 	if(Input::clic.x > w.getLargeur() - 60 - 1){
-		printf("choix\n");
 		if((Input::clic.y > w.getHauteur() - 60 - 1) && (Input::clic.y < w.getHauteur() - 1)){
 			modifchoix = !modifchoix;
 			Input::clic.x = Input::clic.y = -42;
@@ -173,7 +189,6 @@ void AjoutSupp(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 				}
 			}
 		}
-		printf("ajout tronc moyen en %d ,%d\n", Input::clic.x - 40 + min.x, Input::clic.y - 20 + min.y);
 		Input::clic.x = Input::clic.y = -10; //on enleve le clic de la carte pour eviter de repeter l'action
 	}
 }
@@ -250,7 +265,11 @@ void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 	w.write("/\\", 20, sf::Color::Black, w.getLargeur() - 60 * 2 - 2 + 25, w.getHauteur() - 58);
 	w.write("\\/", 20, sf::Color::Black, w.getLargeur() - 60 * 2 - 2 + 25, w.getHauteur() - 25);
 	
-	draw_selection(w,choix,modifchoix,taille);
+	//dessin bouton sauvegarde
+	w.drawRect(270 - 4, w.getHauteur() - 60, 90, 60, sf::Color(190,190,190));
+	w.write("Save", 20, sf::Color::Black, 290 + 4, w.getHauteur() - 40);
+	
+	draw_selection(w,c,choix,modifchoix,taille);
 }
 
 void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max, Carte& c){
@@ -280,13 +299,6 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 			min.x += deplacement;
 			max.x += deplacement;
 		}
-	}
-	if(key == sf::Keyboard::Key::Return ){
-		c.save();
-	}
-	if(key == sf::Keyboard::Key::B ){
-		c.suprimerA();
-		
 	}
 }
 

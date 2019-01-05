@@ -46,8 +46,7 @@ class Carte{
 		char* getNom();
 		void setNom(const char*);
 		bool obstacle_entre_joueurs(Fenetre& w);
-		void save();
-		void suprimerA ();
+		int save(bool forcer);
 		
 };
 
