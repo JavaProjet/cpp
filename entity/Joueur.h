@@ -7,7 +7,7 @@
 class Joueur : public Entity_ronde{
 	private :
 		sf::RectangleShape rectangle;
-		Balle balle;
+		Balle *balle;
 	public :
 		Joueur(int x, int y, int vie, bool bleu);
 		virtual ~Joueur();

@@ -1,6 +1,6 @@
 #include "Joueur.h"
 
-Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), rectangle(sf::Vector2f(25.f, 4.f)), balle(0,0,7,1){
+Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), rectangle(sf::Vector2f(25.f, 4.f)){
 
 	if(bleu) set_texture("Somb3-bleu.png"); 
 	
@@ -8,6 +8,7 @@ Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), recta
 	
 	rectangle.setFillColor(sf::Color(80, 57, 50));
 	rectangle.setPosition(centre.x,centre.y);
+	balle = NULL;
 	
 }
 

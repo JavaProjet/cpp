@@ -9,6 +9,7 @@ class Balle : public Entity_ronde{
 	private :
 	int dommage;
 	int distance;
+	
 	public :
 	Balle(int x, int y, int rayon, int vie);
 	virtual ~Balle();
