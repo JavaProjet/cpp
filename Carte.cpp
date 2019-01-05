@@ -276,6 +276,20 @@ void Carte::deleteEntity(int x, int y){
 	}
 }
 
+int Carte::collisionEntity(int x, int y){
+	if(!initialised) initialise();
+	sprite.setPosition(sf::Vector2f(x, y));
+	
+	bool collision = false;
+	for (unsigned int i = 0; i < entity.size() && !collision; i++){
+		if(Collision::BoundingBoxTest(sprite,entity[i]->getSprite())){
+			return i;
+			collision = true;
+		}
+	}
+	return -1;
+}
+
 void Carte::deleteEntity(int i){
 	vector <Entity*> tmp;
 	Entity* toSupp = NULL;
@@ -377,13 +391,12 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			jj = a*i+b;
 			j = jj;
 			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
-			sprite.setPosition(sf::Vector2f(i, j));
-			if(collisionEntity(sprite) != -1){
+			if(collisionEntity(i,j) != -1){
 				//w.add_pix(i,j,sf::Color::Red);
-				//w.getWindow().draw(sprite);
+				w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			//else w.add_pix(i,j,sf::Color::Blue);
+			else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	
@@ -395,13 +408,12 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			ii = (j-b)/a;
 			i = ii;
 			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
-			sprite.setPosition(sf::Vector2f(i, j));
-			if(collisionEntity(sprite) != -1){
+			if(collisionEntity(i,j) != -1){
 				//w.add_pix(i,j,sf::Color::Red);
-				//w.getWindow().draw(sprite);
+				w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			//else w.add_pix(i,j,sf::Color::Blue);
+			else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	return obstacle;

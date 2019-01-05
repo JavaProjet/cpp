@@ -22,8 +22,6 @@ class Carte{
 		char *nom;
 		int largeur;
 		int hauteur;
-		//void allocTab();
-		void freeTab();
 	public :
 		Carte(const char* name, bool with_joueurs);
 		Carte(int, int);
@@ -37,6 +35,7 @@ class Carte{
 		
 		// indique la position de l'element dans le vecteur en collision avec le sprite en parametre -1 sinon 
 		int collisionEntity(sf::Sprite& s);
+		int collisionEntity(int x, int y);
 		bool collisionJoueur(sf::Sprite& s, bool bleu);
 		Joueur& getJoueurBleu();
 		Joueur& getJoueurRouge();
