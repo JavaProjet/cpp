@@ -103,8 +103,8 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 		if(limite_droite > 360) limite_droite -= 360;		
 		Joueur &Adversaire = (bleuJoue) ? Jr : Jb;
 		touche = sf::Keyboard::A;
-		while(touche != sf::Keyboard::Space){
-			
+		while(touche != sf::Keyboard::Space && w.isOpen()){
+			printf("boucle tir\n");
 			touche = get_key(w, k);
 			
 			if(k.left){
@@ -135,15 +135,12 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 					J.get_balle().draw(w);
 					if(bleuJoue){
 						 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
-						 JoueurVie(w,Jb.getVie()); //vie du joueur
-						 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, w);
 					 }
 					else {
-						drawFond(w, Jr, c.getLargeur(), c.getHauteur());
-						gestion_touches(k, touche,c, Jr, false, move, cptMove, true, w);
-						JoueurVie(w,Jr.getVie()); 	
+						drawFond(w, Jr, c.getLargeur(), c.getHauteur());	
 					}
 					c.drawAroundJoueur(w, bleuJoue);
+					JoueurVie(w,Jb.getVie()); //vie du joueur
 					w.getWindow().display();
 					
 				}
@@ -159,15 +156,12 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 			}
 			if(bleuJoue){
 				 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
-				 JoueurVie(w,Jb.getVie()); //vie du joueur
-				 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, w);
 			 }
 			else {
 				drawFond(w, Jr, c.getLargeur(), c.getHauteur());
-				gestion_touches(k, touche,c, Jr, false, move, cptMove, true, w);
-				JoueurVie(w,Jr.getVie()); 	
 			}
 			c.drawAroundJoueur(w, bleuJoue);
+			JoueurVie(w,Jr.getVie()); 
 			w.getWindow().display();
 		}
 	}
@@ -218,7 +212,7 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
     size.y = hauteur;
     size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
 
-    w.drawSprite(position, beginTo, size,"Sol_600x500.png");
+    w.drawSprite(position, beginTo, size,"sol_1500.png");
 }
 
 void affiche(Fenetre& window, Carte& c){
@@ -234,15 +228,15 @@ void affiche(Fenetre& window, Carte& c){
 			touche = get_key(window, k);
 			if(bleuJoue){
 				 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
-				 JoueurVie(window,Jb.getVie()); //vie du joueur
 				 gestion_touches(k, touche, c, Jb, true, move, cptMove, cptMove < 30, window);
 			 }
 			else {
 				drawFond(window, Jr, c.getLargeur(), c.getHauteur());
 				gestion_touches(k, touche,c, Jr, false, move, cptMove, true, window);
-				JoueurVie(window,Jr.getVie()); 	
 			}
+			
 			c.drawAroundJoueur(window, bleuJoue);
+			JoueurVie(window,Jb.getVie()); //vie du joueur
 			window.getWindow().display();
 			
 			if(touche == sf::Keyboard::Escape){
@@ -258,7 +252,7 @@ void affiche(Fenetre& window, Carte& c){
 			}
 			else {
 				if(c.getBleuIA())  deplacementIA(c, IAr, NULL, &IAb, bleuJoue, move, cptMove, window);
-				else 				deplacementIA(c, IAr, &Jb, NULL, bleuJoue, move, cptMove, window);
+				else 			   deplacementIA(c, IAr, &Jb, NULL, bleuJoue, move, cptMove, window);
 			}
 			bleuJoue = !bleuJoue;
 			changeJoueur(window, bleuJoue);
