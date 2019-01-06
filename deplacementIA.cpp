@@ -8,7 +8,7 @@
 #include <iostream>
 #include <unistd.h>
 
-/*
+
 void deplacementIA2(Carte& c, IA& J, bool bleuJoue, int move, int& cptMove, Fenetre & w){
 	
 	if(bleuJoue){
@@ -115,7 +115,7 @@ void deplacementIA2(Carte& c, IA& J, bool bleuJoue, int move, int& cptMove, Fene
 		
 		
 	aleatire = rand()%1000;
-		
+	/*
 	if( (c.collisionEntity(J.getPosition().x + Cos * 5, J.getPosition().y + Sin * 5) != -1 && (aleatire <= 500 ||  J.get_tire() == true))&& J.getVie() > 30){   // c est pour tirer  a faire apret
 		//pas finie
 		
@@ -183,12 +183,14 @@ void deplacementIA2(Carte& c, IA& J, bool bleuJoue, int move, int& cptMove, Fene
 			c.drawAroundJoueur(w, bleuJoue);
 			w.getWindow().display();
 		}
-	}
+	}*/
 	if((J.getPosition().x != x || J.getPosition().y != y) && J.get_tire())
 		J.set_tire(false);
 	cptMove = 0;
 }
-*/
+
+
+
 int absolue(int value){
 	return (value > 0) ? value : -value;
 }
@@ -211,14 +213,32 @@ int regarderJoueur(sf::Vector2i J, sf::Vector2i adversaire){
 void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool bleuJoue, int move, int& cptMove, Fenetre & w){
 	double Cos = 0, Sin = 0;
 	string str = "";
-	int alea = rand()%50;
-	
+	int alea = rand()%1000;
+	int pos,r,seuil;
 	int x = J.getPosition().x, y = J.getPosition().y;
+	bool tourne=false ;
+	
+	seuil=0;
 	
 	//if(c.obstacle_entre_joueurs(w)){ //si on voit pas le joueur	
 		//rotation de l'IA
-		if(alea > 25){
-			alea = rand()%360 + 1;
+		if(alea > 500){
+			//alea = rand()%360 + 1;
+			
+			;
+		
+		pos = 1;
+		while (pos < 360) {
+			pos *= 2;
+		}
+		
+		
+		do {
+			r = rand() % pos;
+		} while(r >= 360);
+		
+		alea= 1 + r;
+		
 			for (int i = 0; i < alea; i += move){
 				J.setRotation(move);
 				
@@ -228,16 +248,17 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 				c.drawAroundJoueur(w, bleuJoue);
 				w.getWindow().display();
 			}
+			seuil= 250;
 		}
 		
 		Cos = cos(J.getRotation() * PI / 180) * 5;
 		Sin = sin(J.getRotation() * PI / 180) * 5;
 		
 		//deplacement de l'IA
-		alea = rand()%70;
-		if(alea > 25){
+		alea = rand()%1000+seuil;
+		if(alea > 250){
 			int i;
-			alea = rand()%40 + 10;
+			alea = rand()%20 + 10;
 			for (i = 0; i < alea && c.obstacle_entre_joueurs(w) ; i++){
 				int x = J.getPosition().x, y = J.getPosition().y;
 				J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
@@ -264,7 +285,7 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 			}
 		}
 	//}
-	/*else{
+/*	else{//la 
 		//rotation vers le haut ou vers le bas
 		if(J.getPosition().y > ((adversaireJ) ? adversaireJ->getPosition().y : adversaireIA->getPosition().y)){
 			while(J.getRotation() != 270){
@@ -332,9 +353,11 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 		}
 	}*/
 	//affichage final
+
 	drawFond(w, J, c.getLargeur(), c.getHauteur());
 	JoueurVie(w,J.getVie()); 	
 	c.drawAroundJoueur(w, bleuJoue);
 	w.getWindow().display();
 	sleep(2);
 }
+
