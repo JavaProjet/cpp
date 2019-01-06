@@ -36,8 +36,8 @@ input.o: input.cpp input.h fenetre.h
 editeur.o: editeur.cpp editeur.h fenetre.h input.h Carte.h entity/Joueur.h entity/Collision.h entity/Entity.h selecteur_carte.h
 	g++ -c -g -Wall editeur.cpp editeur.h fenetre.h input.h Carte.h entity/Joueur.h entity/Collision.h entity/Entity.h selecteur_carte.h $(ISFML)
 
-jouer.o: jouer.cpp jouer.h fenetre.h Carte.cpp Carte.h entity/Entity.h deplacementIA.cpp
-	g++ -c -g -Wall jouer.cpp jouer.h fenetre.h Carte.cpp Carte.h entity/Entity.h deplacementIA.cpp $(ISFML)
+jouer.o: jouer.cpp jouer.h fenetre.h Carte.cpp Carte.h entity/Entity.h deplacementIA.cpp selecteur_carte.h
+	g++ -c -g jouer.cpp jouer.h fenetre.h Carte.cpp Carte.h entity/Entity.h deplacementIA.cpp selecteur_carte.h $(ISFML)
 
 entity_ronde.o: entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fenetre.h
 	g++ -c -g -Wall entity/entity_ronde.cpp entity/entity_ronde.h entity/Entity.h fenetre.h $(ISFML)

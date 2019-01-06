@@ -6,6 +6,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "deplacementIA.cpp"
+#include "selecteur_carte.h"
 
 using namespace std;
 
@@ -220,12 +221,9 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
     w.drawSprite(position, beginTo, size,"Sol_600x500.png");
 }
 
-void affiche(Fenetre& window){
-
-	Carte c("tmp", true, true, false);
+void affiche(Fenetre& window, Carte& c){
 	
-	int move = 2, moveMax = (window.getLargeur() + window.getHauteur()) / 40 ;
-	printf("move max : %d\n", moveMax);
+	int move = 2;
 	Key k = {false, false, false, false};
 	int cptMove = 0;
 	bool bleuJoue = false;
@@ -237,7 +235,7 @@ void affiche(Fenetre& window){
 			if(bleuJoue){
 				 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
 				 JoueurVie(window,Jb.getVie()); //vie du joueur
-				 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, window);
+				 gestion_touches(k, touche, c, Jb, true, move, cptMove, cptMove < 30, window);
 			 }
 			else {
 				drawFond(window, Jr, c.getLargeur(), c.getHauteur());
@@ -270,4 +268,137 @@ void affiche(Fenetre& window){
 		fin(window, c);
 		
 	}
+}
+
+int choixJoueurs(Fenetre& window){
+    int choix = -1;
+	while (window.isOpen() && choix < 0){
+        sf::Event event;
+        while (window.getWindow().pollEvent(event)){
+            if (event.type == sf::Event::Closed){
+                window.close();
+                choix = 0;
+			}
+            if(event.type == sf::Event::KeyPressed){
+				if(event.key.code == sf::Keyboard::Up && choix < -1) choix++;
+				if(event.key.code == sf::Keyboard::Down && choix > -4 ) choix--;
+				if(event.key.code == sf::Keyboard::Return) choix = -choix;
+			}
+        }
+        window.drawSprite(0,0,600,500,"fond.png");
+        
+        window.write("Joueur vs Joueur", 40, sf::Color::Black, 120, 50);
+        window.write("Joueur vs IA", 40, sf::Color::Black, 120, 170);
+        window.write("Ordi vs Ordi", 40, sf::Color::Black, 120, 290);
+        window.write("Revenir en arriere", 40, sf::Color::Black, 165, 410);
+        
+        if(choix == -1){
+			window.write(">", 40, sf::Color::Black, 60, 50);
+		}
+		else if(choix == -2){
+			window.write(">", 40, sf::Color::Black, 60, 170);
+		}
+        else if(choix == -3){
+			window.write(">", 40, sf::Color::Black, 60, 290);
+		}
+        else if(choix == -4){
+			window.write(">", 40, sf::Color::Black, 60, 410);
+		}
+
+        window.getWindow().display();
+    }
+    return choix;
+}
+
+int nombreChiffre(int nb){
+	int cmp = 1;
+	while((nb = (nb / 10))){
+		cmp++;
+	}
+	return cmp;	
+}
+
+char* itoa(int entier){
+	int taille = nombreChiffre(entier);
+	char* nombre = (char*)malloc((taille + 1) * sizeof(char));
+	int i,chiffre;
+	for(i = taille - 1; i >= 0; i--){
+		chiffre = entier % 10;
+		nombre[i] = chiffre + '0';
+		entier /= 10;
+	}
+	nombre[taille] = '\0';
+	return nombre;
+}
+
+int choixJoueurs(Fenetre& window, int& choix1, int& choix2){
+    int choix = -1;
+    string s1,s2;
+    s1 = "Joueur 1 : Balle de taille ", s2 = "Joueur 2 : Balle de taille ";
+    s1.append(itoa(choix1));
+    s2.append(itoa(choix2));
+	while (window.isOpen() && choix < 0){
+        sf::Event event;
+        while (window.getWindow().pollEvent(event)){
+            if (event.type == sf::Event::Closed){
+                window.close();
+                choix = 0;
+			}
+            if(event.type == sf::Event::KeyPressed){
+				if(event.key.code == sf::Keyboard::Up && choix < -1) choix++;
+				if(event.key.code == sf::Keyboard::Down && choix > -2 ) choix--;
+				if(event.key.code == sf::Keyboard::Left){
+					if(choix == -1 && choix1 > 1) choix1--;
+					if(choix == -2 && choix2 > 1) choix2--;
+				}
+				if(event.key.code == sf::Keyboard::Right){
+					if(choix == -1 && choix1 < 5) choix1++;
+					if(choix == -2 && choix2 < 5) choix2++;
+				}
+				if(event.key.code == sf::Keyboard::Return) return choix;
+			}
+        }
+        window.drawSprite(0,0,600,500,"fond.png");
+        s1 = "Balle de taille ", s2 = "Balle de taille ";
+		s1.append(itoa(choix1));
+		s2.append(itoa(choix2));
+        window.write(s1.c_str(), 40, sf::Color::Black, 120, 50);
+        window.write(s2.c_str(), 40, sf::Color::Black, 120, 170);
+        
+        if(choix == -1){
+			window.write(">", 40, sf::Color::Black, 60, 50);
+		}
+		else if(choix == -2){
+			window.write(">", 40, sf::Color::Black, 60, 170);
+		}
+        window.getWindow().display();
+    }
+    return choix;
+}
+
+void option(Fenetre& w){
+	bool IAbleu = false, IArouge = false;
+	int tailleBalle1 = 1,tailleBalle2 = 1;
+	int choix = choixJoueurs(w);
+	if(choix == 2) IArouge = true;
+	if(choix == 3) IArouge = IAbleu = true;
+	choixJoueurs( w, tailleBalle1, tailleBalle2);
+	const char* str = Selecteur::select_carte(w);
+	string s = ""; s.append (str);
+	Carte* c = new Carte (s.substr(0,s.length() - 6).c_str(), true, IAbleu, IArouge);
+	if(IAbleu){
+		c->getIABleu().set_balle(-100,-100, tailleBalle1, 1);
+	}
+	else{
+		c->getJoueurBleu().set_balle(-100,-100, tailleBalle1, 1);
+	}
+	if(IArouge){
+		c->getIARouge().set_balle(-100,-100, tailleBalle2, 1);
+	}
+	else{
+		c->getJoueurRouge().set_balle(-100,-100, tailleBalle2, 1);
+	}
+	printf("%s\n",s.substr(0, s.length() - 6).c_str());
+	affiche(w,*c);
+	delete[] str;
 }

@@ -5,7 +5,7 @@
 
 namespace Selecteur{
 
-	Carte* select_carte(Fenetre& w);
+	const char* select_carte(Fenetre& w);
 
 }//namespace Selecteur
 

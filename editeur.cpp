@@ -111,7 +111,7 @@ void draw_selection(Fenetre &w, Carte& c, int& choix, bool& modifchoix, int& tai
 			w.getWindow().display();
 			sf::Keyboard::Key touche = sf::Keyboard::A;
 			sf::Event event;
-			while(w.isOpen() && touche != sf::Keyboard::Y && touche != sf::Keyboard::N){
+			while(w.isOpen() && touche != sf::Keyboard::Y && touche != sf::Keyboard::N && !res){
 				while (w.getWindow().pollEvent(event)){
 					if (event.type == sf::Event::Closed)
 						w.close();
@@ -338,8 +338,12 @@ void nouvelle(Fenetre& window, Carte& c){
 }
 
 void modifier(Fenetre& w, Carte* c){
-   c = Selecteur::select_carte(w);
-   if(c) nouvelle(w,*c);
+	const char* str = Selecteur::select_carte(w);
+	string s = ""; s.append (str);
+	c =  new Carte(s.substr(0,s.length() - 6).c_str(), false, false, false);
+	
+	if(c) nouvelle(w,*c);
+	delete[] str;
 }
 
 int menuEdition(Fenetre& window){

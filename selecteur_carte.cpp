@@ -1,6 +1,7 @@
 #include "selecteur_carte.h"
 #include "Carte.h"
 #include <iostream>
+#include <string.h>
 #include <string>
 #include <unistd.h>
 
@@ -40,7 +41,7 @@ void insert_in_tab(vector <Carte*> & tabCartes, vector<string> nomCartes, Fenetr
 	}
 }
 
-void supprimer_carte(vector <Carte*> & tabCartes, int i){
+void supprimer_carte(vector <Carte*> & tabCartes, int& i){
 	vector <Carte*> tmp;
 	Carte* toSupp = NULL;
 	unsigned int j;
@@ -57,6 +58,8 @@ void supprimer_carte(vector <Carte*> & tabCartes, int i){
 		tabCartes.push_back(tmp[j]);
 	}
 	tmp.clear();
+	i = 0;
+	if(tabCartes.size() == 0) i = -1;
 }
 
 sf::Keyboard::Key keyPressed(Fenetre& w){
@@ -76,14 +79,9 @@ void gestionTouches(sf::Keyboard::Key touche, vector <Carte*> & tabCartes, vecto
 	if(touche == sf::Keyboard::Left && i > 0) i--;
 	
 	if(touche == sf::Keyboard::Right && i < (int)(nomCartes.size() - 1)) i++;
-	
-	if(touche == sf::Keyboard::Backspace){
-		supprimer_carte(tabCartes, i);
-		if(tabCartes.size() == 0) i = -1;
-	}
 }
 
-Carte* select_carte(Fenetre& w){
+const char* select_carte(Fenetre& w){
 	
 	vector <Carte*> tabCartes;
 	vector <string> nomCartes = liste_cartes();
@@ -99,12 +97,16 @@ Carte* select_carte(Fenetre& w){
 		
 		if(i != -1) tabCartes[i]->drawMiniature(w);
 		else w.write("Aucune carte n'existe", 50, sf::Color::White, 50, 225);
-		w.write("[Entree] : valider    [Backspace] : Supprimer la carte", 20, sf::Color::White, 10, w.getHauteur() - 40);
+		w.write("[Entree] : valider", 20, sf::Color::White, 10, w.getHauteur() - 40);
 		w.getWindow().display();
 	}
 	
-	
-	return NULL;
+	if(i == -1)return NULL;
+	else {
+		char* str = new char[nomCartes[i].length() + 1](); str[0] = '\0';
+		strcpy(str,nomCartes[i].c_str());
+		return str;
+	} 
 }
 
 

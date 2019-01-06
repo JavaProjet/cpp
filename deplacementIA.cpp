@@ -215,7 +215,7 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 	
 	int x = J.getPosition().x, y = J.getPosition().y;
 	
-	if(c.obstacle_entre_joueurs(w)){ //si on voit pas le joueur	
+	//if(c.obstacle_entre_joueurs(w)){ //si on voit pas le joueur	
 		//rotation de l'IA
 		if(alea > 25){
 			alea = rand()%360 + 1;
@@ -263,8 +263,8 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 				w.getWindow().display();
 			}
 		}
-	}
-	else{
+	//}
+	/*else{
 		//rotation vers le haut ou vers le bas
 		if(J.getPosition().y > ((adversaireJ) ? adversaireJ->getPosition().y : adversaireIA->getPosition().y)){
 			while(J.getRotation() != 270){
@@ -330,7 +330,7 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 			c.drawAroundJoueur(w, bleuJoue);
 			w.getWindow().display();
 		}
-	}
+	}*/
 	//affichage final
 	drawFond(w, J, c.getLargeur(), c.getHauteur());
 	JoueurVie(w,J.getVie()); 	

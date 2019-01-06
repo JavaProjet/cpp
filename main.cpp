@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
 		if(choix == 1){
 			cout << "lancement d'une partie\n";
 			//jouer
-			affiche(window);
+			option(window);
 		}
 		else if(choix == 2){
 			//editeur de carte
