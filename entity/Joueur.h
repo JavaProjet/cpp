@@ -19,6 +19,7 @@ class Joueur : public Entity_ronde{
 		virtual entityType getType();
 		virtual void  save (FILE* fs  );
 		Balle& get_balle();
+		void set_balle(int x, int y, int rayon, int vie);
 };
 
 #endif // Joueur_h

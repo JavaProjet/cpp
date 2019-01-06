@@ -54,3 +54,8 @@ void Joueur  :: save ( FILE* fs){
 Balle& Joueur :: get_balle(){
 	return *balle;
 }
+
+void Joueur::set_balle(int x, int y, int rayon, int vie){
+	if(balle) delete balle, balle = NULL;
+	balle = new Balle(-100,-100, rayon, 1);
+}
