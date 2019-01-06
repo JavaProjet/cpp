@@ -9,7 +9,7 @@ sf::Texture texture; //pour garder la texture en mémoire sinon sprite devient i
 sf::Sprite sprite; //variable contenant un sprite de 1px, pour tester si le clic est dans un autre sprite
 bool initialised = false; //pour initialiser le sprite si ce n'est pas fais
 
-Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-100,20,100,false){
+Carte::Carte(const char* name, bool with_joueurs, bool bleuIA, bool rougeIA){
 	nom=NULL;
 	if(name){
 		FILE* fs = NULL ;
@@ -57,24 +57,36 @@ Carte::Carte(const char* name, bool with_joueurs) : jb(-100,20,100,true), jr(-10
 			fclose(fs);	 
 		}
 		
+		if(bleuIA)
+			jb = new IA(-100,-100,100,true,false);
+		else jb = new Joueur(-100,-100,100,true);
+		if(rougeIA)
+			jr = new IA(-100,-100,100,false,false);
+		else jr = new Joueur(-100,-100,100,false);
+		this->rougeIA = rougeIA;
+		this->bleuIA = bleuIA;
+
+		
 		if(with_joueurs){
 			srand(time(NULL));
 			do{
-				jb.setPosition(rand()%(largeur - 62) + 21, rand()%(hauteur - 62) + 21);
-			}while(collisionEntity(jb.getSprite()) != -1 || collisionJoueur(jb.getSprite(), false));
+				jb->setPosition(rand()%(largeur - 62) + 41, rand()%(hauteur - 62) + 41);
+			}while(collisionEntity(jb->getSprite()) != -1 || collisionJoueur(jb->getSprite(), false));
 			
 			do{
-				jr.setPosition(rand()%(largeur - 41) + 1, rand()%(hauteur - 41) + 1);
-			}while(collisionEntity(jr.getSprite()) != -1 || collisionJoueur(jr.getSprite(), true));
+				jr->setPosition(rand()%(largeur - 62) + 41, rand()%(hauteur - 62) + 41);
+			}while(collisionEntity(jr->getSprite()) != -1 || collisionJoueur(jr->getSprite(), true));
 		}
 	}
 }
 
-Carte::Carte(int largeur, int hauteur) : jb(-100,20,100,true), jr(-100,20,100,false){
+Carte::Carte(int largeur, int hauteur){
 	nom = NULL;
 	setNom("sans_titre");
 	this->largeur = largeur;
 	this->hauteur = hauteur;
+	jb = new Joueur(-100,-100,100,true);
+	jr = new Joueur(-100,-100,100,false);
 }
 
 Carte::~Carte(){
@@ -84,6 +96,8 @@ Carte::~Carte(){
 		 if(v) delete v;
 	 }
 	 entity.clear();
+	 delete jb;
+	 delete jr;
 }
 
 void Carte::draw(Fenetre& w){
@@ -91,8 +105,8 @@ void Carte::draw(Fenetre& w){
 		entity[i]->draw(w);
 	}
 	obstacle_entre_joueurs(w);
-	jb.draw(w);
-	jr.draw(w);
+	jb->draw(w);
+	jr->draw(w);
 }
 
 void Carte::drawMiniature(Fenetre& w){
@@ -165,15 +179,15 @@ void Carte::drawIfIn(Fenetre& w, sf::Vector2i min, sf::Vector2i max){
 		}
 	}
 	
-	if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
-		point.x = jb.getPosition().x - min.x;
-		point.y = jb.getPosition().y - min.y;
-		jb.drawAt(w, point);
+	if(jb->getPosition().x + jr->get_rayon() * 2 > min.x && jb->getPosition().x < max.x && jb->getPosition().y + jr->get_rayon() * 2 > min.y && jb->getPosition().y < max.y){
+		point.x = jb->getPosition().x - min.x;
+		point.y = jb->getPosition().y - min.y;
+		jb->drawAt(w, point);
 	}
-	if(jr.getPosition().x + jr.get_rayon() * 2 > min.x && jr.getPosition().x < max.x && jr.getPosition().y + jr.get_rayon() * 2 > min.y && jr.getPosition().y < max.y){
-		point.x = jr.getPosition().x - min.x;
-		point.y = jr.getPosition().y - min.y;
-		jr.drawAt(w, point);
+	if(jr->getPosition().x + jr->get_rayon() * 2 > min.x && jr->getPosition().x < max.x && jr->getPosition().y + jr->get_rayon() * 2 > min.y && jr->getPosition().y < max.y){
+		point.x = jr->getPosition().x - min.x;
+		point.y = jr->getPosition().y - min.y;
+		jr->drawAt(w, point);
 	}
 }
 
@@ -183,15 +197,15 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 	Entity_rect* e_rect;
 	
 	if(bleu){ //on dessine en decalé en mettant le joueur bleu au centre de la fenetre
-		min.x = jb.getPosition().x + jb.get_rayon() - w.getLargeur() / 2;
-		min.y = jb.getPosition().y + jb.get_rayon() - w.getHauteur() / 2;
+		min.x = jb->getPosition().x + jb->get_rayon() - w.getLargeur() / 2;
+		min.y = jb->getPosition().y + jb->get_rayon() - w.getHauteur() / 2;
 		max.x = min.x + w.getLargeur();
 		max.y = min.y + w.getHauteur();
 	}
 	
 	else { //on dessine en decalé en mettant le joueur rouge au centre de la fenetre
-		min.x = jr.getPosition().x + jb.get_rayon() - w.getLargeur() / 2;
-		min.y = jr.getPosition().y + jb.get_rayon() - w.getHauteur() / 2;
+		min.x = jr->getPosition().x + jb->get_rayon() - w.getLargeur() / 2;
+		min.y = jr->getPosition().y + jb->get_rayon() - w.getHauteur() / 2;
 		max.x = min.x + w.getLargeur();
 		max.y = min.y + w.getHauteur();
 	}
@@ -215,27 +229,27 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		}
 	}
 	if(bleu){ //on dessine le joueur bleu, et s'il n'y a pas d'obstacle entre les deux joueurs, on dessine le rouge s'il est aux alentours
-		point.x = jb.getPosition().x - min.x;
-		point.y = jb.getPosition().y - min.y;
-		jb.drawAt(w, point);
-		if(jr.getPosition().x + jr.get_rayon() * 2 > min.x && jr.getPosition().x < max.x && jr.getPosition().y + jr.get_rayon() * 2 > min.y && jr.getPosition().y < max.y){
+		point.x = jb->getPosition().x - min.x;
+		point.y = jb->getPosition().y - min.y;
+		jb->drawAt(w, point);
+		if(jr->getPosition().x + jr->get_rayon() * 2 > min.x && jr->getPosition().x < max.x && jr->getPosition().y + jr->get_rayon() * 2 > min.y && jr->getPosition().y < max.y){
 			if(obstacle_entre_joueurs(w) == false){
-				point.x = jr.getPosition().x - min.x;
-				point.y = jr.getPosition().y - min.y;
-				jr.drawAt(w, point);
+				point.x = jr->getPosition().x - min.x;
+				point.y = jr->getPosition().y - min.y;
+				jr->drawAt(w, point);
 			}
 		}
 	}
 	
 	else { //on dessine le joueur rouge, et s'il n'y a pas d'obstacle entre les deux joueurs, on dessine le bleu s'il est aux alentours
-		point.x = jr.getPosition().x - min.x;
-		point.y = jr.getPosition().y - min.y;
-		jr.drawAt(w, point);
-		if(jb.getPosition().x + jr.get_rayon() * 2 > min.x && jb.getPosition().x < max.x && jb.getPosition().y + jr.get_rayon() * 2 > min.y && jb.getPosition().y < max.y){
+		point.x = jr->getPosition().x - min.x;
+		point.y = jr->getPosition().y - min.y;
+		jr->drawAt(w, point);
+		if(jb->getPosition().x + jr->get_rayon() * 2 > min.x && jb->getPosition().x < max.x && jb->getPosition().y + jr->get_rayon() * 2 > min.y && jb->getPosition().y < max.y){
 			if(obstacle_entre_joueurs(w) == false){
-				point.x = jb.getPosition().x - min.x;
-				point.y = jb.getPosition().y - min.y;
-				jb.drawAt(w, point);
+				point.x = jb->getPosition().x - min.x;
+				point.y = jb->getPosition().y - min.y;
+				jb->drawAt(w, point);
 			}
 		}
 	}
@@ -362,20 +376,30 @@ int Carte::collisionEntity(sf::Sprite& s){
 
 bool Carte::collisionJoueur(sf::Sprite& s, bool bleu){
 	if(bleu){
-		if(Collision::PixelPerfectTest(s, jb.getSprite(),126)) return true;
+		if(Collision::PixelPerfectTest(s, jb->getSprite(),126)) return true;
 	}
 	else {
-		if(Collision::PixelPerfectTest(s, jr.getSprite(),126)) return true;
+		if(Collision::PixelPerfectTest(s, jr->getSprite(),126)) return true;
 	}
 	return false;
 }
 
 Joueur& Carte::getJoueurBleu(){
-	return jb;
+	return *jb;
 }
 
 Joueur& Carte::getJoueurRouge(){
-	return jr;
+	return *jr;
+}
+
+IA& Carte::getIABleu(){
+	IA* ia = (IA*)jb;
+	return *ia;
+}
+
+IA& Carte::getIARouge(){
+	IA* ia = (IA*)jr;
+	return *ia;
 }
 
 Entity* Carte::getEntity(int i){
@@ -392,6 +416,14 @@ int Carte::getHauteur(){
 
 char* Carte::getNom(){
 	return nom ;
+}
+
+bool Carte::getBleuIA(){
+	return bleuIA;
+}
+
+bool Carte::getRougeIA(){
+	return rougeIA;
 }
 
 void Carte::setNom(const char* name){
@@ -416,9 +448,9 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 	float a,b,ii,jj;
 	bool obstacle = false;
 	
-	sf::Vector2i p1 = jb.getPosition(), p2 = jr.getPosition();
-	p1.x += jb.get_rayon(); p1.y += jb.get_rayon();
-	p2.x += jr.get_rayon(); p2.y += jr.get_rayon();
+	sf::Vector2i p1 = jb->getPosition(), p2 = jr->getPosition();
+	p1.x += jb->get_rayon(); p1.y += jb->get_rayon();
+	p2.x += jr->get_rayon(); p2.y += jr->get_rayon();
 	
 	if(!initialised) initialise();
 	
@@ -434,11 +466,8 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			j = jj;
 			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
 			if(collisionEntity(i,j) != -1){
-				//w.add_pix(i,j,sf::Color::Red);
-				w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	
@@ -451,11 +480,8 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			i = ii;
 			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
 			if(collisionEntity(i,j) != -1){
-				//w.add_pix(i,j,sf::Color::Red);
-				w.getWindow().draw(sprite);
 				obstacle = true;
 			}
-			else w.add_pix(i,j,sf::Color::Blue);
 		}
 	}
 	return obstacle;

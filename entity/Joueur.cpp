@@ -14,6 +14,7 @@ Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), recta
 
 Joueur::~Joueur(){
 	printf("destruction Joueur\n");
+	if(balle != NULL) delete balle;
 }
 
 void Joueur::draw(Fenetre& w){

@@ -46,16 +46,6 @@ Balle::~Balle(){
 	printf("destruction Balle\n");
 }
 
-//Affichage de la balle dans la fenetre
-void Balle::draw(Fenetre& w){//
-	Entity::draw(w);
-}
-
-//Affichage dynamique : dessine la balle dans la fenetre meme si les coordonnées de le permettent pas
-void Balle::drawAt(Fenetre& w, sf::Vector2i point){
-	Entity::drawAt(w, point);
-}
-
 //Récupérer la balle
 entityType Balle::getType(){
 	return balle; //11

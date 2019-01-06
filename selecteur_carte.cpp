@@ -35,7 +35,7 @@ vector <string> liste_cartes(){
 void insert_in_tab(vector <Carte*> & tabCartes, vector<string> nomCartes, Fenetre& w){
 	Carte* c = NULL;
 	for (unsigned int i = 0; i < nomCartes.size(); i++){
-		c = new Carte(nomCartes[i].substr(0,nomCartes[i].length() - 6).c_str(), false);
+		c = new Carte(nomCartes[i].substr(0,nomCartes[i].length() - 6).c_str(), false, false, false);
 		tabCartes.push_back(c);
 	}
 }

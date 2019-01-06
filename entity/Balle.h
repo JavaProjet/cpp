@@ -14,8 +14,6 @@ class Balle : public Entity_ronde{
 	Balle(int x, int y, int rayon, int vie);
 	virtual ~Balle();
 	virtual entityType getType();
-	virtual void draw(Fenetre& w);
-	virtual void drawAt(Fenetre& w, sf::Vector2i);
 	int get_dommage();
 	int get_distance();
 

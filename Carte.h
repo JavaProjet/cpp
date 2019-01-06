@@ -11,6 +11,7 @@
 #include "entity/Balle.h"
 #include "entity/Mur.h"
 #include "entity/Joueur.h"
+#include "entity/IA.h"
 #include "fenetre.h"
 
 using namespace std;
@@ -18,12 +19,13 @@ using namespace std;
 class Carte{
 	private :
 		vector <Entity*> entity;
-		Joueur jb, jr;
+		Joueur *jb, *jr;
+		bool bleuIA, rougeIA;
 		char *nom;
 		int largeur;
 		int hauteur;
 	public :
-		Carte(const char* name, bool with_joueurs);
+		Carte(const char* name, bool with_joueurs, bool bleuIA, bool rougeIA);
 		Carte(int, int);
 		~Carte();
 		void draw(Fenetre& w);
@@ -44,6 +46,10 @@ class Carte{
 		int getLargeur();
 		int getHauteur();
 		char* getNom();
+		bool getBleuIA();
+		bool getRougeIA();
+		IA& getIABleu();
+		IA& getIARouge();
 		void setNom(const char*);
 		bool obstacle_entre_joueurs(Fenetre& w);
 		int save(bool forcer);

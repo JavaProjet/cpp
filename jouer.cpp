@@ -5,21 +5,15 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include "deplacementIA.cpp"
 
 using namespace std;
-
-#define Jb c.getJoueurBleu()
-#define Jr c.getJoueurRouge()
-
-#define PI 3.14159265
 
 //vie
 
 void JoueurVie (Fenetre& w,int J_vie){
 	w.draw_fillRect(10,10,2*J_vie, 4, sf::Color(0, 70, 33));
 }
-
- 
 
 typedef struct {
 	bool up;
@@ -60,10 +54,8 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 	return sf::Keyboard::Unknown;
 }
 
-void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool bleu, int move, int& cptMove, bool avancer, Fenetre & w){
+void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool bleuJoue, int move, int& cptMove, bool avancer, Fenetre & w){
 	double Cos, Sin;
-	int res[3];
-	//entityType t;
 	string str = "";
 	
 	int rotation = J.getRotation();
@@ -86,21 +78,15 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 	if(((k.up && !k.down) || (k.down && !k.up)) && avancer){ //une seule des 2 est appuyé sinon le déplacement s'annule
 		
 		J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
-		if((res[0] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
+		if((c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
 			J.setPosition(x, y + (int)Sin);
-			if((res[1] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+			if((c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 				J.setPosition(x + (int)Cos, y);
-				if((res[2] = c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
+				if(( c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){
 					J.setPosition(x,y);
 				}
 			}
 		}
-		/*for(int i = 0; i < 3; i++){ ca seg fault
-			if(res[i] != -1)
-				if(c.getEntity(res[i])->getType() == cactus)
-					res[i] = -2;
-		}
-		if(res[0] == -2 || res[1] == -2 || res[2] == -2) J.degats(1);*/
 		
 		if(x + Cos - 20 < 0 || x + 20 + Cos > c.getLargeur())
 			J.setPosition(x, J.getPosition().y);
@@ -114,7 +100,7 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 		if(limite_gauche < 0) limite_gauche += 360;
 		int limite_droite = J.getRotation() + 45;
 		if(limite_droite > 360) limite_droite -= 360;		
-		Joueur &Adversaire = (bleu) ? Jr : Jb;
+		Joueur &Adversaire = (bleuJoue) ? Jr : Jb;
 		touche = sf::Keyboard::A;
 		while(touche != sf::Keyboard::Space){
 			
@@ -137,35 +123,51 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 				
 				Cos = cos(J.getRotation() * PI / 180) ;
 				Sin = sin(J.getRotation() * PI / 180) ;
-				 
-				 J.get_balle().setPosition(J.getPosition().x + 20 - 7, J.getPosition().y + 20 - 7);
-				 int i,j;
-				 
-				 J.degats(J.get_balle().get_dommage());
-				 for(i=0 ; i < J.get_balle().get_distance()*8 && (j = c.collisionEntity(J.get_balle().getSprite())) == -1 && c.collisionJoueur(J.get_balle().getSprite(), !bleu) == false; i++){
+				
+				J.get_balle().setPosition(J.getPosition().x + 20 - 7, J.getPosition().y + 20 - 7);
+				int i,j;
+				
+				J.degats(J.get_balle().get_dommage());
+				for(i=0 ; i < J.get_balle().get_distance()*8 && (j = c.collisionEntity(J.get_balle().getSprite())) == -1 && c.collisionJoueur(J.get_balle().getSprite(), !bleuJoue) == false; i++){
 					sleep(0.01);
 					J.get_balle().setPosition(J.get_balle().getPosition().x + Cos * 2 , J.get_balle().getPosition().y + Sin * 2 );
-					w.drawSprite(0,0,600,500,"Sol_600x500.png");
 					J.get_balle().draw(w);
-					c.draw(w);
+					if(bleuJoue){
+						 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
+						 JoueurVie(w,Jb.getVie()); //vie du joueur
+						 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, w);
+					 }
+					else {
+						drawFond(w, Jr, c.getLargeur(), c.getHauteur());
+						gestion_touches(k, touche,c, Jr, false, move, cptMove, true, w);
+						JoueurVie(w,Jr.getVie()); 	
+					}
+					c.drawAroundJoueur(w, bleuJoue);
 					w.getWindow().display();
 					
-				 }
+				}
 				 
-				 if(j != -1){
+				if(j != -1){
 					if(c.getEntity(j)->degats(J.get_balle().get_dommage())==false)c.deleteEntity(j);
 				}
-				else if(c.collisionJoueur(J.get_balle().getSprite(), !bleu)){
+				else if(c.collisionJoueur(J.get_balle().getSprite(), !bleuJoue)){
 					Adversaire.degats(Adversaire.getVie());
 				}
 				
 				 
 			}
-			w.drawSprite(0,0,600,500,"Sol_600x500.png");
-			c.draw(w);
+			if(bleuJoue){
+				 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
+				 JoueurVie(w,Jb.getVie()); //vie du joueur
+				 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, w);
+			 }
+			else {
+				drawFond(w, Jr, c.getLargeur(), c.getHauteur());
+				gestion_touches(k, touche,c, Jr, false, move, cptMove, true, w);
+				JoueurVie(w,Jr.getVie()); 	
+			}
+			c.drawAroundJoueur(w, bleuJoue);
 			w.getWindow().display();
-			
-			
 		}
 	}
 	
@@ -180,25 +182,6 @@ void changeJoueur(Fenetre& w, bool bleu){
 	w.write(str.c_str(),40,sf::Color::White, (w.getLargeur() - size) / 2, (500 - 40) / 2);
 	w.getWindow().display();
 	sleep(2);
-}
-
-void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
-	w.getWindow().clear();
-	sf::Vector2i position, beginTo, size; // points pour dessiner en decalé la photo de fond
-	
-	position.x = w.getLargeur() / 2 - J.getPosition().x;
-	beginTo.x = (position.x >= 0)? 0 : -position.x;
-	if(position.x < 0) position.x = 0;
-	size.x = largeur;
-	size.x -= (J.getPosition().x + w.getLargeur() / 2) - largeur;
-	
-	position.y = w.getHauteur() / 2 - J.getPosition().y;
-	beginTo.y = (position.y >= 0)? 0 : -position.y;
-	if(position.y < 0) position.y = 0;
-	size.y = hauteur;
-	size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
-	
-	w.drawSprite(position, beginTo, size,"Sol_600x500.png");
 }
 
 void fin(Fenetre& w, Carte& c){
@@ -218,14 +201,29 @@ void fin(Fenetre& w, Carte& c){
 	}
 }
 
+void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
+    w.getWindow().clear();
+    sf::Vector2i position, beginTo, size; // points pour dessiner en decalé la photo de fond
+
+    position.x = w.getLargeur() / 2 - J.getPosition().x;
+    beginTo.x = (position.x >= 0)? 0 : -position.x;
+    if(position.x < 0) position.x = 0;
+    size.x = largeur;
+    size.x -= (J.getPosition().x + w.getLargeur() / 2) - largeur;
+
+    position.y = w.getHauteur() / 2 - J.getPosition().y;
+    beginTo.y = (position.y >= 0)? 0 : -position.y;
+    if(position.y < 0) position.y = 0;
+    size.y = hauteur;
+    size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
+
+    w.drawSprite(position, beginTo, size,"Sol_600x500.png");
+}
+
 void affiche(Fenetre& window){
 
-	Carte c("tmp", true);
-	/*c.ajoutEntity(100,100,petit,arbre);
-	c.ajoutEntity(200,100,moyen,rocher);
-	c.ajoutEntity(200,200,petit,rocher);
-	c.ajoutEntity(300,200,petit,cactus);
-*/
+	Carte c("tmp", true, true, false);
+	
 	int move = 2, moveMax = (window.getLargeur() + window.getHauteur()) / 40 ;
 	printf("move max : %d\n", moveMax);
 	Key k = {false, false, false, false};
@@ -234,35 +232,42 @@ void affiche(Fenetre& window){
 	sf::Keyboard::Key touche;
 	
 	while (window.isOpen()){
-		/*if(bleuJoue){
-			 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
-			 JoueurVie(window,Jb.getVie()); //vie du joueur
-		 }
-		else {
-			drawFond(window, Jr, c.getLargeur(), c.getHauteur());
-			JoueurVie(window,Jr.getVie());
-				
-		}*/
-		window.drawSprite(0,0,600,500,"Sol_600x500.png");
-		
-		touche = get_key(window, k);
-		if(bleuJoue){
-			 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, window);
-			 JoueurVie(window, Jb.getVie());
-		 }
-		else {
-			gestion_touches(k, touche,c, Jr, false, move, cptMove, true, window);
-			JoueurVie(window,Jr.getVie()); 
+		if((bleuJoue && !c.getBleuIA()) || (!bleuJoue && !c.getRougeIA())){
+			touche = get_key(window, k);
+			if(bleuJoue){
+				 drawFond(window, Jb, c.getLargeur(), c.getHauteur());
+				 JoueurVie(window,Jb.getVie()); //vie du joueur
+				 gestion_touches(k, touche, c, Jb, true, move, cptMove, /*cptMove < moveMax*/ true, window);
+			 }
+			else {
+				drawFond(window, Jr, c.getLargeur(), c.getHauteur());
+				gestion_touches(k, touche,c, Jr, false, move, cptMove, true, window);
+				JoueurVie(window,Jr.getVie()); 	
+			}
+			c.drawAroundJoueur(window, bleuJoue);
+			window.getWindow().display();
+			
+			if(touche == sf::Keyboard::Escape){
+				bleuJoue = !bleuJoue;
+				changeJoueur(window, bleuJoue);
+				cptMove = 0;
+			}
 		}
-
-		//c.drawAroundJoueur(window, bleuJoue);
-		c.draw(window);
-		window.getWindow().display();
-		if(touche == sf::Keyboard::Escape){
+		else {
+			if(bleuJoue){
+				if(c.getRougeIA())  deplacementIA(c, IAb, NULL, &IAr, bleuJoue, move, cptMove, window);
+				else 				deplacementIA(c, IAb, &Jr, NULL, bleuJoue, move, cptMove, window);
+			}
+			else {
+				if(c.getBleuIA())  deplacementIA(c, IAr, NULL, &IAb, bleuJoue, move, cptMove, window);
+				else 				deplacementIA(c, IAr, &Jb, NULL, bleuJoue, move, cptMove, window);
+			}
 			bleuJoue = !bleuJoue;
 			changeJoueur(window, bleuJoue);
 			cptMove = 0;
 		}
+		
 		fin(window, c);
+		
 	}
 }
