@@ -104,7 +104,7 @@ void Carte::draw(Fenetre& w){
 	for (unsigned int i = 0; i < entity.size(); i++){
 		entity[i]->draw(w);
 	}
-	obstacle_entre_joueurs(w);
+	//obstacle_entre_joueurs(w);
 	jb->draw(w);
 	jr->draw(w);
 }
@@ -233,7 +233,7 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.y = jb->getPosition().y - min.y;
 		jb->drawAt(w, point);
 		if(jr->getPosition().x + jr->get_rayon() * 2 > min.x && jr->getPosition().x < max.x && jr->getPosition().y + jr->get_rayon() * 2 > min.y && jr->getPosition().y < max.y){
-			if(obstacle_entre_joueurs(w) == false){
+			if(obstacle_entre_joueurs(w, min) == false){
 				point.x = jr->getPosition().x - min.x;
 				point.y = jr->getPosition().y - min.y;
 				jr->drawAt(w, point);
@@ -246,7 +246,7 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.y = jr->getPosition().y - min.y;
 		jr->drawAt(w, point);
 		if(jb->getPosition().x + jr->get_rayon() * 2 > min.x && jb->getPosition().x < max.x && jb->getPosition().y + jr->get_rayon() * 2 > min.y && jb->getPosition().y < max.y){
-			if(obstacle_entre_joueurs(w) == false){
+			if(obstacle_entre_joueurs(w, min) == false){
 				point.x = jb->getPosition().x - min.x;
 				point.y = jb->getPosition().y - min.y;
 				jb->drawAt(w, point);
@@ -368,7 +368,7 @@ void Carte::deleteEntity(int i){
 int Carte::collisionEntity(sf::Sprite& s){
 	int i;
 	for (i = 0; (unsigned)i < entity.size(); i++){
-		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),126))
+		if(Collision::PixelPerfectTest(s, entity[i]->getSprite(),127))
 			return i;
 	}
 	return -1;
@@ -376,10 +376,10 @@ int Carte::collisionEntity(sf::Sprite& s){
 
 bool Carte::collisionJoueur(sf::Sprite& s, bool bleu){
 	if(bleu){
-		if(Collision::PixelPerfectTest(s, jb->getSprite(),126)) return true;
+		if(Collision::PixelPerfectTest(s, jb->getSprite(),127)) return true;
 	}
 	else {
-		if(Collision::PixelPerfectTest(s, jr->getSprite(),126)) return true;
+		if(Collision::PixelPerfectTest(s, jr->getSprite(),127)) return true;
 	}
 	return false;
 }
@@ -441,7 +441,7 @@ void Carte::setNom(const char* name){
 
 //fonction qui calcul une ligne entre les 2 points et teste si une entité la croise, fonction draw_line de fenetre.cpp/.h (uvsqgraphics) modifié
 //retourne vrai si une entité dans le vecteur la croise et faux si aucune entité croise la ligne
-bool Carte::obstacle_entre_joueurs(Fenetre& w){
+bool Carte::obstacle_entre_joueurs(Fenetre& w, sf::Vector2i min){
 	int xmin, xmax;
 	int ymin, ymax;
 	int i,j;
@@ -467,7 +467,9 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			if (((jj-j) > 0.5) && (j < hauteur-1)) j++;
 			if(collisionEntity(i,j) != -1){
 				obstacle = true;
+				//w.add_pix(i + min.x,j + min.y,sf::Color::Red);
 			}
+			//else w.add_pix(i + min.x,j + min.y,sf::Color::Blue);
 		}
 	}
 	
@@ -481,7 +483,9 @@ bool Carte::obstacle_entre_joueurs(Fenetre& w){
 			if (((ii-i) > 0.5) && (i < largeur-1)) i++;
 			if(collisionEntity(i,j) != -1){
 				obstacle = true;
+				//w.add_pix(i + min.x,j + min.y,sf::Color::Red);
 			}
+			//else w.add_pix(i + min.x,j + min.y,sf::Color::Blue);
 		}
 	}
 	return obstacle;

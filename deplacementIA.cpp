@@ -81,7 +81,7 @@ void deplacementIA2(Carte& c, IA& J, bool bleuJoue, int move, int& cptMove, Fene
 	if(aleaAvence < 500 || obligation){
 			
 		cbAvence = rand()% 30;
-		for (int i = 0; i < cbAvence && c.obstacle_entre_joueurs(w); i++){
+		for (int i = 0; i < cbAvence /*&& c.obstacle_entre_joueurs(w)*/; i++){
 			
 			J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
 			if((c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite
@@ -259,7 +259,7 @@ void deplacementIA(Carte& c, IA& J, Joueur* adversaireJ, IA* adversaireIA, bool 
 		if(alea > 250){
 			int i;
 			alea = rand()%20 + 10;
-			for (i = 0; i < alea && c.obstacle_entre_joueurs(w) ; i++){
+			for (i = 0; i < alea /*&& c.obstacle_entre_joueurs(w)*/ ; i++){
 				int x = J.getPosition().x, y = J.getPosition().y;
 				J.setPosition(J.getPosition().x + (int)Cos, J.getPosition().y + (int)Sin);
 				if((c.collisionEntity(J.getSprite())) != -1 || c.collisionJoueur(Jr.getSprite(), true)){//collision avec un autre sprite

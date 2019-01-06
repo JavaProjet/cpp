@@ -51,7 +51,7 @@ class Carte{
 		IA& getIABleu();
 		IA& getIARouge();
 		void setNom(const char*);
-		bool obstacle_entre_joueurs(Fenetre& w);
+		bool obstacle_entre_joueurs(Fenetre& w, sf::Vector2i);
 		int save(bool forcer);
 		
 };

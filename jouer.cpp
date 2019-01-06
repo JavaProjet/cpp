@@ -104,7 +104,6 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 		Joueur &Adversaire = (bleuJoue) ? Jr : Jb;
 		touche = sf::Keyboard::A;
 		while(touche != sf::Keyboard::Space && w.isOpen()){
-			printf("boucle tir\n");
 			touche = get_key(w, k);
 			
 			if(k.left){
@@ -201,18 +200,19 @@ void drawFond(Fenetre& w, Joueur& J, int largeur, int hauteur){
     sf::Vector2i position, beginTo, size; // points pour dessiner en decalé la photo de fond
 
     position.x = w.getLargeur() / 2 - J.getPosition().x;
-    beginTo.x = (position.x >= 0)? 0 : -position.x;
-    if(position.x < 0) position.x = 0;
+    //beginTo.x = (position.x >= 0)? 0 : -position.x;
+    //if(position.x < 0) position.x = 0;
     size.x = largeur;
-    size.x -= (J.getPosition().x + w.getLargeur() / 2) - largeur;
+    //size.x -= (J.getPosition().x + w.getLargeur() / 2) - largeur;
 
     position.y = w.getHauteur() / 2 - J.getPosition().y;
-    beginTo.y = (position.y >= 0)? 0 : -position.y;
-    if(position.y < 0) position.y = 0;
+    //beginTo.y = (position.y >= 0)? 0 : -position.y;
+    //if(position.y < 0) position.y = 0;
     size.y = hauteur;
-    size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
+    //size.y -= (J.getPosition().y + w.getHauteur() / 2) - hauteur;
 
-    w.drawSprite(position, beginTo, size,"sol_1500.png");
+    //w.drawSprite(position, beginTo, size,"sol_1500.png");
+    w.draw_fillRect(position.x, position.y, size.x, size.y, sf::Color(160,62,35));
 }
 
 void affiche(Fenetre& window, Carte& c){
@@ -232,7 +232,7 @@ void affiche(Fenetre& window, Carte& c){
 			 }
 			else {
 				drawFond(window, Jr, c.getLargeur(), c.getHauteur());
-				gestion_touches(k, touche,c, Jr, false, move, cptMove, true, window);
+				gestion_touches(k, touche,c, Jr, false, move, cptMove, /*cptMove < 30*/ true, window);
 			}
 			
 			c.drawAroundJoueur(window, bleuJoue);
@@ -379,20 +379,22 @@ void option(Fenetre& w){
 	choixJoueurs( w, tailleBalle1, tailleBalle2);
 	const char* str = Selecteur::select_carte(w);
 	string s = ""; s.append (str);
-	Carte* c = new Carte (s.substr(0,s.length() - 6).c_str(), true, IAbleu, IArouge);
-	if(IAbleu){
-		c->getIABleu().set_balle(-100,-100, tailleBalle1, 1);
+	if(str) {
+		Carte* c = new Carte (s.substr(0,s.length() - 6).c_str(), true, IAbleu, IArouge);
+		if(IAbleu){
+			c->getIABleu().set_balle(-100,-100, tailleBalle1, 1);
+		}
+		else{
+			c->getJoueurBleu().set_balle(-100,-100, tailleBalle1, 1);
+		}
+		if(IArouge){
+			c->getIARouge().set_balle(-100,-100, tailleBalle2, 1);
+		}
+		else{
+			c->getJoueurRouge().set_balle(-100,-100, tailleBalle2, 1);
+		}
+		printf("%s\n",s.substr(0, s.length() - 6).c_str());
+		affiche(w,*c);
+		delete[] str;
 	}
-	else{
-		c->getJoueurBleu().set_balle(-100,-100, tailleBalle1, 1);
-	}
-	if(IArouge){
-		c->getIARouge().set_balle(-100,-100, tailleBalle2, 1);
-	}
-	else{
-		c->getJoueurRouge().set_balle(-100,-100, tailleBalle2, 1);
-	}
-	printf("%s\n",s.substr(0, s.length() - 6).c_str());
-	affiche(w,*c);
-	delete[] str;
 }

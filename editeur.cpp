@@ -339,11 +339,13 @@ void nouvelle(Fenetre& window, Carte& c){
 
 void modifier(Fenetre& w, Carte* c){
 	const char* str = Selecteur::select_carte(w);
-	string s = ""; s.append (str);
-	c =  new Carte(s.substr(0,s.length() - 6).c_str(), false, false, false);
-	
-	if(c) nouvelle(w,*c);
-	delete[] str;
+	if(str) {
+		string s = ""; s.append (str);
+		c =  new Carte(s.substr(0,s.length() - 6).c_str(), false, false, false);
+
+		if(c) nouvelle(w,*c);
+		delete[] str;
+	}
 }
 
 int menuEdition(Fenetre& window){
