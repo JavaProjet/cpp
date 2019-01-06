@@ -232,7 +232,7 @@ void affiche(Fenetre& window, Carte& c){
 			 }
 			else {
 				drawFond(window, Jr, c.getLargeur(), c.getHauteur());
-				gestion_touches(k, touche,c, Jr, false, move, cptMove, /*cptMove < 30*/ true, window);
+				gestion_touches(k, touche,c, Jr, false, move, cptMove, cptMove < 30 , window);
 			}
 			
 			c.drawAroundJoueur(window, bleuJoue);
