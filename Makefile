@@ -79,7 +79,7 @@ IA.o: entity/IA.cpp entity/IA.h entity/Joueur.cpp entity/Joueur.h entity/Balle.h
 	g++ -c -g -Wall entity/IA.cpp entity/IA.h entity/Joueur.cpp entity/Joueur.h entity/Balle.h entity/entity_ronde.h entity/Entity.h fenetre.h $(ISFML)
 
 clean:
-	rm -f *.o main entity/*.gch
+	rm -f *.o main entity/*.gch *.gch
 
 install:
 	unzip SFML.zip
@@ -93,6 +93,13 @@ git:
 	git commit
 	git push
 
+tar_gz: clean
+	rm -fr ../projet_cpp
+	rm -f ../Projet_cpp_Bazin-Lapegue-De_Jesus.tar.gz
+	mkdir ../projet_cpp
+	cp -r * ../projet_cpp
+	tar czvf ../Projet_cpp_Bazin-Lapegue-De_Jesus.tar.gz ../projet_cpp
+	rm -fr ../projet_cpp
 
 main2:
 	g++ -g -Wall $(ficCpp) $(ficH) $(ISFML) $(LSFML) -o main
