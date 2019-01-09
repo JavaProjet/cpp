@@ -28,7 +28,7 @@ void Input::drawInput(){
 						if(!maj) str[cursor++] = 'a' + event.key.code;
 						else str[cursor++] = 'A' + event.key.code;
 					}
-					if(event.key.code == sf::Keyboard::Space) str[cursor++] = ' ';
+					//if(event.key.code == sf::Keyboard::Space) str[cursor++] = ' ';
 				}
 				if(cursor > 0){
 					if(event.key.code == sf::Keyboard::BackSpace) str[--cursor] = '\0';

@@ -55,7 +55,7 @@ sf::Keyboard::Key get_key(Fenetre& window, Key& k){
 	return sf::Keyboard::Unknown;
 }
 
-void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool bleuJoue, int move, int& cptMove, bool avancer, Fenetre & w){
+void gestion_touches(Key& k, sf::Keyboard::Key& touche, Carte& c, Joueur& J, bool bleuJoue, int move, int& cptMove, bool avancer, Fenetre & w){
 	double Cos, Sin;
 	string str = "";
 	
@@ -103,7 +103,7 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 		if(limite_droite > 360) limite_droite -= 360;		
 		Joueur &Adversaire = (bleuJoue) ? Jr : Jb;
 		touche = sf::Keyboard::A;
-		while(touche != sf::Keyboard::Space && w.isOpen()){
+		while(touche != sf::Keyboard::Space && touche != sf::Keyboard::Escape && w.isOpen()){
 			touche = get_key(w, k);
 			
 			if(k.left){
@@ -121,17 +121,14 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 			}
 			if(touche == sf::Keyboard::Space && J.getVie() - J.get_balle().get_dommage() > 0 ){
 				
-				Cos = cos(J.getRotation() * PI / 180) ;
-				Sin = sin(J.getRotation() * PI / 180) ;
+				Cos = cos(J.getRotation() * PI / 180) * 10 ;
+				Sin = sin(J.getRotation() * PI / 180) * 10 ;
 				
-				J.get_balle().setPosition(J.getPosition().x + 20 - 7, J.getPosition().y + 20 - 7);
+				J.get_balle().setPosition(J.getPosition().x + 20 - J.get_balle().get_rayon() / 2, J.getPosition().y + 20 - J.get_balle().get_rayon() / 2);
 				int i,j;
-				
-				J.degats(J.get_balle().get_dommage());
-				for(i=0 ; i < J.get_balle().get_distance()*8 && (j = c.collisionEntity(J.get_balle().getSprite())) == -1 && c.collisionJoueur(J.get_balle().getSprite(), !bleuJoue) == false; i++){
-					sleep(0.01);
-					J.get_balle().setPosition(J.get_balle().getPosition().x + Cos * 2 , J.get_balle().getPosition().y + Sin * 2 );
-					J.get_balle().draw(w);
+				for(i = 0 ; i < J.get_balle().get_distance()* 2 && (j = c.collisionEntity(J.get_balle().getSprite())) == -1 && c.collisionJoueur(J.get_balle().getSprite(), !bleuJoue) == false; i++){
+					sleep(0.5);
+					J.get_balle().setPosition(J.get_balle().getPosition().x + Cos , J.get_balle().getPosition().y + Sin);
 					if(bleuJoue){
 						 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
 					 }
@@ -150,8 +147,20 @@ void gestion_touches(Key& k, sf::Keyboard::Key touche, Carte& c, Joueur& J, bool
 				else if(c.collisionJoueur(J.get_balle().getSprite(), !bleuJoue)){
 					Adversaire.degats(Adversaire.getVie());
 				}
+				J.degats(J.get_balle().get_dommage());
 				
-				 
+				J.get_balle().setPosition(-100, -100);
+				if(bleuJoue){
+					 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
+				 }
+				else {
+					drawFond(w, Jr, c.getLargeur(), c.getHauteur());	
+				}
+				c.drawAroundJoueur(w, bleuJoue);
+				JoueurVie(w,Jb.getVie()); //vie du joueur
+				w.getWindow().display();
+				sleep(1);
+				touche = sf::Keyboard::Escape;
 			}
 			if(bleuJoue){
 				 drawFond(w, Jb, c.getLargeur(), c.getHauteur());
@@ -281,9 +290,9 @@ int choixJoueurs(Fenetre& window){
         }
         window.drawSprite(0,0,600,500,"fond.png");
         
-        window.write("Joueur vs Joueur", 40, sf::Color::Black, 120, 50);
-        window.write("Joueur vs IA", 40, sf::Color::Black, 120, 170);
-        window.write("Ordi vs Ordi", 40, sf::Color::Black, 120, 290);
+        window.write("Joueur vs Joueur", 40, sf::Color::Black, 165, 50);
+        window.write("Joueur vs IA", 40, sf::Color::Black, 200, 170);
+        window.write("Ordi vs Ordi", 40, sf::Color::Black, 205, 290);
         window.write("Revenir en arriere", 40, sf::Color::Black, 165, 410);
         
         if(choix == -1){
@@ -356,14 +365,14 @@ int choixJoueurs(Fenetre& window, int& choix1, int& choix2){
         s1 = "Balle de taille ", s2 = "Balle de taille ";
 		s1.append(itoa(choix1));
 		s2.append(itoa(choix2));
-        window.write(s1.c_str(), 40, sf::Color::Black, 120, 50);
-        window.write(s2.c_str(), 40, sf::Color::Black, 120, 170);
+        window.write(s1.c_str(), 40, sf::Color::Black, 165, 50);
+        window.write(s2.c_str(), 40, sf::Color::Black, 165, 170);
         
         if(choix == -1){
-			window.write(">", 40, sf::Color::Black, 60, 50);
+			window.write(">", 40, sf::Color::Black, 120, 50);
 		}
 		else if(choix == -2){
-			window.write(">", 40, sf::Color::Black, 60, 170);
+			window.write(">", 40, sf::Color::Black, 120, 170);
 		}
         window.getWindow().display();
     }
@@ -376,25 +385,27 @@ void option(Fenetre& w){
 	int choix = choixJoueurs(w);
 	if(choix == 2) IArouge = true;
 	if(choix == 3) IArouge = IAbleu = true;
-	choixJoueurs( w, tailleBalle1, tailleBalle2);
-	const char* str = Selecteur::select_carte(w);
-	string s = ""; s.append (str);
-	if(str) {
-		Carte* c = new Carte (s.substr(0,s.length() - 6).c_str(), true, IAbleu, IArouge);
-		if(IAbleu){
-			c->getIABleu().set_balle(-100,-100, tailleBalle1, 1);
+	if(choix != 4){
+		choixJoueurs(w, tailleBalle1, tailleBalle2);
+		const char* str = Selecteur::select_carte(w);
+		string s = ""; s.append (str);
+		if(str) {
+			Carte* c = new Carte (s.substr(0,s.length() - 6).c_str(), true, IAbleu, IArouge);
+			if(IAbleu){
+				c->getIABleu().set_balle(-100,-100, tailleBalle1, 1);
+			}
+			else{
+				c->getJoueurBleu().set_balle(-100,-100, tailleBalle1, 1);
+			}
+			if(IArouge){
+				c->getIARouge().set_balle(-100,-100, tailleBalle2, 1);
+			}
+			else{
+				c->getJoueurRouge().set_balle(-100,-100, tailleBalle2, 1);
+			}
+			printf("%s\n",s.substr(0, s.length() - 6).c_str());
+			affiche(w,*c);
+			delete[] str;
 		}
-		else{
-			c->getJoueurBleu().set_balle(-100,-100, tailleBalle1, 1);
-		}
-		if(IArouge){
-			c->getIARouge().set_balle(-100,-100, tailleBalle2, 1);
-		}
-		else{
-			c->getJoueurRouge().set_balle(-100,-100, tailleBalle2, 1);
-		}
-		printf("%s\n",s.substr(0, s.length() - 6).c_str());
-		affiche(w,*c);
-		delete[] str;
 	}
 }

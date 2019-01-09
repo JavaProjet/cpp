@@ -232,6 +232,11 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.x = jb->getPosition().x - min.x;
 		point.y = jb->getPosition().y - min.y;
 		jb->drawAt(w, point);
+		if(jb->get_balle().getPosition().x != -100 && jb->get_balle().getPosition().y != -100){
+			point.x = jb->get_balle().getPosition().x - min.x;
+			point.y = jb->get_balle().getPosition().y - min.y;
+			jb->get_balle().drawAt(w,point);
+		}
 		if(jr->getPosition().x + jr->get_rayon() * 2 > min.x && jr->getPosition().x < max.x && jr->getPosition().y + jr->get_rayon() * 2 > min.y && jr->getPosition().y < max.y){
 			if(obstacle_entre_joueurs(w, min) == false){
 				point.x = jr->getPosition().x - min.x;
@@ -245,6 +250,11 @@ void Carte::drawAroundJoueur(Fenetre& w, bool bleu){
 		point.x = jr->getPosition().x - min.x;
 		point.y = jr->getPosition().y - min.y;
 		jr->drawAt(w, point);
+		if(jr->get_balle().getPosition().x != -100 && jr->get_balle().getPosition().y != -100){	
+			point.x = jr->get_balle().getPosition().x - min.x;
+			point.y = jr->get_balle().getPosition().y - min.y;
+			jr->get_balle().drawAt(w,point);
+		}
 		if(jb->getPosition().x + jr->get_rayon() * 2 > min.x && jb->getPosition().x < max.x && jb->getPosition().y + jr->get_rayon() * 2 > min.y && jb->getPosition().y < max.y){
 			if(obstacle_entre_joueurs(w, min) == false){
 				point.x = jb->getPosition().x - min.x;

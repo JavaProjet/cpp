@@ -12,7 +12,7 @@ using namespace std;
 sf::Texture textureCursor; //pour garder la texture en mémoire sinon sprite devient invalide
 sf::Sprite spriteCursor; //variable contenant le sprite pour changer le cursor
 bool changeSprite = false; //indique si le sprite doit etre mit a jour
-#define deplacement 100   //valeurs possibles 1 2 5 10 20 50 100 200 ...
+#define deplacement 50   //valeurs possibles 1 2 5 10 20 50 100 200 ...
 
 
 void changeCursor(const char* filename, int sizeX, int sizeY){
@@ -273,7 +273,7 @@ void draw_menu(Fenetre &w, sf::Vector2i& cursorPos, int& choix, bool& modifchoix
 	draw_selection(w,c,choix,modifchoix,taille);
 }
 
-void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max, Carte& c){
+void gestionTouches(Fenetre& w,sf::Keyboard::Key key, sf::Vector2i cursorPos, sf::Vector2i& min, sf::Vector2i& max, Carte& c){
 	if(key == sf::Keyboard::Key::Up){
 		if(min.y - deplacement >= 0){
 			min.y -= deplacement;
@@ -301,6 +301,11 @@ void gestionTouches(sf::Keyboard::Key key, sf::Vector2i& min, sf::Vector2i& max,
 			max.x += deplacement;
 		}
 	}
+	//deplacement avec cursor sur les bords
+	if(cursorPos.x < 10){ if(min.x - deplacement >= 0){ min.x -= 10, max.x -= 10; }}
+	if(cursorPos.x > w.getLargeur() - 10){ if(max.x + deplacement <= c.getLargeur()){ min.x += 10, max.x += 10; }}
+	if(cursorPos.y < 10){ if(min.y - deplacement >= 0){ min.y -= 10, max.y -= 10; }}
+	if(cursorPos.y > w.getHauteur() - 70 && cursorPos.y < w.getHauteur() - 60){ if(max.y + deplacement <= c.getHauteur()){ min.y += 10, max.y += 10; }}
 }
 
 void nouvelle(Fenetre& window, Carte& c){
@@ -326,7 +331,7 @@ void nouvelle(Fenetre& window, Carte& c){
 		window.drawRect(0, 0, c.getLargeur(), c.getHauteur(), sf::Color(160,62,35));
 		
 		key = Input::get_clic(window);
-		gestionTouches(key, min, max, c);
+		gestionTouches(window, key, cursorPos, min, max, c);
 		c.drawIfIn(window,min,max);
 		draw_menu(window, cursorPos, choix, modifchoix, taille, c);
 		nomCarte.drawInput();

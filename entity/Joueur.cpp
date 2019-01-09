@@ -9,7 +9,6 @@ Joueur::Joueur(int x, int y,int vie,bool bleu) : Entity_ronde(x,y,20,vie), recta
 	rectangle.setFillColor(sf::Color(80, 57, 50));
 	rectangle.setPosition(centre.x,centre.y);
 	balle = NULL;
-	
 }
 
 Joueur::~Joueur(){
@@ -57,5 +56,5 @@ Balle& Joueur :: get_balle(){
 
 void Joueur::set_balle(int x, int y, int rayon, int vie){
 	if(balle) delete balle, balle = NULL;
-	balle = new Balle(-100,-100, rayon, 1);
+	balle = new Balle(x, y, rayon, 1);
 }
